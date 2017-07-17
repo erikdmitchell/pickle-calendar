@@ -67,13 +67,18 @@ class Pickle_Calendar_Event_Details {
      * @return void
      */
     public function render_metabox( $post ) {
-        wp_nonce_field('update_settings', 'boomi_trust_admin');
-        
-        $html='';
+	    $html='';
+	    
+        $html.=wp_nonce_field('update_settings', 'boomi_trust_admin', true, false);
         
         $html.='<div class="mb-row">';
-        	$html.='<label for="event-date">Date</label>';
-	        $html.='<input type="text" name="event[date]" id="event-date" class="bted-pickr" value="'.get_post_meta($post->ID, '_event_date', true).'" />';
+        	$html.='<label for="start_date">Start Date</label>';
+	        $html.='<input type="text" name="details[start_date]" id="start_date" class="pcdetail-pickr regular-text" value="'.get_post_meta($post->ID, '_detail_start_date', true).'" />';
+	    $html.='</div>';
+
+        $html.='<div class="mb-row">';
+        	$html.='<label for="end_date">End Date</label>';
+	        $html.='<input type="text" name="details[end_date]" id="end_date" class="pcdetail-pickr regular-text" value="'.get_post_meta($post->ID, '_detail_end_date', true).'" />';
 	    $html.='</div>';
         
         echo $html;
@@ -116,7 +121,9 @@ class Pickle_Calendar_Event_Details {
             return;
         }
 
-        update_post_meta($post_id, '_event_date', $_POST['event']['date']);
+		foreach ($_POST['details'] as $key => $value) :
+			update_post_meta($post_id, '_detail_'.sanitize_key($key), $value);
+		endforeach;
     }
 }
  

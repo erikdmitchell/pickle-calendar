@@ -1,5 +1,8 @@
 jQuery(document).ready(function($) {
 	
-	$('.bted-pickr').flatpickr();
+	$('.pcdetail-pickr').flatpickr({
+		enableTime: true,
+		altInput: true
+	});
 	
 });

@@ -88,9 +88,7 @@ class Pickle_Calendar_Admin {
 			$html.='</form>';
 			
 		$html.='</div>';
-echo '<pre>';
-print_r(picklecalendar()->settings);
-echo '</pre>';		
+	
 		echo $html;
 	}
 	

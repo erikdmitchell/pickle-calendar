@@ -62,6 +62,8 @@ final class PickleCalendar {
 			'adminlabel' => 'Event',
 			'cpt_single' => 'Event',
 			'cpt_plural' => 'Events',
+			'tax_single' => 'Event Type',
+			'tax_plural' => 'Event Types',
 		);
 		$settings=wp_parse_args($settings, $default_settings);
 		

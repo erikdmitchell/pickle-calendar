@@ -28,7 +28,7 @@ class Pickle_Calendar_Admin {
 					$html.='<tbody>';
 					
 						$html.='<tr>';
-							$html.='<th scope="row"><label for="adminlabel">Admin Label (single)</label></th>';
+							$html.='<th scope="row"><label for="adminlabel">Admin Label</label></th>';
 							$html.='<td><input name="adminlabel" type="text" id="adminlabel" value="'.picklecalendar()->settings['adminlabel'].'" class="regular-text"></td>';
 						$html.='</tr>';
 					

@@ -64,10 +64,32 @@ final class PickleCalendar {
 			'cpt_plural' => 'Events',
 			'tax_single' => 'Event Type',
 			'tax_plural' => 'Event Types',
+			'include_details' => true,
+			'detail_options' => array(
+				'start_date' => true,
+				'end_date' => true,	
+			),
 		);
-		$settings=wp_parse_args(get_option('pickle_calendar_settings', ''), $default_settings);
+		$db_settings=get_option('pickle_calendar_settings', '');
+		$settings=$this->parse_args($db_settings, $default_settings);
 		
 		return $settings;
+	}
+	
+	public function parse_args(&$a, $b) {
+		$a = (array) $a;
+		$b = (array) $b;
+		$result = $b;
+		
+		foreach ( $a as $k => &$v ) {
+			if ( is_array( $v ) && isset( $result[ $k ] ) ) {
+				$result[ $k ] = $this->parse_args($v, $result[ $k ]);
+			} else {
+				$result[ $k ] = $v;
+			}
+		}
+		
+		return $result;
 	}
 
 }

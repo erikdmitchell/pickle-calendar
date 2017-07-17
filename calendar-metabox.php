@@ -1,9 +1,6 @@
 <?php
 
-/**
- * BoomiTrustEventDetails class.
- */
-class BoomiTrustEventDetails {
+class Pickle_Calendar_Event_Details {
 
     /**
      * __construct function.
@@ -37,11 +34,11 @@ class BoomiTrustEventDetails {
      * @return void
      */
     public function admin_scripts_styles() {
-	    wp_enqueue_script('flatpickr-script', BOOMI_TRUST_URL.'js/flatpickr.min.js', array('jquery'), '2.6.1', true);
-	    wp_enqueue_script('bted-script', BOOMI_TRUST_URL.'js/event-details.js', array('flatpickr-script'), '0.1.0', true);
+	    wp_enqueue_script('flatpickr-script', PICKLE_CALENDAR_URL.'js/flatpickr.min.js', array('jquery'), '2.6.1', true);
+	    wp_enqueue_script('bted-script', PICKLE_CALENDAR_URL.'js/event-details.js', array('flatpickr-script'), '0.1.0', true);
 	    
-	    wp_enqueue_style('flatpickr-style', BOOMI_TRUST_URL.'css/flatpickr.min.css', '', '2.6.1');
-	    wp_enqueue_style('bted-style', BOOMI_TRUST_URL.'css/event-details.css', '', '0.1.0');
+	    wp_enqueue_style('flatpickr-style', PICKLE_CALENDAR_URL.'css/flatpickr.min.css', '', '2.6.1');
+	    wp_enqueue_style('bted-style', PICKLE_CALENDAR_URL.'css/event-details.css', '', '0.1.0');
     }
 
     /**
@@ -53,9 +50,9 @@ class BoomiTrustEventDetails {
     public function add_metabox() {
         add_meta_box(
             'event-details',
-            __('Event Details', 'textdomain' ),
+            __('Event Details', 'pickle-calendar' ),
             array( $this, 'render_metabox' ),
-            'scevent',
+            'pcevent',
             'advanced',
             'default'
         );
@@ -123,5 +120,5 @@ class BoomiTrustEventDetails {
     }
 }
  
-new BoomiTrustEventDetails();
+new Pickle_Calendar_Event_Details();
 ?>

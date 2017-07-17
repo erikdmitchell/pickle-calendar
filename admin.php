@@ -28,13 +28,18 @@ class Pickle_Calendar_Admin {
 					$html.='<tbody>';
 					
 						$html.='<tr>';
-							$html.='<th scope="row"><label for="adminlabel_single">Admin Label (single)</label></th>';
-							$html.='<td><input name="adminlabel_single" type="text" id="adminlabel_single" value="'.picklecalendar()->settings['adminlabel_single'].'" class="regular-text"></td>';
+							$html.='<th scope="row"><label for="adminlabel">Admin Label (single)</label></th>';
+							$html.='<td><input name="adminlabel" type="text" id="adminlabel" value="'.picklecalendar()->settings['adminlabel'].'" class="regular-text"></td>';
 						$html.='</tr>';
 					
 						$html.='<tr>';
-							$html.='<th scope="row"><label for="adminlabel_plural">Admin Label (plural)</label></th>';
-							$html.='<td><input name="adminlabel_plural" type="text" id="adminlabel_plural" value="'.picklecalendar()->settings['adminlabel_plural'].'" class="regular-text"></td>';
+							$html.='<th scope="row"><label for="cpt_single">Post Type Label (single)</label></th>';
+							$html.='<td><input name="cpt_single" type="text" id="cpt_single" value="'.picklecalendar()->settings['cpt_single'].'" class="regular-text"></td>';
+						$html.='</tr>';
+					
+						$html.='<tr>';
+							$html.='<th scope="row"><label for="cpt_plural">Post Type Label (plural)</label></th>';
+							$html.='<td><input name="cpt_plural" type="text" id="cpt_plural" value="'.picklecalendar()->settings['cpt_plural'].'" class="regular-text"></td>';
 						$html.='</tr>';
 					
 					$html.='</tbody>';				

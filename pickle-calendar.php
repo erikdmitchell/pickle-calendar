@@ -59,8 +59,9 @@ final class PickleCalendar {
 
 	public function settings($settings='') {
 		$default_settings=array(
-			'adminlabel_single' => 'Class',
-			'adminlabel_plural' => 'Classes',
+			'adminlabel' => 'Event',
+			'cpt_single' => 'Event',
+			'cpt_plural' => 'Events',
 		);
 		$settings=wp_parse_args($settings, $default_settings);
 		

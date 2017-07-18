@@ -8,10 +8,7 @@ class Pickle_Calendar {
 	 * @access public
 	 * @return void
 	 */
-	public function __construct() {
-		include_once(PICKLE_CALENDAR_PATH.'post-type.php');
-		include_once(PICKLE_CALENDAR_PATH.'taxonomy.php');
-		
+	public function __construct() {		
 		add_action('wp_ajax_bscal_nav', array($this, 'ajax_nav'));
 		add_action('wp_ajax_nopriv_bscal_nav', array($this, 'ajax_nav'));
 		add_action('wp_enqueue_scripts', array($this, 'scripts_styles'));

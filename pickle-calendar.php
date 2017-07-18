@@ -50,6 +50,8 @@ final class PickleCalendar {
 		include_once(PICKLE_CALENDAR_PATH.'admin.php');
 		include_once(PICKLE_CALENDAR_PATH.'calendar.php');
 		include_once(PICKLE_CALENDAR_PATH.'calendar-metabox.php');
+		include_once(PICKLE_CALENDAR_PATH.'post-type.php');
+		include_once(PICKLE_CALENDAR_PATH.'taxonomy.php');
 	}
 
 	public function init() {

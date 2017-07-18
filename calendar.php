@@ -113,7 +113,7 @@ class Pickle_Calendar {
 		
 		$html.='</div>';
 		
-		return apply_filters('simcoe_calendar_weekdays', $html, $dow);
+		return apply_filters('pickle_calendar_weekdays', $html, $dow);
 	}
 	
 	/**
@@ -173,8 +173,9 @@ class Pickle_Calendar {
 	
 		// keep going with days //
 		for ($list_day = 1; $list_day <= $days_in_month; $list_day++) :
+			$pref_date=date('Y-m-d', strtotime("$year-$month-$list_day"));
 			
-			if (date('Y-m-d', strtotime("$year-$month-$list_day"))==$current_date) :
+			if ($pref_date==$current_date) :
 				$class='calendar-day today';
 			else :
 				$class='calendar-day';
@@ -183,7 +184,7 @@ class Pickle_Calendar {
 			$html.= '<div class="'.$class.'">';
 				$html.= '<div class="day-number">'.$list_day.'</div>'; // add day number
 	
-				$html.=apply_filters('simcoe_calendar_single_day', '', date('Y-m-d', strtotime("$year-$month-$list_day")));
+				$html.=apply_filters('pickle_calendar_single_day', $this->add_date_info($pref_date), $pref_date);
 				
 			$html.= '</div>';
 			
@@ -274,6 +275,38 @@ class Pickle_Calendar {
 		endswitch;
 		
 		return $nav_year;
+	}
+	
+	protected function add_date_info($date='') {
+		$content='';
+		$events=$this->get_events($date);
+	
+		foreach ($events as $event) :
+			$terms=wp_get_post_terms($event->ID, 'pctype');
+		
+			foreach ($terms as $term) :
+				$content.='<div class="pickle-calendar-icon-wrap"><a href="#">'.$term->slug.'</a></div>';
+			endforeach;
+	
+		endforeach;
+		
+		return $content;		
+	}
+	
+	protected function get_events($date='') {
+		$posts=get_posts(array(
+			'posts_per_page' => -1,
+			'post_type' => 'pcevent',
+			'meta_query' => array(
+				array(
+					'key'     => '_event_date', // THIS WILL CHANGE //
+					'value' => $date,
+					'type' => 'DATE'
+				),
+			),				
+		));
+print_r($posts);			
+		return $posts;		
 	}
 	
 	/**

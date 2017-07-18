@@ -328,8 +328,13 @@ class Pickle_Calendar {
 					'type' => 'DATE'
 				),				
 			),
-			'fields' => 'ids',				
+			'fields' => 'ids',	
+			'meta_key' => '_detail_start_date',
+			'orderby' => 'meta_value',	
+			'order' => 'ASC',		
 		));
+		
+		$posts=apply_filters('pickle_calendar_get_events', $posts, $date);
 			
 		return $posts;		
 	}

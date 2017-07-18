@@ -24,6 +24,8 @@ final class PickleCalendar {
 	public $version='1.0.0';
 	
 	public $settings='';
+	
+	public $calendar=null;
 
 	public function __construct() {
 		$this->define_constants();
@@ -52,6 +54,7 @@ final class PickleCalendar {
 
 	public function init() {
 		$this->settings=$this->settings();
+		$this->calendar=new Pickle_Calendar();
 
 		do_action( 'pickle_calendar_init' );
 	}

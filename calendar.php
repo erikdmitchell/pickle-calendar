@@ -277,16 +277,26 @@ class Pickle_Calendar {
 		return $nav_year;
 	}
 	
+	/**
+	 * add_date_info function.
+	 * 
+	 * @access protected
+	 * @param string $date (default: '')
+	 * @return void
+	 */
 	protected function add_date_info($date='') {
 		$content='';
 		$events=$this->get_events($date);
 	
-		foreach ($events as $event) :
-			//$terms=wp_get_post_terms($event->ID, 'pctype');
-		
-			//foreach ($terms as $term) :
-				$content.='<div class="pickle-calendar-icon-wrap"><a href="#">'.$event->post_title.'</a></div>';
-			//endforeach;
+		foreach ($events as $event_id) :
+			$terms_classes=array();
+			$terms=wp_get_post_terms($event_id, 'pctype');
+
+			foreach ($terms as $term) :
+				$terms_classes[]=$term->slug;
+			endforeach;
+
+			$content.='<div class="pickle-calendar-event '.implode(' ', $terms_classes).'"><a href="'.get_permalink($event_id).'">'.get_the_title($event_id).'</a></div>';
 	
 		endforeach;
 		
@@ -317,7 +327,8 @@ class Pickle_Calendar {
 					'compare' => '>=',
 					'type' => 'DATE'
 				),				
-			),				
+			),
+			'fields' => 'ids',				
 		));
 			
 		return $posts;		

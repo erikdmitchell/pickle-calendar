@@ -68,5 +68,8 @@
 }
 .pickle-calendar .cal-wrap .row .calendar-day.today {
     background: #0087cc;
-    color: white;
+    color: #fff;
+}
+.pickle-calendar .cal-wrap .row .calendar-day.today a {
+    color: #fff;
 }

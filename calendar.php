@@ -282,30 +282,44 @@ class Pickle_Calendar {
 		$events=$this->get_events($date);
 	
 		foreach ($events as $event) :
-			$terms=wp_get_post_terms($event->ID, 'pctype');
+			//$terms=wp_get_post_terms($event->ID, 'pctype');
 		
-			foreach ($terms as $term) :
-				$content.='<div class="pickle-calendar-icon-wrap"><a href="#">'.$term->slug.'</a></div>';
-			endforeach;
+			//foreach ($terms as $term) :
+				$content.='<div class="pickle-calendar-icon-wrap"><a href="#">'.$event->post_title.'</a></div>';
+			//endforeach;
 	
 		endforeach;
 		
 		return $content;		
 	}
 	
+	/**
+	 * get_events function.
+	 * 
+	 * @access protected
+	 * @param string $date (default: '')
+	 * @return void
+	 */
 	protected function get_events($date='') {
 		$posts=get_posts(array(
 			'posts_per_page' => -1,
 			'post_type' => 'pcevent',
 			'meta_query' => array(
 				array(
-					'key'     => '_event_date', // THIS WILL CHANGE //
+					'key'     => '_detail_start_date',
 					'value' => $date,
+					'compare' => '<=',
 					'type' => 'DATE'
 				),
+				array(
+					'key'     => '_detail_end_date',
+					'value' => $date,
+					'compare' => '>=',
+					'type' => 'DATE'
+				),				
 			),				
 		));
-print_r($posts);			
+			
 		return $posts;		
 	}
 	

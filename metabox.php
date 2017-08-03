@@ -34,10 +34,11 @@ class Pickle_Calendar_Event_Details {
      * @return void
      */
     public function admin_scripts_styles() {
-	    wp_enqueue_script('flatpickr-script', PICKLE_CALENDAR_URL.'js/flatpickr.min.js', array('jquery'), '2.6.1', true);
-	    wp_enqueue_script('bted-script', PICKLE_CALENDAR_URL.'js/event-details.js', array('flatpickr-script'), '0.1.0', true);
+	    wp_enqueue_script('jquery-ui-datepicker');
+	    wp_enqueue_script('bted-script', PICKLE_CALENDAR_URL.'js/event-details.js', array('jquery-ui-datepicker'), '0.1.0', true);
+	    wp_enqueue_script('pc-repeat-field-script', PICKLE_CALENDAR_URL.'js/repeat-field.js', array('jquery'), '0.1.0', true);	    
 	    
-	    wp_enqueue_style('flatpickr-style', PICKLE_CALENDAR_URL.'css/flatpickr.min.css', '', '2.6.1');
+	    wp_enqueue_style('jquery-ui-style', PICKLE_CALENDAR_URL.'css/jquery-ui.min.css', '', '1.12.1');
 	    wp_enqueue_style('bted-style', PICKLE_CALENDAR_URL.'css/event-details.css', '', '0.1.0');
     }
 
@@ -68,18 +69,33 @@ class Pickle_Calendar_Event_Details {
      */
     public function render_metabox( $post ) {
 	    $html='';
-	    
+	    $default_dates=array(
+			array(
+				'start_date' => '',
+				'end_date' => '',
+			)  
+	    );
+	    $dates=$this->_wp_parse_args(picklecalendar()->calendar->get_event_dates($post->ID), $default_dates);
+
         $html.=wp_nonce_field('update_settings', 'boomi_trust_admin', true, false);
         
-        $html.='<div class="mb-row">';
-        	$html.='<label for="start_date">Start Date</label>';
-	        $html.='<input type="text" name="details[start_date]" id="start_date" class="pcdetail-pickr regular-text" value="'.get_post_meta($post->ID, '_detail_start_date', true).'" />';
-	    $html.='</div>';
-
-        $html.='<div class="mb-row">';
-        	$html.='<label for="end_date">End Date</label>';
-	        $html.='<input type="text" name="details[end_date]" id="end_date" class="pcdetail-pickr regular-text" value="'.get_post_meta($post->ID, '_detail_end_date', true).'" />';
-	    $html.='</div>';
+        foreach ($dates as $key => $date) :
+		
+	        $html.='<div class="event-date-wrap" data-row-id="'.$key.'">';
+	
+		        	$html.='<label for="start_date">Start Date</label>';
+			        $html.='<input type="text" name="details[dates]['.$key.'][start_date]" id="start_date" class="pcdetail-pickr" value="'.$date['start_date'].'" />';
+	
+			        $html.='<label for="end_date">End Date</label>';
+			        $html.='<input type="text" name="details[dates]['.$key.'][end_date]" id="end_date" class="pcdetail-pickr" value="'.$date['end_date'].'" />';
+			        
+			        $html.='<button class="pc-remove-row">-</button>';
+	
+		    $html.='</div>';
+	    
+	    endforeach;
+	    
+	    $html.='<a href="" class="button pc-repeater" data-field=".event-date-wrap">+</a>';
         
         echo $html;
     }
@@ -93,6 +109,8 @@ class Pickle_Calendar_Event_Details {
      * @return void
      */
     public function save_metabox( $post_id, $post ) {
+	    global $wpdb;
+	    
         $nonce_name   = isset( $_POST['boomi_trust_admin'] ) ? $_POST['boomi_trust_admin'] : '';
         $nonce_action = 'update_settings';
  
@@ -120,11 +138,34 @@ class Pickle_Calendar_Event_Details {
         if ( wp_is_post_revision( $post_id ) ) {
             return;
         }
+        
+        // delete all existing dates //
+		$wpdb->query($wpdb->prepare(
+			"DELETE FROM $wpdb->postmeta WHERE post_id = %d AND ( meta_key LIKE %s OR meta_key LIKE %s )",
+			$post_id,
+			'_start_date_%',
+			'_end_date_%'
+		));
 
-		foreach ($_POST['details'] as $key => $value) :
-			update_post_meta($post_id, '_detail_'.sanitize_key($key), $value);
+		foreach ($_POST['details']['dates'] as $key => $dates) :
+			add_post_meta($post_id, '_start_date_'.sanitize_key($key), $dates['start_date']);
+			add_post_meta($post_id, '_end_date_'.sanitize_key($key), $dates['end_date']);
 		endforeach;
     }
+    
+    public function _wp_parse_args( &$a, $b ) {
+		$a = (array) $a;
+		$b = (array) $b;
+		$result = $b;
+		foreach ( $a as $k => &$v ) {
+			if ( is_array( $v ) && isset( $result[ $k ] ) ) {
+				$result[ $k ] = $this->_wp_parse_args( $v, $result[ $k ] );
+			} else {
+				$result[ $k ] = $v;
+			}
+		}
+		return $result;
+	}
 }
  
 new Pickle_Calendar_Event_Details();

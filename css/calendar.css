@@ -1,3 +1,54 @@
+/* general */
+.pickle-calendar {
+	width: 100%;
+}
+.pickle-calendar a {
+	text-decoration: none;
+}
+.pickle-calendar .row {
+	margin-right: -15px;
+	margin-left: -15px;
+}
+.pickle-calendar .row:before {
+	display: table;
+	content: " ";
+}
+.pickle-calendar .row:after {
+	clear: both;
+	display: table;
+	content: " ";
+}
+.pickle-calendar .prev, 
+.pickle-calendar .month, 
+.pickle-calendar .year,
+.pickle-calendar .next {
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+.pickle-calendar .prev,
+.pickle-calendar .next {
+    width: 16.66666667%;
+}
+.pickle-calendar .next {
+	text-align: right;
+}
+.pickle-calendar .month {
+    width: 41.66666667%;
+    text-align: center;
+}
+.pickle-calendar .year {
+    width: 25%;
+    text-align: center;
+}
+.pickle-calendar .prev, 
+.pickle-calendar .month, 
+.pickle-calendar .year,
+.pickle-calendar .next {
+    float: left;
+}
+
 /* Month header */
 .pickle-calendar .header {
     padding: 10px 0;
@@ -14,15 +65,6 @@
 .pickle-calendar .header a:hover,
 .pickle-calendar .header a:active {
 	text-decoration: none;
-}
-.pickle-calendar .month {
-	text-align: center;
-}
-.pickle-calendar .year {
-	text-align: center;
-}
-.pickle-calendar .next {
-	text-align: right;
 }
 
 /* Weekdays (Mon-Sun) */
@@ -48,7 +90,6 @@
     width: 14.28571428%;
     font-size:12px;
     color:#777;	
-    padding: 5px 7px;
     border-style: solid;
 	border-width: 1px 0 0 1px;
 	border-color: #ccc;
@@ -64,7 +105,11 @@
 
 }
 .pickle-calendar .cal-wrap .row .calendar-day .day-number {
-	float: right;
+	text-align: right;
+	padding-top: 5px;
+	padding-right: 7px;
+	padding-bottom: 5px;	
+	line-height: 1;
 }
 .pickle-calendar .cal-wrap .row .calendar-day.today {
     background: #0087cc;
@@ -72,4 +117,24 @@
 }
 .pickle-calendar .cal-wrap .row .calendar-day.today a {
     color: #fff;
+}
+/* events */
+.pickle-calendar-event {
+	position: relative;
+	background: #fd0000;
+	color: #fff;
+	margin-left: 5px;
+	padding: 5px;
+	margin-bottom: 5px;
+	margin-right: 5px;
+	line-height: 1;
+}
+.pickle-calendar-event.multiday {
+	margin-right: -6px;
+}
+.pickle-calendar-event.multiday.end {
+	margin-right: 5px;
+}
+.pickle-calendar-event a {
+	color: #fff;
 }

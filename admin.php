@@ -10,7 +10,7 @@ class Pickle_Calendar_Admin {
 
 	public function admin_scripts_styles() {
 		wp_enqueue_script('pickle-calendar-admin-script', PICKLE_CALENDAR_URL.'js/admin.js', array('jquery'), picklecalendar()->version, true);
-		
+				
 		wp_enqueue_style('pickle-calendar-admin-css', PICKLE_CALENDAR_URL.'css/admin.css', '', picklecalendar()->version);
 	}
 	
@@ -64,6 +64,11 @@ class Pickle_Calendar_Admin {
 
 				$html.='<table class="form-table">';
 					$html.='<tbody>';
+					
+						$html.='<tr>';
+							$html.='<th scope="row"><label for="disable_editor">Disable Editor</label></th>';
+							$html.='<td><label for="disable_editor"><input name="settings[disable_editor]" type="checkbox" id="disable_editor" value="1" '.checked(picklecalendar()->settings['disable_editor'], 1, false).'>Disable Editor</label>';
+						$html.='</tr>';
 					
 						$html.='<tr>';
 							$html.='<th scope="row"><label for="include_details">Details Box</label></th>';

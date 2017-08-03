@@ -21,7 +21,8 @@ function bsevents_init() {
 		'hierarchical'      => false,
 		'show_ui'           => true,
 		'show_in_nav_menus' => true,
-		'supports'          => array( 'title', 'editor', 'thumbnail' ),
+		//'supports'          => array( 'title', 'editor', 'thumbnail' ),
+		'supports'          => array('title'),
 		'has_archive'       => true,
 		'rewrite'           => true,
 		'query_var'         => true,
@@ -59,3 +60,23 @@ function pcevents_updated_messages( $messages ) {
 	return $messages;
 }
 add_filter( 'post_updated_messages', 'pcevents_updated_messages' );
+
+function pcevents_remove_wp_seo_meta_box() {
+	global $post;
+	
+	if ($post->post_type != 'pcevents')
+		return;
+		
+	remove_meta_box('wpseo_meta', 'pcevent', 'normal');
+}
+add_action('add_meta_boxes', 'pcevents_remove_wp_seo_meta_box', 100);
+
+function pcevents_dequeue_wp_seo_scripts() {
+	global $post;
+	
+	if ($post->post_type != 'pcevents')
+		return;
+			
+    wp_dequeue_script('yoast-seo-post-scraper');  
+}
+add_action('wp_print_scripts', 'pcevents_dequeue_wp_seo_scripts', 100);

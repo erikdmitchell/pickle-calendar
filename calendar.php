@@ -173,15 +173,28 @@ class Pickle_Calendar {
 	
 		// keep going with days //
 		for ($list_day = 1; $list_day <= $days_in_month; $list_day++) :
+			$classes=array('calendar-day');
 			$pref_date=date('Y-m-d', strtotime("$year-$month-$list_day"));
 			
-			if ($pref_date==$current_date) :
-				$class='calendar-day today';
-			else :
-				$class='calendar-day';
+			if ($pref_date==$current_date)
+				$classes[]='today';
+				
+			if ($running_day==0) :
+				$classes[]='first-of-week';
+				$eow_day=date('Y-m-d', strtotime($pref_date.' +6 days'));
+//echo $pref_date.' - '.$eow_day.'<br>';				
+/*
+print_r($this->get_events_in_week(array(
+	'start' => $pref_date,
+	'end' => $eow_day,
+)));
+*/
 			endif;
-		
-			$html.= '<div class="'.$class.'">';
+				
+			if ($running_day==6)
+				$classes[]='last-of-week';
+				
+			$html.= '<div class="'.implode(' ', $classes).'">';
 				$html.= '<div class="day-number">'.$list_day.'</div>'; // add day number
 	
 				$html.=apply_filters('pickle_calendar_single_day', $this->add_date_info($pref_date), $pref_date);
@@ -214,7 +227,7 @@ class Pickle_Calendar {
 		// final row //
 		$html.= '</div>';
 		
-		$html.= '</div>';
+		$html.= '</div>'; // cal-wrap
 		
 		return $html;
 	}
@@ -289,14 +302,33 @@ class Pickle_Calendar {
 		$events=$this->get_events($date);
 	
 		foreach ($events as $event_id) :
-			$terms_classes=array();
+			$classes=array('event-'.$event_id);
 			$terms=wp_get_post_terms($event_id, 'pctype');
 
 			foreach ($terms as $term) :
-				$terms_classes[]=$term->slug;
+				$classes[]=$term->slug;
 			endforeach;
+			
+			if ($this->event_is_multiday($event_id, $date)) :
+				$classes[]='multiday';
+				$classes[]='overwrap-text';
+				
+				if ($this->is_start_date($event_id, $date)) :
+					$classes[]='start';
+				elseif ($this->is_end_date($event_id, $date)) :
+					$classes[]='end';
+				endif;
+			else :
+				$classes[]='single';
+			endif;
+			
+			// SETTING OF SOME SORT //
+			$text='<a href="'.get_permalink($event_id).'">'.get_the_title($event_id).'</a>';
+			
+			//if ($this->event_is_multiday($event_id, $date) && !$this->is_start_date($event_id, $date))
+				//$text='&nbsp;';
 
-			$content.='<div class="pickle-calendar-event '.implode(' ', $terms_classes).'"><a href="'.get_permalink($event_id).'">'.get_the_title($event_id).'</a></div>';
+			$content.='<div class="pickle-calendar-event '.implode(' ', $classes).'" data-event-id="'.$event_id.'">'.$text.'</div>';
 	
 		endforeach;
 		
@@ -304,39 +336,167 @@ class Pickle_Calendar {
 	}
 	
 	/**
+	 * is_start_date function.
+	 * 
+	 * @access public
+	 * @param int $id (default: 0)
+	 * @param string $date (default: '')
+	 * @return void
+	 */
+	public function is_start_date($id=0, $date='') {
+		global $wpdb;
+		
+		$meta_key=$wpdb->get_var("SELECT meta_key FROM $wpdb->postmeta WHERE $wpdb->postmeta.post_id = $id AND meta_value = '$date'");
+		
+		if (strpos($meta_key, '_start_date_') !== false)
+			return true;
+			
+		return false;
+	}
+
+	/**
+	 * is_end_date function.
+	 * 
+	 * @access public
+	 * @param int $id (default: 0)
+	 * @param string $date (default: '')
+	 * @return void
+	 */
+	public function is_end_date($id=0, $date='') {
+		global $wpdb;
+		
+		$meta_key=$wpdb->get_var("SELECT meta_key FROM $wpdb->postmeta WHERE $wpdb->postmeta.post_id = $id AND meta_value = '$date'");
+		
+		if (strpos($meta_key, '_end_date_') !== false)
+			return true;
+			
+		return false;
+	}
+	
+	/**
+	 * event_is_multiday function.
+	 * 
+	 * @access public
+	 * @param int $id (default: 0)
+	 * @param string $date (default: '')
+	 * @return void
+	 */
+	public function event_is_multiday($id=0, $date='') {
+		global $wpdb;
+		
+		$id=$wpdb->get_var("
+			SELECT $wpdb->postmeta.post_id
+			FROM $wpdb->postmeta
+			INNER JOIN $wpdb->postmeta AS mt1 ON ( wp_postmeta.post_id = mt1.post_id ) 
+			WHERE $wpdb->postmeta.post_id = $id
+				AND ( REPLACE($wpdb->postmeta.meta_key, '_start_date_', '') = REPLACE(mt1.meta_key, '_end_date_', '') )
+				AND $wpdb->postmeta.meta_value != mt1.meta_value
+				AND ( $wpdb->postmeta.meta_value >= '$date' OR mt1.meta_value <= '$date')
+		");
+				
+		if ($id)
+			return true;
+			
+		return false;
+	}
+
+	/**
 	 * get_events function.
 	 * 
 	 * @access protected
 	 * @param string $date (default: '')
+	 * @param string $args (default: '')
 	 * @return void
 	 */
-	protected function get_events($date='') {
-		$posts=get_posts(array(
-			'posts_per_page' => -1,
-			'post_type' => 'pcevent',
-			'meta_query' => array(
-				array(
-					'key'     => '_detail_start_date',
-					'value' => $date,
-					'compare' => '<=',
-					'type' => 'DATE'
-				),
-				array(
-					'key'     => '_detail_end_date',
-					'value' => $date,
-					'compare' => '>=',
-					'type' => 'DATE'
-				),				
-			),
-			'fields' => 'ids',	
-			'meta_key' => '_detail_start_date',
-			'orderby' => 'meta_value',	
-			'order' => 'ASC',		
-		));
+	protected function get_events($date='', $args='') {
+		global $wpdb;
 		
-		$posts=apply_filters('pickle_calendar_get_events', $posts, $date);
+		$default_args=array(
+			'post_type' => 'pcevent',	
+		);
+		$args=wp_parse_args($args, $default_args);
+		
+		// AND wp_postmeta.meta_value != mt1.meta_value
+		
+		$post_ids=$wpdb->get_col("
+			SELECT wp_posts.ID
+			FROM $wpdb->posts
+			INNER JOIN $wpdb->postmeta ON ( $wpdb->posts.ID = $wpdb->postmeta.post_id ) 
+			INNER JOIN $wpdb->postmeta AS mt1 ON ( $wpdb->posts.ID = mt1.post_id ) 
+			WHERE 1=1
+				AND ( ( $wpdb->postmeta.meta_key LIKE '_start_date_%' AND CAST($wpdb->postmeta.meta_value AS DATE) <= '$date' ) AND ( mt1.meta_key LIKE '_end_date_%' AND CAST(mt1.meta_value AS DATE) >= '$date' ) ) 
+				AND ( REPLACE($wpdb->postmeta.meta_key, '_start_date_', '') = REPLACE(mt1.meta_key, '_end_date_', '') )
+				AND $wpdb->posts.post_type = 'pcevent' 
+				AND (($wpdb->posts.post_status = 'publish')) 
+			GROUP BY $wpdb->posts.ID
+			ORDER BY $wpdb->postmeta.meta_value ASC
+		");	
+		
+		if (empty($post_ids))
+			return;
+		
+		$post_ids=apply_filters('pickle_calendar_get_events', $post_ids, $date);
 			
-		return $posts;		
+		return $post_ids;		
+	}
+	
+	protected function get_events_in_week($args='') {
+		global $wpdb;
+		
+		$default_args=array(
+			'post_type' => 'pcevent',
+			'start' => '',
+			'end' => '',	
+		);
+		$args=wp_parse_args($args, $default_args);
+		
+		$post_ids=$wpdb->get_col("
+			SELECT wp_posts.ID
+			FROM $wpdb->posts
+			INNER JOIN $wpdb->postmeta ON ( $wpdb->posts.ID = $wpdb->postmeta.post_id ) 
+			INNER JOIN $wpdb->postmeta AS mt1 ON ( $wpdb->posts.ID = mt1.post_id ) 
+			WHERE 1=1
+				AND ( ( $wpdb->postmeta.meta_key LIKE '_start_date_%' AND CAST($wpdb->postmeta.meta_value AS DATE) >= '".$args['start']."' ) AND ( mt1.meta_key LIKE '_end_date_%' AND CAST(mt1.meta_value AS DATE) <= '".$args['end']."' ) ) 
+				AND $wpdb->posts.post_type = 'pcevent' 
+				AND (($wpdb->posts.post_status = 'publish')) 
+			GROUP BY $wpdb->posts.ID
+			ORDER BY $wpdb->postmeta.meta_value ASC
+		");	
+		
+		if (empty($post_ids))
+			return;
+		
+		$post_ids=apply_filters('pickle_calendar_get_events', $post_ids, $date);
+			
+		return $post_ids;			
+	}
+	
+	/**
+	 * get_event_dates function.
+	 * 
+	 * @access public
+	 * @param int $post_id (default: 0)
+	 * @return void
+	 */
+	public function get_event_dates($post_id=0) {
+		$dates=array();
+		$meta=get_post_meta($post_id);
+		
+		foreach ($meta as $key => $value) :
+			if (strpos($key, '_start_date_') !== false) :
+				if (isset($value[0])) :
+					preg_match("/([0-9]+)/", $key, $matches);
+					$dates[$matches[1]]['start_date']=$value[0];
+				endif;
+			elseif (strpos($key, '_end_date_') !== false) :
+				if (isset($value[0])) :
+					preg_match("/([0-9]+)/", $key, $matches);
+					$dates[$matches[1]]['end_date']=$value[0];
+				endif;
+			endif; 
+		endforeach;
+		
+		return $dates;
 	}
 	
 	/**

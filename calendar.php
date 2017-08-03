@@ -300,7 +300,12 @@ print_r($this->get_events_in_week(array(
 	protected function add_date_info($date='') {
 		$content='';
 		$events=$this->get_events($date);
-	
+		
+		if (empty($events))
+			return;
+echo '<pre>';
+print_r($events);
+echo '</pre>';	
 		foreach ($events as $event_id) :
 			$classes=array('event-'.$event_id);
 			$terms=wp_get_post_terms($event_id, 'pctype');
@@ -308,8 +313,9 @@ print_r($this->get_events_in_week(array(
 			foreach ($terms as $term) :
 				$classes[]=$term->slug;
 			endforeach;
-			
+echo "event id $event_id<br>";			
 			if ($this->event_is_multiday($event_id, $date)) :
+echo "MD<BR>";			
 				$classes[]='multiday';
 				$classes[]='overwrap-text';
 				
@@ -377,21 +383,21 @@ print_r($this->get_events_in_week(array(
 	 * event_is_multiday function.
 	 * 
 	 * @access public
-	 * @param int $id (default: 0)
+	 * @param int $event_id (default: 0)
 	 * @param string $date (default: '')
 	 * @return void
 	 */
-	public function event_is_multiday($id=0, $date='') {
+	public function event_is_multiday($event_id=0, $date='') {
 		global $wpdb;
 		
 		$id=$wpdb->get_var("
 			SELECT $wpdb->postmeta.post_id
 			FROM $wpdb->postmeta
 			INNER JOIN $wpdb->postmeta AS mt1 ON ( wp_postmeta.post_id = mt1.post_id ) 
-			WHERE $wpdb->postmeta.post_id = $id
+			WHERE $wpdb->postmeta.post_id = $event_id
 				AND ( REPLACE($wpdb->postmeta.meta_key, '_start_date_', '') = REPLACE(mt1.meta_key, '_end_date_', '') )
 				AND $wpdb->postmeta.meta_value != mt1.meta_value
-				AND ( $wpdb->postmeta.meta_value >= '$date' OR mt1.meta_value <= '$date')
+				AND ( $wpdb->postmeta.meta_value >= '$date' OR mt1.meta_value >= '$date')
 		");
 				
 		if ($id)

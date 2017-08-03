@@ -75,7 +75,8 @@ class Pickle_Calendar_Event_Details {
 				'end_date' => '',
 			)  
 	    );
-	    $dates=$this->_wp_parse_args(picklecalendar()->calendar->get_event_dates($post->ID), $default_dates);
+	    $event_dates=picklecalendar()->calendar->get_event_dates($post->ID);
+	    $dates=$this->_wp_parse_args($event_dates, $default_dates);
 
         $html.=wp_nonce_field('update_settings', 'boomi_trust_admin', true, false);
         

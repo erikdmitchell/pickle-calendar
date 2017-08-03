@@ -303,21 +303,18 @@ print_r($this->get_events_in_week(array(
 		
 		if (empty($events))
 			return;
-echo '<pre>';
-print_r($events);
-echo '</pre>';	
-		foreach ($events as $event_id) :
+
+		foreach ($events as $key => $event_id) :
 			$classes=array('event-'.$event_id);
 			$terms=wp_get_post_terms($event_id, 'pctype');
 
 			foreach ($terms as $term) :
 				$classes[]=$term->slug;
 			endforeach;
-echo "event id $event_id<br>";			
-			if ($this->event_is_multiday($event_id, $date)) :
-echo "MD<BR>";			
+		
+			if ($this->event_is_multiday($event_id, $date)) :		
 				$classes[]='multiday';
-				$classes[]='overwrap-text';
+				//$classes[]='overwrap-text';
 				
 				if ($this->is_start_date($event_id, $date)) :
 					$classes[]='start';
@@ -334,7 +331,7 @@ echo "MD<BR>";
 			//if ($this->event_is_multiday($event_id, $date) && !$this->is_start_date($event_id, $date))
 				//$text='&nbsp;';
 
-			$content.='<div class="pickle-calendar-event '.implode(' ', $classes).'" data-event-id="'.$event_id.'">'.$text.'</div>';
+			$content.='<div class="pickle-calendar-event '.implode(' ', $classes).'" data-event-id="'.$event_id.'" data-event-day-number="'.$key.'">'.$text.'</div>';
 	
 		endforeach;
 		

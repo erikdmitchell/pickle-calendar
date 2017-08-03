@@ -19,6 +19,8 @@ jQuery(document).ready(function($) {
 		});
 	});
 	
+	flipThatBurger();
+	
 });
 
 jQuery(window).load(function() {
@@ -70,3 +72,29 @@ jQuery(window).resize(function(){
 	};
 	
 })(jQuery);
+
+
+function flipThatBurger() {
+	
+	jQuery('.pickle-calendar-event').each(function() {
+		var thisOffset=jQuery(this).offset();		
+		var date=new Date(jQuery(this).data('eventDate') + 'T00:00:00');
+
+		var newDate=new Date(jQuery(this).data('eventDate') + 'T00:00:00');
+		
+		newDate.setDate(newDate.getDate() - 1);
+		
+		var nd=new Date(newDate);
+		var prevDay=('0' + nd.getDate()).slice(-2);
+		var prevMonth=('0' + (nd.getMonth() + 1)).slice(-2);
+		var prevDate=nd.getFullYear() + '-' + prevMonth + '-' + prevDay;
+		var prevEvent=jQuery('.pickle-calendar').find(".pickle-calendar-event[data-event-date='" + prevDate + "'][data-event-id='" + jQuery(this).data('eventId') + "']");
+		
+		if (typeof prevEvent.offset() != 'undefined' && prevEvent.offset().top != thisOffset.top) {
+			jQuery(this).css({
+				'margin-top' : prevEvent.offset().top - thisOffset.top
+			});
+		}		
+	});
+	
+}

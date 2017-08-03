@@ -331,7 +331,7 @@ print_r($this->get_events_in_week(array(
 			//if ($this->event_is_multiday($event_id, $date) && !$this->is_start_date($event_id, $date))
 				//$text='&nbsp;';
 
-			$content.='<div class="pickle-calendar-event '.implode(' ', $classes).'" data-event-id="'.$event_id.'" data-event-day-number="'.$key.'">'.$text.'</div>';
+			$content.='<div class="pickle-calendar-event '.implode(' ', $classes).'" data-event-id="'.$event_id.'" data-event-day-number="'.$key.'" data-event-date="'.$date.'">'.$text.'</div>';
 	
 		endforeach;
 		

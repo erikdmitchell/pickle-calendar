@@ -18,6 +18,8 @@ jQuery(document).ready(function($) {
 			$(document).trigger('pickle_calendar_ajax_load', response);
 			
 			PickleCalendarRowSetup();
+			
+			pcalEqualHeight('.pickle-calendar .calendar-day');
 		});
 	});
 	
@@ -26,12 +28,12 @@ jQuery(document).ready(function($) {
 });
 
 jQuery(window).load(function() {
-	bscalEqualHeight('.pickle-calendar .calendar-day');
+	pcalEqualHeight('.pickle-calendar .calendar-day');
 });
 
 
 jQuery(window).resize(function(){
-	bscalEqualHeight('.pickle-calendar .calendar-day');
+	pcalEqualHeight('.pickle-calendar .calendar-day');
 });
 
 /*
@@ -39,7 +41,7 @@ jQuery(window).resize(function(){
  */
 (function($) {
 	
-	bscalEqualHeight = function(container) {
+	pcalEqualHeight = function(container) {
 		var currentTallest = 0,
 		currentRowStart = 0,
 		rowDivs = new Array(),

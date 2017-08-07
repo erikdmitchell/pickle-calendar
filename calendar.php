@@ -182,13 +182,6 @@ class Pickle_Calendar {
 			if ($running_day==0) :
 				$classes[]='first-of-week';
 				$eow_day=date('Y-m-d', strtotime($pref_date.' +6 days'));
-//echo $pref_date.' - '.$eow_day.'<br>';				
-/*
-print_r($this->get_events_in_week(array(
-	'start' => $pref_date,
-	'end' => $eow_day,
-)));
-*/
 			endif;
 				
 			if ($running_day==6)
@@ -328,8 +321,8 @@ print_r($this->get_events_in_week(array(
 			// SETTING OF SOME SORT //
 			$text='<a href="'.get_permalink($event_id).'">'.get_the_title($event_id).'</a>';
 			
-			//if ($this->event_is_multiday($event_id, $date) && !$this->is_start_date($event_id, $date))
-				//$text='&nbsp;';
+			if ($this->event_is_multiday($event_id, $date) && !$this->is_start_date($event_id, $date))
+				$text='&nbsp;';
 
 			$content.='<div class="pickle-calendar-event '.implode(' ', $classes).'" data-event-id="'.$event_id.'" data-event-day-number="'.$key.'" data-event-date="'.$date.'">'.$text.'</div>';
 	

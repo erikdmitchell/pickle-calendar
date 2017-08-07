@@ -74,7 +74,7 @@ add_action('add_meta_boxes', 'pcevents_remove_wp_seo_meta_box', 100);
 function pcevents_dequeue_wp_seo_scripts() {
 	global $post;
 	
-	if ($post->post_type != 'pcevents')
+	if (isset($post->post_type) && $post->post_type!='pcevents')
 		return;
 			
     wp_dequeue_script('yoast-seo-post-scraper');  

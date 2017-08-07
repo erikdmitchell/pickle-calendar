@@ -16,6 +16,8 @@ jQuery(document).ready(function($) {
 			$parent.append(response); // add calendar
 			
 			$(document).trigger('pickle_calendar_ajax_load', response);
+			
+			PickleCalendarRowSetup();
 		});
 	});
 	

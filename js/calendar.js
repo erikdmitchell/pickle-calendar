@@ -84,10 +84,10 @@ jQuery(window).resize(function(){
 			var days=$("div[data-event-id='"+eventID+"']").length;
 			var tmpID='tmp' + eventID;
 			var linkURL=$(this).find('a').attr('href');
-			
+		
 			$(this).find('a').text('&nbsp;'); // hide existing text
 
-			var $div='<div id="'+tmpID+'" class="pickle-calendar-event"><a href="'+linkURL+'">'+text+'</a></div>';
+			var $div='<div id="'+tmpID+'" class="'+$(this).attr('class')+'"><a href="'+linkURL+'">'+text+'</a></div>';
 			
 			$('.pickle-calendar').append($div);
 

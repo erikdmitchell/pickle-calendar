@@ -23,8 +23,6 @@ jQuery(document).ready(function($) {
 	
 });
 
-	
-
 jQuery(window).load(function() {
 	bscalEqualHeight('.pickle-calendar .calendar-day');
 });
@@ -74,7 +72,6 @@ jQuery(window).resize(function(){
 	};
 	
 	$.fn.pcAdjustText=function() {
-		
 		var text=$(this).find('a').text();
 		var textWidth=pcTextWidth(text, $(this).css('font'));
 		var eleWidth=$(this).width();
@@ -97,8 +94,7 @@ jQuery(window).resize(function(){
 				'left' : $(this).position().left,
 				'font' : $(this).css('font')
 			});		
-		}
-				
+		}			
 	};
 			
 })(jQuery);
@@ -112,7 +108,6 @@ function pcTextWidth(text, font) {
 };
 
 function PickleCalendarRowSetup() {
-	
 	jQuery('.pickle-calendar-event').each(function() {
 		var thisOffset=jQuery(this).offset();		
 		var date=new Date(jQuery(this).data('eventDate') + 'T00:00:00');
@@ -131,11 +126,16 @@ function PickleCalendarRowSetup() {
 			jQuery(this).css({
 				'margin-top' : prevEvent.offset().top - thisOffset.top
 			});
+			
+			// double check //
+			if (prevEvent.offset().top != jQuery(this).offset().top) {
+				jQuery(this).css({
+					'margin-top' : parseInt(jQuery(this).css('margin-top')) + (prevEvent.offset().top - jQuery(this).offset().top)
+				});			
+			}
 		}
 		
 		// adjust text //	
-		jQuery(this).pcAdjustText();
-					
-	});
-	
+		jQuery(this).pcAdjustText();			
+	});	
 }

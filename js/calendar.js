@@ -83,7 +83,7 @@ jQuery(window).resize(function(){
 		if (textWidth > eleWidth) {
 			var eventID=$(this).data('eventId');
 			var days=$("div[data-event-id='"+eventID+"']").length;
-			var tmpID='tmp' + eventID;
+			var tmpID='tmp' + eventID + $(this).data('eventDate');
 			var linkURL=$(this).find('a').attr('href');
 		
 			$(this).find('a').text('&nbsp;'); // hide existing text

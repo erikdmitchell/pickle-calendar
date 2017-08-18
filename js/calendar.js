@@ -23,16 +23,16 @@ jQuery(document).ready(function($) {
 		});
 	});
 	
-	PickleCalendarRowSetup();
-	
 });
 
 jQuery(window).load(function() {
-	pcalEqualHeight('.pickle-calendar .calendar-day');
+	PickleCalendarRowSetup();
+	pcalEqualHeight('.pickle-calendar .calendar-day');	
 });
 
 
-jQuery(window).resize(function(){
+jQuery(window).resize(function() {
+	PickleCalendarRowSetup();
 	pcalEqualHeight('.pickle-calendar .calendar-day');
 });
 
@@ -88,7 +88,7 @@ jQuery(window).resize(function(){
 		
 			$(this).find('a').text('&nbsp;'); // hide existing text
 
-			var $div='<div id="'+tmpID+'" class="'+$(this).attr('class')+'"><a href="'+linkURL+'">'+text+'</a></div>';
+			var $div='<div id="'+tmpID+'" class="'+$(this).attr('class')+' tmp"><a href="'+linkURL+'">'+text+'</a></div>';
 			
 			$('.pickle-calendar').append($div);
 
@@ -113,6 +113,10 @@ function pcTextWidth(text, font) {
 
 function PickleCalendarRowSetup() {
 	jQuery('.pickle-calendar-event').each(function() {
+		if (jQuery(this).hasClass('tmp')) {
+			return;	
+		}
+		
 		var thisOffset=jQuery(this).offset();		
 		var date=new Date(jQuery(this).data('eventDate') + 'T00:00:00');
 

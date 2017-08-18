@@ -79,11 +79,11 @@ jQuery(window).resize(function() {
 		var text=$(this).find('a').text();
 		var textWidth=pcTextWidth(text, $(this).css('font'));
 		var eleWidth=$(this).width();
+		var eventID=$(this).data('eventId');
+		var tmpID='tmp' + eventID + $(this).data('eventDate');
 
 		if (textWidth > eleWidth) {
-			var eventID=$(this).data('eventId');
 			var days=$("div[data-event-id='"+eventID+"']").length;
-			var tmpID='tmp' + eventID + $(this).data('eventDate');
 			var linkURL=$(this).find('a').attr('href');
 		
 			$(this).find('a').text('&nbsp;'); // hide existing text
@@ -98,23 +98,35 @@ jQuery(window).resize(function() {
 				'left' : $(this).position().left,
 				'font' : $(this).css('font')
 			});		
-		}			
+		} else if ($('#'+tmpID).length) {
+			$('#'+tmpID).css({
+				'position' : 'absolute',
+				'top' : $(this).position().top,
+				'left' : $(this).position().left,
+				'font' : $(this).css('font')
+			});		
+		}
+				
 	};
 			
 })(jQuery);
 
 function pcTextWidth(text, font) { 
-    $fakeEl = jQuery('<span>').hide().appendTo(document.body);
+    $fakeEl=jQuery('<span>').hide().appendTo(document.body);
     	
     $fakeEl.text(text).css('font', font);
     
-    return $fakeEl.width();
+    var width = $fakeEl.width();
+    
+    $fakeEl.remove();
+    
+    return width;
 };
 
-function PickleCalendarRowSetup() {
+function PickleCalendarRowSetup() {	
 	jQuery('.pickle-calendar-event').each(function() {
 		if (jQuery(this).hasClass('tmp')) {
-			return;	
+			return true;	
 		}
 		
 		var thisOffset=jQuery(this).offset();		

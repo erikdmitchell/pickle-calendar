@@ -1,7 +1,7 @@
 <?php
 
 function sctype_init() {
-	register_taxonomy( 'pctype', array( 'pcevent' ), array(
+	register_taxonomy('pctype', array( 'pcevent' ), array(
 		'hierarchical'      => true,
 		'public'            => true,
 		'show_in_nav_menus' => true,

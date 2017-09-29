@@ -40,7 +40,7 @@ final class PickleCalendar {
 		$this->define('PICKLE_CALENDAR_URL', plugin_dir_url(__FILE__));
 	}
 
-	private function define( $name, $value ) {
+	private function define($name, $value) {
 		if ( ! defined( $name ) ) {
 			define( $name, $value );
 		}
@@ -52,6 +52,7 @@ final class PickleCalendar {
 		include_once(PICKLE_CALENDAR_PATH.'metabox.php');
 		include_once(PICKLE_CALENDAR_PATH.'post-type.php');
 		include_once(PICKLE_CALENDAR_PATH.'taxonomy.php');
+		include_once(PICKLE_CALENDAR_PATH.'import-export.php');
 	}
 
 	public function init() {
@@ -69,6 +70,7 @@ final class PickleCalendar {
 			'cpt_plural' => 'Events',
 			'tax_single' => 'Event Type',
 			'tax_plural' => 'Event Types',
+			'disable_editor' => false,
 			'include_details' => true,
 			'detail_options' => array(
 				'start_date' => true,

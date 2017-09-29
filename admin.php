@@ -15,6 +15,7 @@ class Pickle_Calendar_Admin {
 		add_action('admin_enqueue_scripts', array($this, 'admin_scripts_styles'));
 		add_action('admin_menu', array($this, 'admin_menu'));
 		add_action('admin_init', array($this, 'process_settings_export'));
+		add_action('admin_init', array($this, 'process_events_export'));		
 		add_action('admin_init', array($this, 'process_settings_import'));
 		add_action('admin_init', array($this, 'update_settings'));
 	}
@@ -49,9 +50,7 @@ class Pickle_Calendar_Admin {
 	 */
 	public function settings_page() {
 		?>
-<?php
-picklecalendar()->import_export_events->export();
-?>
+
 		<div class="wrap">
 			<h1>Pickle Calendar</h1>
 			
@@ -122,6 +121,39 @@ picklecalendar()->import_export_events->export();
 				<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="Save Changes"></p>
 				
 			</form>
+
+			<div class="metabox-holder">
+				<div class="postbox">
+					<h3><span><?php _e('Export Events'); ?></span></h3>
+					<div class="inside">
+						<p><?php _e( 'Export events for this site as a .json file. This allows you to easily import the events into another site.' ); ?></p>
+						<form method="post">
+							<p><input type="hidden" name="pc_action" value="export_events" /></p>
+							<p>
+								<?php wp_nonce_field('pickle_calendar_export_events_nonce', 'pickle_calendar_export_events_nonce'); ?>
+								<?php submit_button( __( 'Export' ), 'secondary', 'submit', false ); ?>
+							</p>
+						</form>
+					</div><!-- .inside -->
+				</div><!-- .postbox -->
+	
+				<div class="postbox">
+					<h3><span><?php _e( 'Import Settings' ); ?></span></h3>
+					<div class="inside">
+						<p><?php _e( 'Import the plugin settings from a .json file. This file can be obtained by exporting the settings on another site using the form above.' ); ?></p>
+						<form method="post" enctype="multipart/form-data">
+							<p>
+								<input type="file" name="import_file"/>
+							</p>
+							<p>
+								<input type="hidden" name="pc_action" value="import_settings" />
+								<?php wp_nonce_field( 'pickle_calendar_import_nonce', 'pickle_calendar_import_nonce' ); ?>
+								<?php submit_button( __( 'Import' ), 'secondary', 'submit', false ); ?>
+							</p>
+						</form>
+					</div><!-- .inside -->
+				</div><!-- .postbox -->
+			</div><!-- .metabox-holder -->
 			
 			<div class="metabox-holder">
 				<div class="postbox">
@@ -261,6 +293,19 @@ picklecalendar()->import_export_events->export();
 		wp_safe_redirect(admin_url('options-general.php?page=pickle-calendar')); 
 		
 		exit;
+	}
+
+	public function process_events_export() {
+		if (empty($_POST['pc_action']) || $_POST['pc_action']!='export_events')
+			return;
+					
+		if (!isset($_POST['pickle_calendar_export_events_nonce']) || !wp_verify_nonce($_POST['pickle_calendar_export_events_nonce'], 'pickle_calendar_export_events_nonce'))
+			return;
+
+		if (!current_user_can('manage_options'))
+			return;
+			
+		picklecalendar()->import_export_events->export();
 	}
 	
 }	

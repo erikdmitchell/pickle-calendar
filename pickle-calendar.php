@@ -25,7 +25,9 @@ final class PickleCalendar {
 	
 	public $settings='';
 	
-	public $calendar=null;
+	public $calendar='';
+	
+	public $import_export_events='';
 
 	public function __construct() {
 		$this->define_constants();
@@ -58,8 +60,9 @@ final class PickleCalendar {
 	public function init() {
 		$this->settings=$this->settings();
 		$this->calendar=new Pickle_Calendar();
+		$this->import_export_events=new Pickle_Calendar_Import_Export_Events();
 
-		do_action( 'pickle_calendar_init' );
+		do_action('pickle_calendar_init');
 	}
 
 

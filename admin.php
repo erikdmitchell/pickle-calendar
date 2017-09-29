@@ -1,7 +1,16 @@
 <?php
 
+/**
+ * Pickle_Calendar_Admin class.
+ */
 class Pickle_Calendar_Admin {
 	
+	/**
+	 * __construct function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function __construct() {
 		add_action('admin_enqueue_scripts', array($this, 'admin_scripts_styles'));
 		add_action('admin_menu', array($this, 'admin_menu'));
@@ -10,19 +19,39 @@ class Pickle_Calendar_Admin {
 		add_action('admin_init', array($this, 'update_settings'));
 	}
 
+	/**
+	 * admin_scripts_styles function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function admin_scripts_styles() {
 		wp_enqueue_script('pickle-calendar-admin-script', PICKLE_CALENDAR_URL.'js/admin.js', array('jquery'), picklecalendar()->version, true);
 				
 		wp_enqueue_style('pickle-calendar-admin-css', PICKLE_CALENDAR_URL.'css/admin.css', '', picklecalendar()->version);
 	}
 	
+	/**
+	 * admin_menu function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function admin_menu() {
 		add_options_page('Pickle Calendar', 'Pickle Calendar', 'manage_options', 'pickle-calendar', array($this, 'settings_page'));
 	}
 	
+	/**
+	 * settings_page function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function settings_page() {
 		?>
-
+<?php
+picklecalendar()->import_export_events->export();
+?>
 		<div class="wrap">
 			<h1>Pickle Calendar</h1>
 			
@@ -132,6 +161,12 @@ class Pickle_Calendar_Admin {
 		<?php
 	}
 	
+	/**
+	 * update_settings function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function update_settings() {
 		if (!isset($_POST['pickle_calendar_admin']) || !wp_verify_nonce($_POST['pickle_calendar_admin'], 'update_settings'))
 			return false; 
@@ -159,6 +194,12 @@ class Pickle_Calendar_Admin {
 		exit;
 	}
 	
+	/**
+	 * process_settings_export function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function process_settings_export() {
 		if (empty($_POST['pc_action']) || $_POST['pc_action']!='export_settings')
 			return;
@@ -184,6 +225,12 @@ class Pickle_Calendar_Admin {
 		exit;
 	}	
 
+	/**
+	 * process_settings_import function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function process_settings_import() {
 		if (empty($_POST['pc_action']) || $_POST['pc_action']!='import_settings')
 			return;

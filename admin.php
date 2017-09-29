@@ -5,7 +5,8 @@ class Pickle_Calendar_Admin {
 	public function __construct() {
 		add_action('admin_enqueue_scripts', array($this, 'admin_scripts_styles'));
 		add_action('admin_menu', array($this, 'admin_menu'));
-		add_action( 'admin_init', array($this, 'process_settings_export'));
+		add_action('admin_init', array($this, 'process_settings_export'));
+		add_action('admin_init', array($this, 'process_settings_import'));
 		add_action('admin_init', array($this, 'update_settings'));
 	}
 
@@ -182,6 +183,38 @@ class Pickle_Calendar_Admin {
 		
 		exit;
 	}	
+
+	public function process_settings_import() {
+		if (empty($_POST['pc_action']) || $_POST['pc_action']!='import_settings')
+			return;
+					
+		if (!isset($_POST['pickle_calendar_import_nonce']) || !wp_verify_nonce($_POST['pickle_calendar_import_nonce'], 'pickle_calendar_import_nonce'))
+			return;
+
+		if (!current_user_can('manage_options'))
+			return;
+			
+		$extension = end( explode( '.', $_FILES['import_file']['name'] ) );
+		
+		if ( $extension != 'json' ) {
+			wp_die( __( 'Please upload a valid .json file' ) );
+		}
+		
+		$import_file = $_FILES['import_file']['tmp_name'];
+		
+		if ( empty( $import_file ) ) {
+			wp_die( __( 'Please upload a file to import' ) );
+		}
+		
+		// Retrieve the settings from the file and convert the json object to an array.
+		$settings=json_decode(file_get_contents($import_file), true);
+		
+		update_option('pickle_calendar_settings', $settings);
+		
+		wp_safe_redirect(admin_url('options-general.php?page=pickle-calendar')); 
+		
+		exit;
+	}
 	
 }	
 

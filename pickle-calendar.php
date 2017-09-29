@@ -32,7 +32,7 @@ final class PickleCalendar {
 		$this->includes();
 		$this->init();
 
-		do_action( 'pickle_calendar_loaded' );
+		do_action('pickle_calendar_loaded');
 	}
 
 	private function define_constants() {
@@ -77,7 +77,9 @@ final class PickleCalendar {
 				'end_date' => true,	
 			),
 		);
+		
 		$db_settings=get_option('pickle_calendar_settings', '');
+		
 		$settings=$this->parse_args($db_settings, $default_settings);
 		
 		return $settings;

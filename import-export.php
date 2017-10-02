@@ -67,7 +67,7 @@ class Pickle_Calendar_Import_Export_Events {
 		
 		$events='';
 		$event_types='';
-echo "import<br>";	
+	
 		if (isset($import_arr->events))
 			$events=$import_arr->events;
 			
@@ -75,6 +75,7 @@ echo "import<br>";
 			$event_types=$import_arr->event_types;
 			
 		if (!empty($events)) :
+
 			foreach ($events as $event) :
 				$post=get_page_by_title($event->post_title, OBJECT, $this->post_type);
 				$event_dates=$event->dates;
@@ -82,12 +83,14 @@ echo "import<br>";
 				
 				unset($event->dates, $event->event_types);
 
-				if ($post!=null) :
+				if ($post!=null) :				
 					$updated_post=$this->parse_object_args($event, $post);
 					wp_update_post($updated_post);
 					
 					$post_id=$post->ID;
 				else :
+					unset($event->ID, $event->post_author);
+				
 					$post_id=wp_insert_post(get_object_vars($event));
 				endif;
 
@@ -110,7 +113,7 @@ echo "import<br>";
 				endif;
 			endforeach;
 		endif;
-exit;
+
 		return true;				
 	}
 	

@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Pickle_Calendar_Import_Export_Events class.
+ */
 class Pickle_Calendar_Import_Export_Events {
 	
 	protected $post_type='pcevent';
@@ -10,6 +13,12 @@ class Pickle_Calendar_Import_Export_Events {
 		
 	}
 	
+	/**
+	 * export function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function export() {
 		$events_export=array(
 			'events' => $this->get_events(),
@@ -29,6 +38,12 @@ class Pickle_Calendar_Import_Export_Events {
 		exit;			
 	}
 	
+	/**
+	 * get_events function.
+	 * 
+	 * @access protected
+	 * @return void
+	 */
 	protected function get_events() {
 		global $wpdb;
 		
@@ -43,6 +58,12 @@ class Pickle_Calendar_Import_Export_Events {
 		return $events;
 	}
 
+	/**
+	 * get_event_types function.
+	 * 
+	 * @access protected
+	 * @return void
+	 */
 	protected function get_event_types() {
 		$tax_terms=(array) get_terms($this->taxonomy, array('get' => 'all'));
 		$terms=array();
@@ -61,6 +82,13 @@ class Pickle_Calendar_Import_Export_Events {
 		return $terms;
 	}
 
+	/**
+	 * import function.
+	 * 
+	 * @access public
+	 * @param string $import_arr (default: '')
+	 * @return void
+	 */
 	public function import($import_arr='') {
 		if (empty($import_arr))
 			return false;
@@ -117,6 +145,14 @@ class Pickle_Calendar_Import_Export_Events {
 		return true;				
 	}
 	
+	/**
+	 * parse_object_args function.
+	 * 
+	 * @access protected
+	 * @param mixed $args
+	 * @param string $defaults (default: '')
+	 * @return void
+	 */
 	protected function parse_object_args($args, $defaults='') {
 	    if (is_object($args)) :
 	        $r = get_object_vars( $args );
@@ -131,6 +167,14 @@ class Pickle_Calendar_Import_Export_Events {
 	    return array_merge($defaults, $r);
 	}
 	
+	/**
+	 * update_event_dates function.
+	 * 
+	 * @access protected
+	 * @param int $event_id (default: 0)
+	 * @param array $event_dates (default: array())
+	 * @return void
+	 */
 	protected function update_event_dates($event_id=0, $event_dates=array()) {
 		// from our save metabox code //
 		global $wpdb;
@@ -149,6 +193,14 @@ class Pickle_Calendar_Import_Export_Events {
 		endforeach;
 	}
 
+	/**
+	 * update_event_types function.
+	 * 
+	 * @access protected
+	 * @param int $event_id (default: 0)
+	 * @param array $event_types (default: array())
+	 * @return void
+	 */
 	protected function update_event_types($event_id=0, $event_types=array()) {
 		// remove existing terms //
 		wp_set_object_terms($event_id, NULL, $this->taxonomy);
@@ -158,6 +210,13 @@ class Pickle_Calendar_Import_Export_Events {
 		endforeach;
 	}
 	
+	/**
+	 * setup_term function.
+	 * 
+	 * @access protected
+	 * @param string $term (default: '')
+	 * @return void
+	 */
 	protected function setup_term($term='') {
 		if (empty($term))
 			return;

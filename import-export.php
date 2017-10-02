@@ -75,6 +75,7 @@ class Pickle_Calendar_Import_Export_Events {
 			$event_types=$import_arr->event_types;
 			
 		if (!empty($events)) :
+
 			foreach ($events as $event) :
 				$post=get_page_by_title($event->post_title, OBJECT, $this->post_type);
 				$event_dates=$event->dates;
@@ -82,12 +83,14 @@ class Pickle_Calendar_Import_Export_Events {
 				
 				unset($event->dates, $event->event_types);
 
-				if ($post!=null) :
+				if ($post!=null) :				
 					$updated_post=$this->parse_object_args($event, $post);
 					wp_update_post($updated_post);
 					
 					$post_id=$post->ID;
 				else :
+					unset($event->ID, $event->post_author);
+				
 					$post_id=wp_insert_post(get_object_vars($event));
 				endif;
 
@@ -103,7 +106,7 @@ class Pickle_Calendar_Import_Export_Events {
 				$clean_term=$this->setup_term($event_type);
 				
 				if (isset($term_exists['term_id'])) :		
-					wp_update_term($event_type->ID, $this->taxonomy, $clean_term);
+					wp_update_term($event_type->term_id, $this->taxonomy, $clean_term);
 		
 				else :
 					wp_insert_term($event_type->name, $this->taxonomy, $clean_term);

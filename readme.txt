@@ -26,7 +26,7 @@ Coming soon.
 
 == Hooks and Filters ==
 
-Coming soon.
+apply_filters('pickle_calendar_event_title', $title, $event_id)
 
 == Changelog ==
 

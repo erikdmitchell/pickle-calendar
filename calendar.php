@@ -320,7 +320,7 @@ class Pickle_Calendar {
 			
 			// SETTING OF SOME SORT //
 			$title='<a href="'.get_permalink($event_id).'">'.get_the_title($event_id).'</a>';
-			$text=apply_filters('pickle_calendar_event_title', $title, $event_id) 
+			$text=apply_filters('pickle_calendar_event_title', $title, $event_id); 
 			
 			if ($this->event_is_multiday($event_id, $date) && !$this->is_start_date($event_id, $date))
 				$text='&nbsp;';

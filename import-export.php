@@ -67,7 +67,7 @@ class Pickle_Calendar_Import_Export_Events {
 		
 		$events='';
 		$event_types='';
-	
+echo "import";	
 		if (isset($import_arr->events))
 			$events=$import_arr->events;
 			

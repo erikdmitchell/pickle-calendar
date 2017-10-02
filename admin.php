@@ -13,12 +13,13 @@ class Pickle_Calendar_Admin {
 	 */
 	public function __construct() {
 		add_action('admin_enqueue_scripts', array($this, 'admin_scripts_styles'));
-		add_action('admin_menu', array($this, 'admin_menu'));
 		add_action('admin_init', array($this, 'process_events_export'));
 		add_action('admin_init', array($this, 'process_events_import'));				
 		add_action('admin_init', array($this, 'process_settings_export'));		
 		add_action('admin_init', array($this, 'process_settings_import'));
 		add_action('admin_init', array($this, 'update_settings'));
+		add_action('admin_menu', array($this, 'admin_menu'));
+		add_action('admin_notices', array($this, 'admin_notices'));
 	}
 
 	/**
@@ -340,11 +341,46 @@ class Pickle_Calendar_Admin {
 		// Retrieve the settings from the file.
 		$events=json_decode(file_get_contents($import_file));
 		
-		picklecalendar()->import_export_events->import($events);
+		$imported=picklecalendar()->import_export_events->import($events);
 		
-		wp_safe_redirect(admin_url('options-general.php?page=pickle-calendar')); 
+		if ($imported) :
+			$imported_url_var=1;
+		else :
+			$imported_url_var=0;
+		endif;
+		
+		wp_safe_redirect(admin_url('options-general.php?page=pickle-calendar&import-events='.$imported_url_var)); 
 		
 		exit;
+	}
+	
+	public function admin_notices() {
+		$html='';
+		$screen=get_current_screen();
+		
+		if ($screen->id !== 'settings_page_pickle-calendar')
+			return;
+
+		
+		if (isset($_GET['import-events'])) :
+			
+			if ($_GET['import-events'] === 'true') :
+				
+				$html.='<div class="notice notice-success is-dismissible">';
+					$html.='<p>'._('Events successfully imported.', 'pickle-calendar').'</p>';
+				$html.='</div>';
+				
+			else :
+				
+				$html.='<div class="notice notice-error is-dismissible">';
+					$html.='<p>'._('Events not imported.', 'pickle-calendar').'</p>';
+				$html.='</div>';
+				
+			endif;
+		
+		endif;
+		
+		echo $html;	
 	}
 	
 }	

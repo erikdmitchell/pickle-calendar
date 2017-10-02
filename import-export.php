@@ -67,7 +67,7 @@ class Pickle_Calendar_Import_Export_Events {
 		
 		$events='';
 		$event_types='';
-echo "import";	
+echo "import<br>";	
 		if (isset($import_arr->events))
 			$events=$import_arr->events;
 			
@@ -103,14 +103,14 @@ echo "import";
 				$clean_term=$this->setup_term($event_type);
 				
 				if (isset($term_exists['term_id'])) :		
-					wp_update_term($event_type->ID, $this->taxonomy, $clean_term);
+					wp_update_term($event_type->term_id, $this->taxonomy, $clean_term);
 		
 				else :
 					wp_insert_term($event_type->name, $this->taxonomy, $clean_term);
 				endif;
 			endforeach;
 		endif;
-
+exit;
 		return true;				
 	}
 	

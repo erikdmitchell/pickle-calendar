@@ -367,13 +367,13 @@ class Pickle_Calendar_Admin {
 			if ($_GET['import-events'] === 'true') :
 				
 				$html.='<div class="notice notice-success is-dismissible">';
-					$html.='<p>'._('Events successfully imported.', 'pickle-calendar').'</p>';
+					$html.='<p>'.__('Events successfully imported.', 'pickle-calendar').'</p>';
 				$html.='</div>';
 				
 			else :
 				
 				$html.='<div class="notice notice-error is-dismissible">';
-					$html.='<p>'._('Events not imported.', 'pickle-calendar').'</p>';
+					$html.='<p>'.__('Events not imported.', 'pickle-calendar').'</p>';
 				$html.='</div>';
 				
 			endif;

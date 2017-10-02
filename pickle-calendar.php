@@ -3,7 +3,7 @@
  * Plugin Name: Pickle Calendar
  * Plugin URI: 
  * Description: Pickle Calendar
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: Erik Mitchell
  * Author URI: 
  * License: GPL-2.0+
@@ -21,18 +21,20 @@ if ( ! defined( 'WPINC' ) ) {
 
 final class PickleCalendar {
 
-	public $version='1.0.0';
+	public $version='1.1.0';
 	
 	public $settings='';
 	
-	public $calendar=null;
+	public $calendar='';
+	
+	public $import_export_events='';
 
 	public function __construct() {
 		$this->define_constants();
 		$this->includes();
 		$this->init();
 
-		do_action( 'pickle_calendar_loaded' );
+		do_action('pickle_calendar_loaded');
 	}
 
 	private function define_constants() {
@@ -40,7 +42,7 @@ final class PickleCalendar {
 		$this->define('PICKLE_CALENDAR_URL', plugin_dir_url(__FILE__));
 	}
 
-	private function define( $name, $value ) {
+	private function define($name, $value) {
 		if ( ! defined( $name ) ) {
 			define( $name, $value );
 		}
@@ -52,13 +54,15 @@ final class PickleCalendar {
 		include_once(PICKLE_CALENDAR_PATH.'metabox.php');
 		include_once(PICKLE_CALENDAR_PATH.'post-type.php');
 		include_once(PICKLE_CALENDAR_PATH.'taxonomy.php');
+		include_once(PICKLE_CALENDAR_PATH.'import-export.php');
 	}
 
 	public function init() {
 		$this->settings=$this->settings();
 		$this->calendar=new Pickle_Calendar();
+		$this->import_export_events=new Pickle_Calendar_Import_Export_Events();
 
-		do_action( 'pickle_calendar_init' );
+		do_action('pickle_calendar_init');
 	}
 
 
@@ -69,13 +73,16 @@ final class PickleCalendar {
 			'cpt_plural' => 'Events',
 			'tax_single' => 'Event Type',
 			'tax_plural' => 'Event Types',
+			'disable_editor' => false,
 			'include_details' => true,
 			'detail_options' => array(
 				'start_date' => true,
 				'end_date' => true,	
 			),
 		);
+		
 		$db_settings=get_option('pickle_calendar_settings', '');
+		
 		$settings=$this->parse_args($db_settings, $default_settings);
 		
 		return $settings;

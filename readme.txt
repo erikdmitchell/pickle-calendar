@@ -30,6 +30,11 @@ apply_filters('pickle_calendar_event_title', $title, $event_id)
 
 == Changelog ==
 
+= 1.1.1 =
+
+* Removed for text width and duplication
+* Implemented percentage width for multi day events
+
 = 1.1.0 =
 
 * Added import/export settings and events

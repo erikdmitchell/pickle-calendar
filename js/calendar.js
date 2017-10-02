@@ -75,40 +75,33 @@ jQuery(window).resize(function() {
 		});
 	};
 	
-	$.fn.pcAdjustText=function() {
-		var text=$(this).find('a').text();
-		var textWidth=pcTextWidth(text, $(this).css('font'));
-		var eleWidth=$(this).width();
-		var eventID=$(this).data('eventId');
-		var tmpID='tmp' + eventID + $(this).data('eventDate');
-
-		if (textWidth > eleWidth) {
-			var days=$("div[data-event-id='"+eventID+"']").length;
-			var linkURL=$(this).find('a').attr('href');
+	$.fn.pcEventOffset=function() {
+		var thisOffset=jQuery(this).offset();		
+		var date=new Date(jQuery(this).data('eventDate') + 'T00:00:00');
+		var newDate=new Date(jQuery(this).data('eventDate') + 'T00:00:00');
 		
-			$(this).find('a').text('&nbsp;'); // hide existing text
-
-			var $div='<div id="'+tmpID+'" class="'+$(this).attr('class')+' tmp"><a href="'+linkURL+'">'+text+'</a></div>';
+		newDate.setDate(newDate.getDate() - 1);
+		
+		var nd=new Date(newDate);
+		var prevDay=('0' + nd.getDate()).slice(-2);
+		var prevMonth=('0' + (nd.getMonth() + 1)).slice(-2);
+		var prevDate=nd.getFullYear() + '-' + prevMonth + '-' + prevDay;
+		var prevEvent=jQuery('.pickle-calendar').find(".pickle-calendar-event[data-event-date='" + prevDate + "'][data-event-id='" + jQuery(this).data('eventId') + "']");
+		
+		if (typeof prevEvent.offset() != 'undefined' && prevEvent.offset().top != thisOffset.top) {
+			jQuery(this).css({
+				'margin-top' : prevEvent.offset().top - thisOffset.top
+			});
 			
-			$('.pickle-calendar').append($div);
-
-			$('#'+tmpID).css({
-				'position' : 'absolute',
-				'top' : $(this).position().top,
-				'left' : $(this).position().left,
-				'font' : $(this).css('font')
-			});		
-		} else if ($('#'+tmpID).length) {
-			$('#'+tmpID).css({
-				'position' : 'absolute',
-				'top' : $(this).position().top,
-				'left' : $(this).position().left,
-				'font' : $(this).css('font')
-			});		
+			// double check //
+			if (prevEvent.offset().top != jQuery(this).offset().top) {
+				jQuery(this).css({
+					'margin-top' : parseInt(jQuery(this).css('margin-top')) + (prevEvent.offset().top - jQuery(this).offset().top)
+				});			
+			}
 		}
 				
-	};
-			
+	};	
 })(jQuery);
 
 function pcTextWidth(text, font) { 
@@ -123,6 +116,17 @@ function pcTextWidth(text, font) {
     return width;
 };
 
+function PickleCalendarRowSetup() {
+	jQuery('.pickle-calendar-event.multiday').each(function() {
+		var eventTotalDays=jQuery(this).data('eventTotalDays');
+	
+		jQuery(this).css('width', eventTotalDays * 98 + '%'); // set width //
+			
+		jQuery(this).pcEventOffset(); // tweak margin	
+	});
+}
+
+/*
 function PickleCalendarRowSetup() {	
 	jQuery('.pickle-calendar-event').each(function() {
 		if (jQuery(this).hasClass('tmp')) {
@@ -159,3 +163,4 @@ function PickleCalendarRowSetup() {
 		jQuery(this).pcAdjustText();			
 	});	
 }
+*/

@@ -130,10 +130,10 @@
 	line-height: 1;
 }
 .pickle-calendar-event.multiday {
-	margin-right: -6px;
+	opacity: 0;
 }
-.pickle-calendar-event.multiday.end {
-	margin-right: 5px;
+.pickle-calendar-event.multiday.start {
+	opacity: 1;
 }
 .pickle-calendar-event a {
 	color: #fff;

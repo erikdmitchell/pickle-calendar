@@ -307,7 +307,6 @@ class Pickle_Calendar {
 		
 			if ($this->event_is_multiday($event_id, $date)) :		
 				$classes[]='multiday';
-				//$classes[]='overwrap-text';
 				
 				if ($this->is_start_date($event_id, $date)) :
 					$classes[]='start';
@@ -317,15 +316,15 @@ class Pickle_Calendar {
 			else :
 				$classes[]='single';
 			endif;
-			
-			// SETTING OF SOME SORT //
+
 			$title='<a href="'.get_permalink($event_id).'">'.get_the_title($event_id).'</a>';
 			$text=apply_filters('pickle_calendar_event_title', $title, $event_id); 
 			
 			if ($this->event_is_multiday($event_id, $date) && !$this->is_start_date($event_id, $date))
 				$text='&nbsp;';
+				//continue;
 
-			$content.='<div class="pickle-calendar-event '.implode(' ', $classes).'" data-event-id="'.$event_id.'" data-event-day-number="'.$key.'" data-event-date="'.$date.'">'.$text.'</div>';
+			$content.='<div class="pickle-calendar-event '.implode(' ', $classes).'" data-event-id="'.$event_id.'" data-event-day-number="'.$key.'" data-event-date="'.$date.'" data-event-total-days='.$this->total_days($event_id, $date).'>'.$text.'</div>';
 	
 		endforeach;
 		
@@ -395,6 +394,21 @@ class Pickle_Calendar {
 			return true;
 			
 		return false;
+	}
+	
+	public function total_days($event_id=0, $start_date='') {
+		global $wpdb;
+		
+		$meta_key=$wpdb->get_var("SELECT meta_key FROM $wpdb->postmeta WHERE $wpdb->postmeta.post_id = $event_id AND $wpdb->postmeta.meta_value = '$start_date'");
+		$date_id=str_replace('_start_date_', '', $meta_key);
+		$end_date_id='_end_date_'.$date_id;
+		$end_date=$wpdb->get_var("SELECT meta_value FROM $wpdb->postmeta WHERE $wpdb->postmeta.post_id = $event_id AND $wpdb->postmeta.meta_key = '$end_date_id'");
+
+		$start_ts=strtotime($start_date);
+		$end_ts=strtotime($end_date);
+		$diff=$end_ts-$start_ts;
+		
+		return round($diff/86400) + 1;	
 	}
 
 	/**

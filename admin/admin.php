@@ -29,9 +29,9 @@ class Pickle_Calendar_Admin {
 	 * @return void
 	 */
 	public function admin_scripts_styles() {
-		wp_enqueue_script('pickle-calendar-admin-script', PICKLE_CALENDAR_URL.'js/admin.js', array('jquery'), picklecalendar()->version, true);
+		wp_enqueue_script('pickle-calendar-admin-script', PICKLE_CALENDAR_URL.'admin/js/admin.js', array('jquery'), picklecalendar()->version, true);
 				
-		wp_enqueue_style('pickle-calendar-admin-css', PICKLE_CALENDAR_URL.'css/admin.css', '', picklecalendar()->version);
+		wp_enqueue_style('pickle-calendar-admin-css', PICKLE_CALENDAR_URL.'admin/css/admin.css', '', picklecalendar()->version);
 	}
 	
 	/**

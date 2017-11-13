@@ -1,0 +1,8 @@
+.wrap h2.wp-heading-inline {
+	display: inline-block;
+    margin-right: 5px;
+}
+
+.pickle-calendar-settings-form tr.details-box {
+	display: none;
+}

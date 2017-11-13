@@ -37,6 +37,7 @@ final class PickleCalendar {
 		$this->define_constants();
 		$this->includes();
 		$this->init_hooks();
+		$this->init();
 
 		do_action('pickle_calendar_loaded');
 	}
@@ -59,17 +60,14 @@ final class PickleCalendar {
 		include_once(PICKLE_CALENDAR_PATH.'calendar.php');
 		include_once(PICKLE_CALENDAR_PATH.'metabox.php');
 		include_once(PICKLE_CALENDAR_PATH.'post-type.php');
-		include_once(PICKLE_CALENDAR_PATH.'taxonomy.php');
 		include_once(PICKLE_CALENDAR_PATH.'import-export.php');
 	}
 	
 	private function init_hooks() {
 		register_activation_hook(PICKLE_CALENDAR_PLUGIN_FILE, array('Pickle_Calendar_Install', 'install'));
-		
-		add_action('init', array($this, 'init'), 0);
 	}
 
-	public function init() {
+	public function init() {		
 		$this->settings=$this->settings();
 		$this->calendar=new Pickle_Calendar();
 		$this->import_export_events=new Pickle_Calendar_Import_Export_Events();
@@ -77,8 +75,7 @@ final class PickleCalendar {
 		do_action('pickle_calendar_init');
 	}
 
-
-	public function settings() {
+	public function settings() {		
 		$default_settings=array(
 			'adminlabel' => 'Events',
 			'cpt_single' => 'Event',

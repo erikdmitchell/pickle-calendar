@@ -1,3 +1,7 @@
+<?php 
+$slug=isset($_GET['slug']) ? $_GET['slug'] : '';	
+$taxonomy=pickle_calendar_get_taxonomy($slug); ?>
+
 <h2 class="wp-heading-inline">Taxonomy</h2>
 
 <a href="<?php echo admin_url('options-general.php?page=pickle-calendar&tab=taxonomies&action=edit'); ?>" class="page-title-action">Add New</a>
@@ -10,17 +14,17 @@
 			<div id="post-body-content">
 				<div class="tax-input-row">
 					<label for="tax_slug">Slug</label>
-					<input type="text" name="tax_details[slug]" id="tax_slug" class="" value="" />
+					<input type="text" name="tax_details[slug]" id="tax_slug" class="" value="<?php echo $taxonomy['slug']; ?>" />
 				</div>
 
 				<div class="tax-input-row">
 					<label for="tax_label">Label</label>
-					<input type="text" name="tax_details[label]" id="tax_label" class="" value="" />
+					<input type="text" name="tax_details[label]" id="tax_label" class="" value="<?php echo $taxonomy['label']; ?>" />
 				</div>
 				
 				<div class="tax-input-row">
 					<label for="tax_label_plural">Label Plural</label>
-					<input type="text" name="tax_details[label_plural]" id="tax_label_plural" class="" value="" />
+					<input type="text" name="tax_details[label_plural]" id="tax_label_plural" class="" value="<?php echo $taxonomy['label_plural']; ?>" />
 				</div>				
 			</div>
 			

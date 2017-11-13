@@ -6,3 +6,27 @@
 .pickle-calendar-settings-form tr.details-box {
 	display: none;
 }
+
+.taxonomy-form #poststuff .inside {
+	overflow: hidden;
+	padding: 12px;
+	margin: 0;
+}
+.taxonomy-form #delete-action .submitdelete {
+	color: red;
+	text-decoration: none;
+}
+.taxonomy-form #delete-action .submitdelete:hover {
+	text-decoration: underline;
+}
+.taxonomy-form .tax-input-row {
+	margin-bottom: 15px;
+}
+.taxonomy-form .tax-input-row label {
+	font-weight: 600;
+	width: 150px;
+	display: inline-block;
+}
+.taxonomy-form .tax-input-row input {
+	width: 25em;
+}

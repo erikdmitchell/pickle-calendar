@@ -18,6 +18,7 @@ class Pickle_Calendar_Admin {
 		add_action('admin_init', array($this, 'process_settings_export'));		
 		add_action('admin_init', array($this, 'process_settings_import'));
 		add_action('admin_init', array($this, 'update_settings'));
+		add_action('admin_init', array($this, 'update_taxonomy'));
 		add_action('admin_menu', array($this, 'admin_menu'));
 		add_action('admin_notices', array($this, 'admin_notices'));
 	}
@@ -59,7 +60,7 @@ class Pickle_Calendar_Admin {
 		$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'settings';
 			
 		$html.='<div class="wrap pickle-calendar-admin">';
-			$html.='<h1>Pickle Calednar</h1>';
+			$html.='<h1>Pickle Calendar</h1>';
 			
 			$html.='<h2 class="nav-tab-wrapper">';
 				foreach ($tabs as $key => $name) :
@@ -75,7 +76,11 @@ class Pickle_Calendar_Admin {
 
 			switch ($active_tab) :
 				case 'taxonomies':
-					$html.=$this->get_admin_page('taxonomies');
+					if (isset($_GET['action']) && $_GET['action']=='edit') :
+						$html.=$this->get_admin_page('taxonomies-single');					
+					else :
+						$html.=$this->get_admin_page('taxonomies');
+					endif;
 					break;					
 				default:
 					$html.=$this->get_admin_page('settings');
@@ -116,6 +121,29 @@ class Pickle_Calendar_Admin {
 		update_option('pickle_calendar_settings', $new_settings);
 		
 		wp_redirect(site_url($_POST['_wp_http_referer']));
+		exit;
+	}
+
+	/**
+	 * update_taxonomy function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function update_taxonomy() {
+		if (!isset($_POST['pickle_calendar_admin']) || !wp_verify_nonce($_POST['pickle_calendar_admin'], 'update_taxonomy'))
+			return false; 
+	
+		$taxonomies=get_option('pickle_calendar_taxonomies');
+		
+		if (!empty($_POST['tax_details']['slug']))
+			$taxonomies[]=$_POST['tax_details'];
+
+		update_option('pickle_calendar_taxonomies', $taxonomies);
+		
+		picklecalendar()->update_settings();
+
+		wp_redirect(admin_url('options-general.php?page=pickle-calendar&tab=taxonomies&action=edit&slug='.$_POST['tax_details']['slug']));
 		exit;
 	}
 	

@@ -1,6 +1,6 @@
 <h2 class="wp-heading-inline">Taxonomies</h2>
 
-<a href="#" class="page-title-action">Add New</a>
+<a href="<?php echo admin_url('options-general.php?page=pickle-calendar&tab=taxonomies&action=edit'); ?>" class="page-title-action">Add New</a>
 
 <table class="wp-list-table widefat fixed striped pickle-calendar-taxonomies">
 	<thead>
@@ -23,7 +23,7 @@
 					<input id="cb-select-<?php echo $taxonomy['slug']; ?>" type="checkbox" name="taxonomy[]" value="<?php echo $taxonomy['slug']; ?>">
 				</th>
 				<td class="title column-title column-primary" data-colname="Title">
-					<strong><a class="row-title" href="#" aria-label="“<?php echo ucwords($taxonomy['label']); ?>” (Edit)"><?php echo ucwords($taxonomy['label']); ?></a></strong>
+					<strong><a class="row-title" href="<?php echo admin_url('options-general.php?page=pickle-calendar&tab=taxonomies&action=edit&slug='.$taxonomy['slug']); ?>" aria-label="“<?php echo ucwords($taxonomy['label']); ?>” (Edit)"><?php echo ucwords($taxonomy['label']); ?></a></strong>
 				</td>
 			</tr>
 		<?php endforeach; ?>

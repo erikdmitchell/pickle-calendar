@@ -71,7 +71,6 @@ final class PickleCalendar {
 		$this->settings=$this->settings();
 		$this->calendar=new Pickle_Calendar();
 		$this->import_export_events=new Pickle_Calendar_Import_Export_Events();
-		$this->settings['taxonomies']=get_option('pickle_calendar_taxonomies', '');
 
 		do_action('pickle_calendar_init');
 	}
@@ -95,7 +94,13 @@ final class PickleCalendar {
 		
 		$settings=$this->parse_args($db_settings, $default_settings);
 		
+		$settings['taxonomies']=get_option('pickle_calendar_taxonomies', '');
+		
 		return $settings;
+	}
+	
+	public function update_settings() {
+		$this->settings=$this->settings();
 	}
 	
 	public function parse_args(&$a, $b) {

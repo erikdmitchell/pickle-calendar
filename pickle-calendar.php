@@ -56,7 +56,7 @@ final class PickleCalendar {
 	public function includes() {
 		include_once(PICKLE_CALENDAR_PATH.'update-functions.php');
 		include_once(PICKLE_CALENDAR_PATH.'install.php');
-		include_once(PICKLE_CALENDAR_PATH.'admin.php');
+		include_once(PICKLE_CALENDAR_PATH.'admin/admin.php');
 		include_once(PICKLE_CALENDAR_PATH.'calendar.php');
 		include_once(PICKLE_CALENDAR_PATH.'metabox.php');
 		include_once(PICKLE_CALENDAR_PATH.'post-type.php');

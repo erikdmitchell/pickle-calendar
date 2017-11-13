@@ -1,31 +1,5 @@
 <?php
 
-
-
-
-
-
-function pcevents_remove_wp_seo_meta_box() {
-	global $post;
-	
-	if ($post->post_type != 'pcevents')
-		return;
-		
-	remove_meta_box('wpseo_meta', 'pcevent', 'normal');
-}
-//add_action('add_meta_boxes', 'pcevents_remove_wp_seo_meta_box', 100);
-
-function pcevents_dequeue_wp_seo_scripts() {
-	global $post;
-	
-	if (isset($post->post_type) && $post->post_type!='pcevents')
-		return;
-			
-    wp_dequeue_script('yoast-seo-post-scraper');  
-}
-//add_action('wp_print_scripts', 'pcevents_dequeue_wp_seo_scripts', 100);
-
-
 class Pickle_Calendar_Post_Types {
 	
 	public static function init() {		
@@ -33,6 +7,9 @@ class Pickle_Calendar_Post_Types {
 		add_action('init', array(__CLASS__, 'register_taxonomies'), 5);
 		
 		add_filter('post_updated_messages', array(__CLASS__, 'updated_messages'));
+		
+		add_action('wp_print_scripts', array(__CLASS__, 'pcevents_dequeue_wp_seo_scripts'), 100);
+		add_action('add_meta_boxes', array(__CLASS__, 'pcevents_remove_wp_seo_meta_box'), 100);
 		// potential rewrite flush rules hook/action here
 	}
 
@@ -139,6 +116,24 @@ class Pickle_Calendar_Post_Types {
 	
 		return $messages;
 	}	
+
+	public static function pcevents_dequeue_wp_seo_scripts() {
+		global $post;
+		
+		if (isset($post->post_type) && $post->post_type!='pcevents')
+			return;
+				
+	    wp_dequeue_script('yoast-seo-post-scraper');  
+	}
+	
+	public static function pcevents_remove_wp_seo_meta_box() {
+		global $post;
+		
+		if ($post->post_type != 'pcevents')
+			return;
+			
+		remove_meta_box('wpseo_meta', 'pcevent', 'normal');
+	}
 
 	public static function flush_rewrite_rules() {
 		flush_rewrite_rules();

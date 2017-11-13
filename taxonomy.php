@@ -39,5 +39,5 @@ function sctype_init() {
 	) );
 
 }
-add_action( 'init', 'sctype_init' );
+add_action('init', 'sctype_init', 5);
 ?>

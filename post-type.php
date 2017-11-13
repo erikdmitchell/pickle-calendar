@@ -1,6 +1,7 @@
 <?php
 
 function pcevents_init() {
+print_r(picklecalendar());	
 	register_post_type('pcevent', array(
 		'labels'            => array(
 			'name'                => __( picklecalendar()->settings['cpt_plural'], 'pickle-calendar' ),
@@ -33,7 +34,7 @@ function pcevents_init() {
 	) );
 
 }
-add_action('init', 'pcevents_init');
+add_action('init', 'pcevents_init', 11);
 
 function pcevents_updated_messages( $messages ) {
 	global $post;

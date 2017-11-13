@@ -17,11 +17,15 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+if (!defined('PICKLE_CALENDAR_PLUGIN_FILE')) {
+	define('PICKLE_CALENDAR_PLUGIN_FILE', __FILE__);
+}
+
 // our main class //
 
 final class PickleCalendar {
 
-	public $version='1.1.1';
+	public $version='1.2.0';
 	
 	public $settings='';
 	
@@ -32,7 +36,7 @@ final class PickleCalendar {
 	public function __construct() {
 		$this->define_constants();
 		$this->includes();
-		$this->init();
+		$this->init_hooks();
 
 		do_action('pickle_calendar_loaded');
 	}
@@ -49,12 +53,20 @@ final class PickleCalendar {
 	}
 
 	public function includes() {
+		include_once(PICKLE_CALENDAR_PATH.'update-functions.php');
+		include_once(PICKLE_CALENDAR_PATH.'install.php');
 		include_once(PICKLE_CALENDAR_PATH.'admin.php');
 		include_once(PICKLE_CALENDAR_PATH.'calendar.php');
 		include_once(PICKLE_CALENDAR_PATH.'metabox.php');
 		include_once(PICKLE_CALENDAR_PATH.'post-type.php');
 		include_once(PICKLE_CALENDAR_PATH.'taxonomy.php');
 		include_once(PICKLE_CALENDAR_PATH.'import-export.php');
+	}
+	
+	private function init_hooks() {
+		register_activation_hook(PICKLE_CALENDAR_PLUGIN_FILE, array('Pickle_Calendar_Install', 'install'));
+		
+		add_action('init', array($this, 'init'), 0);
 	}
 
 	public function init() {

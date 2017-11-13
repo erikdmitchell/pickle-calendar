@@ -51,9 +51,7 @@ class Pickle_Calendar_Post_Types {
 	}
 	
 	public static function register_taxonomies() {
-		$taxonomies=get_option('pickle_calendar_taxonomies', array());
-		
-		foreach ($taxonomies as $taxonomy) :
+		foreach (picklecalendar()->settings['taxonomies'] as $taxonomy) :
 			self::generate_taxonomy($taxonomy);
 		endforeach;	
 	}

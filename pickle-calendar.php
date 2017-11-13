@@ -71,6 +71,7 @@ final class PickleCalendar {
 		$this->settings=$this->settings();
 		$this->calendar=new Pickle_Calendar();
 		$this->import_export_events=new Pickle_Calendar_Import_Export_Events();
+		$this->settings['taxonomies']=get_option('pickle_calendar_taxonomies', '');
 
 		do_action('pickle_calendar_init');
 	}

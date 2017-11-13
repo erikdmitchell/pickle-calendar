@@ -51,15 +51,43 @@ class Pickle_Calendar_Post_Types {
 	}
 	
 	public static function register_taxonomies() {
-		if (taxonomy_exists('pctype'))
-			return;
+		$taxonomies=get_option('pickle_calendar_taxonomies', array());
+		
+		foreach ($taxonomies as $taxonomy) :
+			self::generate_taxonomy($taxonomy);
+		endforeach;	
+	}
 
-		register_taxonomy('pctype', array( 'pcevent' ), array(
-			'hierarchical'      => true,
+	protected static function generate_taxonomy($taxonomy=array()) {
+		if (empty($taxonomy))
+			return;
+			
+		$defaults=array(
+			'post_type' => 'pcevent',
+			'textdomain' => 'pickle-calendar',
+			'slug' => '',
+		);
+		$args=wp_parse_args($taxonomy, $defaults);
+			
+		if (empty($args['slug']))
+			return;
+			
+		if (empty($args['label'])) :
+			preg_replace( '/_|-/', ' ', strtolower($args['slug']));
+		endif;
+
+		if (empty($args['label_plural'])) :
+			preg_replace( '/_|-/', ' ', strtolower($args['slug']));
+		endif;
+
+		extract($args);		
+
+		register_taxonomy($slug, array($post_type), array(
+			'hierarchical'      => false,
 			'public'            => true,
 			'show_in_nav_menus' => true,
 			'show_ui'           => true,
-			'show_admin_column' => true,
+			'show_admin_column' => false,
 			'query_var'         => true,
 			'rewrite'           => true,
 			'capabilities'      => array(
@@ -69,25 +97,25 @@ class Pickle_Calendar_Post_Types {
 				'assign_terms'  => 'edit_posts'
 			),
 			'labels'            => array(
-				'name'                       => __( picklecalendar()->settings['tax_plural'], 'pickle-calendar' ),
-				'singular_name'              => _x( picklecalendar()->settings['tax_single'], 'taxonomy general name', 'pickle-calendar' ),
-				'search_items'               => __( 'Search '.picklecalendar()->settings['tax_plural'], 'pickle-calendar' ),
-				'popular_items'              => __( 'Popular '.picklecalendar()->settings['tax_plural'], 'pickle-calendar' ),
-				'all_items'                  => __( 'All '.picklecalendar()->settings['tax_plural'], 'pickle-calendar' ),
-				'parent_item'                => __( 'Parent '.picklecalendar()->settings['tax_single'], 'pickle-calendar' ),
-				'parent_item_colon'          => __( 'Parent '.picklecalendar()->settings['tax_single'].':', 'pickle-calendar' ),
-				'edit_item'                  => __( 'Edit '.picklecalendar()->settings['tax_single'], 'pickle-calendar' ),
-				'update_item'                => __( 'Update '.picklecalendar()->settings['tax_single'], 'pickle-calendar' ),
-				'add_new_item'               => __( 'New '.picklecalendar()->settings['tax_single'], 'pickle-calendar' ),
-				'new_item_name'              => __( 'New '.picklecalendar()->settings['tax_single'], 'pickle-calendar' ),
-				'separate_items_with_commas' => __( 'Separate '.picklecalendar()->settings['tax_plural'].' with commas', 'pickle-calendar' ),
-				'add_or_remove_items'        => __( 'Add or remove '.picklecalendar()->settings['tax_plural'], 'pickle-calendar' ),
-				'choose_from_most_used'      => __( 'Choose from the most used '.picklecalendar()->settings['tax_plural'], 'pickle-calendar' ),
-				'not_found'                  => __( 'No '.picklecalendar()->settings['tax_plural'].' found.', 'pickle-calendar' ),
-				'menu_name'                  => __( picklecalendar()->settings['tax_plural'], 'pickle-calendar' ),
+				'name'                       => __( ucwords($label_plural), $textdomain),
+				'singular_name'              => _x( ucwords($label), 'taxonomy general name', $textdomain),
+				'search_items'               => __( 'Search '.ucwords($label_plural), $textdomain),
+				'popular_items'              => __( 'Popular '.ucwords($label_plural), $textdomain),
+				'all_items'                  => __( 'All '.ucwords($label_plural), $textdomain),
+				'parent_item'                => __( 'Parent '.ucwords($label), $textdomain),
+				'parent_item_colon'          => __( 'Parent '.ucwords($label).':', $textdomain),
+				'edit_item'                  => __( 'Edit '.ucwords($label), $textdomain),
+				'update_item'                => __( 'Update '.ucwords($label), $textdomain),
+				'add_new_item'               => __( 'New '.ucwords($label), $textdomain),
+				'new_item_name'              => __( 'New '.ucwords($label), $textdomain),
+				'separate_items_with_commas' => __( 'Separate '.ucwords($label_plural).' with commas', $textdomain),
+				'add_or_remove_items'        => __( 'Add or remove '.ucwords($label_plural), $textdomain),
+				'choose_from_most_used'      => __( 'Choose from the most used '.ucwords($label_plural), $textdomain),
+				'not_found'                  => __( 'No '.ucwords($label_plural).' found.', $textdomain),
+				'menu_name'                  => __( ucwords($label_plural), $textdomain),
 			),
 			'show_in_rest'      => true,
-			'rest_base'         => 'pctype',
+			'rest_base'         => $slug,
 			'rest_controller_class' => 'WP_REST_Terms_Controller',
 		) );		
 	}

@@ -46,8 +46,8 @@ class Pickle_Calendar_Install {
 	private static function update() {
 		$current_version=get_option('pickle_calendar_version');
 
-		foreach ($this->get_update_callbacks() as $version => $update_callbacks ) :	
-			if (version_compare($current_version, $version, '<')) :
+		foreach (self::get_update_callbacks() as $version => $update_callbacks ) :	
+			if (version_compare($current_version, $version, '<=')) :	
 				foreach ($update_callbacks as $update_callback) :
 					$update_callback();
 				endforeach;

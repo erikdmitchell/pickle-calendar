@@ -1,5 +1,6 @@
 jQuery(document).ready(function($) {
 
+    // AJAX calendar navigation //
 	$('body').on('click', '.pickle-calendar .cal-nav', function(e) {
 		e.preventDefault();
 
@@ -21,6 +22,31 @@ jQuery(document).ready(function($) {
 			
 			pcalEqualHeight('.pickle-calendar .calendar-day');
 		});
+	});
+	
+	// calendar filters //
+	$('body').on('change', '.pickle-calendar-filters .filter-term', function(e) {
+    	var activeFilters=$('#pickle-calendar-filters').data('filters'); // get filters
+    	var activeFiltersArr=activeFilters.split(','); // filters to arr
+
+        // add or remove based on check //
+    	if (this.checked) {
+        	activeFiltersArr.push($(this).val());     	
+    	} else {
+            var index=activeFiltersArr.indexOf($(this).val());
+            
+            if (index > -1) {
+                activeFiltersArr.splice(index, 1);
+            }        	
+    	}
+    	
+    	// remove empty arr elements //
+    	activeFiltersArr=activeFiltersArr.filter(function(x) {
+            return (x !== (undefined || null || ''));
+        });
+
+        // update filters //
+    	$('#pickle-calendar-filters').data('filters', activeFiltersArr.join());
 	});
 	
 });

@@ -33,7 +33,7 @@ $taxonomy=pickle_calendar_get_taxonomy($slug); ?>
 					<div id="" class="postbox ">
 						<div class="inside">
 							<div id="delete-action">
-								<a class="submitdelete deletion" href="#">Move to Trash</a>
+								<a class="submitdelete deletion" href="<?php echo admin_url('options-general.php?page=pickle-calendar&tab=taxonomies&action=delete&slug='.$taxonomy['slug']); ?>">Delete</a>
 							</div>
 	
 							<div id="publishing-action">

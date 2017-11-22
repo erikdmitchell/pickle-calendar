@@ -17,5 +17,5 @@ function pickle_calendar_get_taxonomy($slug='') {
 	$tax=picklecalendar()->parse_args($tax, $default);
 	
 	return $tax;
-}	
+}
 ?>

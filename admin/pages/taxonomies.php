@@ -1,3 +1,5 @@
+<?php picklecalendar()->admin->check_remove_taxonomy(); ?>
+
 <h2 class="wp-heading-inline">Taxonomies</h2>
 
 <a href="<?php echo admin_url('options-general.php?page=pickle-calendar&tab=taxonomies&action=edit'); ?>" class="page-title-action">Add New</a>

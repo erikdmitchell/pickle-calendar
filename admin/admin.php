@@ -77,7 +77,7 @@ class Pickle_Calendar_Admin {
 			switch ($active_tab) :
 				case 'taxonomies':
 					if (isset($_GET['action']) && $_GET['action']=='edit') :
-						$html.=$this->get_admin_page('taxonomies-single');					
+						$html.=$this->get_admin_page('taxonomies-single');
 					else :
 						$html.=$this->get_admin_page('taxonomies');
 					endif;

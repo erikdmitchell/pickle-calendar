@@ -32,6 +32,8 @@ final class PickleCalendar {
 	public $calendar='';
 	
 	public $import_export_events='';
+	
+	public $admin='';
 
 	public function __construct() {
 		$this->define_constants();
@@ -58,10 +60,14 @@ final class PickleCalendar {
 		include_once(PICKLE_CALENDAR_PATH.'install.php');
 		include_once(PICKLE_CALENDAR_PATH.'functions.php');
 		include_once(PICKLE_CALENDAR_PATH.'admin/admin.php');
+		include_once(PICKLE_CALENDAR_PATH.'admin/functions.php');
 		include_once(PICKLE_CALENDAR_PATH.'calendar.php');
 		include_once(PICKLE_CALENDAR_PATH.'metabox.php');
 		include_once(PICKLE_CALENDAR_PATH.'post-type.php');
 		include_once(PICKLE_CALENDAR_PATH.'import-export.php');
+		
+		if (is_admin())
+		    $this->admin=new Pickle_Calendar_Admin_Functions();
 	}
 	
 	private function init_hooks() {

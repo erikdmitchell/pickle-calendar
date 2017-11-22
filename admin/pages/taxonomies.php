@@ -4,6 +4,8 @@
 
 <a href="<?php echo admin_url('options-general.php?page=pickle-calendar&tab=taxonomies&action=edit'); ?>" class="page-title-action">Add New</a>
 
+<form id="pickle-calendar-taxonomies" method="post">
+
 <table class="wp-list-table widefat fixed striped pickle-calendar-taxonomies">
 	<thead>
 		<tr>
@@ -27,7 +29,7 @@
 			<tr id="taxonomy-<?php echo $taxonomy['slug']; ?>" class="taxonomy-<?php echo $taxonomy['slug']; ?> taxonomy hentry">
 				<th scope="row" class="check-column">
 					<label class="screen-reader-text" for="cb-select-<?php echo $taxonomy['slug']; ?>">Select <?php echo ucwords($taxonomy['label']); ?></label>
-					<input id="cb-select-<?php echo $taxonomy['slug']; ?>" type="checkbox" name="taxonomy[]" value="<?php echo $taxonomy['slug']; ?>">
+					<input id="cb-select-<?php echo $taxonomy['slug']; ?>" type="checkbox" name="pickle_calendar_taxonomy[]" value="<?php echo $taxonomy['slug']; ?>">
 				</th>
 				
 				<td class="name column-name column-primary" data-colname="Name">
@@ -47,10 +49,12 @@
         <label for="bulk-action-selector-bottom" class="screen-reader-text">Select bulk action</label>
         <select name="action" id="bulk-action-selector-bottom">
             <option value="-1">Bulk Actions</option>
-            <option value="delete-all">Delete</option>
+            <option value="deleteall">Delete</option>
         </select>
         
-        <input type="submit" id="doaction2" class="button action" value="Apply">
+        <input type="submit" id="doaction" class="button action" value="Apply">
     </div>
     <br class="clear">
 </div>
+
+</form>

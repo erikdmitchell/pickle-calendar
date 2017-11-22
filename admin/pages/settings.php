@@ -22,16 +22,6 @@
 				<th scope="row"><label for="cpt_plural">Post Type Label (plural)</label></th>
 				<td><input name="settings[cpt_plural]" type="text" id="cpt_plural" value="<?php echo picklecalendar()->settings['cpt_plural']; ?>" class="regular-text"></td>
 			</tr>
-
-			<tr>
-				<th scope="row"><label for="tax_single">Taxonomy Label (single)</label></th>
-				<td><input name="settings[tax_single]" type="text" id="tax_single" value="<?php echo picklecalendar()->settings['tax_single']; ?>" class="regular-text"></td>
-			</tr>	
-
-			<tr>
-				<th scope="row"><label for="tax_plural">Taxonomy Label (plural)</label></th>
-				<td><input name="settings[tax_plural]" type="text" id="tax_plural" value="<?php echo picklecalendar()->settings['tax_plural']; ?>" class="regular-text"></td>
-			</tr>											
 		
 		</tbody>				
 	</table>	

@@ -81,8 +81,6 @@ final class PickleCalendar {
 			'adminlabel' => 'Events',
 			'cpt_single' => 'Event',
 			'cpt_plural' => 'Events',
-			'tax_single' => 'Event Type',
-			'tax_plural' => 'Event Types',
 			'disable_editor' => false,
 			'include_details' => true,
 			'detail_options' => array(

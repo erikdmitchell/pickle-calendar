@@ -10,15 +10,12 @@ jQuery(document).ready(function($) {
 	
 	// check second date //
 	$('body').on('change', '.pcdetail-pickr.start-date', function(e) {
-    	//var rowID=$(this).parent().data('rowId');
     	var startDate=$(this).val();
     	var endDate=$(this).parent().find('.pcdetail-pickr.end-date').val();
     	
     	if (endDate < startDate) {
         	$(this).parent().find('.pcdetail-pickr.end-date').val(startDate);
     	}
-    	    
-console.log(startDate + ' | ' + endDate);
 	});
 	
 	// add new date row //

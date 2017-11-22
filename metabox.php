@@ -35,7 +35,7 @@ class Pickle_Calendar_Event_Details {
      */
     public function admin_scripts_styles() {
 	    wp_enqueue_script('jquery-ui-datepicker');
-	    wp_enqueue_script('bted-script', PICKLE_CALENDAR_URL.'js/event-details.js', array('jquery-ui-datepicker'), '0.1.0', true);
+	    wp_enqueue_script('pced-script', PICKLE_CALENDAR_URL.'js/event-details.js', array('jquery-ui-datepicker'), '0.1.0', true);
 	    wp_enqueue_script('pc-repeat-field-script', PICKLE_CALENDAR_URL.'js/repeat-field.js', array('jquery'), '0.1.0', true);	    
 	    
 	    wp_enqueue_style('jquery-ui-style', PICKLE_CALENDAR_URL.'css/jquery-ui.min.css', '', '1.12.1');
@@ -85,10 +85,10 @@ class Pickle_Calendar_Event_Details {
 	        $html.='<div class="event-date-wrap" data-row-id="'.$key.'">';
 	
 		        	$html.='<label for="start_date">Start Date</label>';
-			        $html.='<input type="text" name="details[dates]['.$key.'][start_date]" id="start_date" class="pcdetail-pickr" value="'.$date['start_date'].'" />';
+			        $html.='<input type="text" name="details[dates]['.$key.'][start_date]" id="" class="pcdetail-pickr start-date" value="'.$date['start_date'].'" />';
 	
 			        $html.='<label for="end_date">End Date</label>';
-			        $html.='<input type="text" name="details[dates]['.$key.'][end_date]" id="end_date" class="pcdetail-pickr" value="'.$date['end_date'].'" />';
+			        $html.='<input type="text" name="details[dates]['.$key.'][end_date]" id="" class="pcdetail-pickr end-date" value="'.$date['end_date'].'" />';
 			        
 			        $html.='<button class="pc-remove-row">-</button>';
 	

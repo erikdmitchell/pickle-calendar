@@ -9,8 +9,13 @@
 				<label class="screen-reader-text" for="cb-select-all-1">Select All</label>
 				<input id="cb-select-all-1" type="checkbox">
 			</td>
-			<th scope="col" id="title" class="manage-column column-title column-primary">
-				<a href="#"><span>Title</span></a>
+			
+			<th scope="col" id="name" class="manage-column column-name column-primary">
+				<span>Name</span>
+			</th>
+			
+			<th scope="col" id="actions" class="manage-column column-actions">
+				<span></span>
 			</th>
 		</tr>
 	</thead>
@@ -22,10 +27,28 @@
 					<label class="screen-reader-text" for="cb-select-<?php echo $taxonomy['slug']; ?>">Select <?php echo ucwords($taxonomy['label']); ?></label>
 					<input id="cb-select-<?php echo $taxonomy['slug']; ?>" type="checkbox" name="taxonomy[]" value="<?php echo $taxonomy['slug']; ?>">
 				</th>
-				<td class="title column-title column-primary" data-colname="Title">
-					<strong><a class="row-title" href="<?php echo admin_url('options-general.php?page=pickle-calendar&tab=taxonomies&action=edit&slug='.$taxonomy['slug']); ?>" aria-label="“<?php echo ucwords($taxonomy['label']); ?>” (Edit)"><?php echo ucwords($taxonomy['label']); ?></a></strong>
+				
+				<td class="name column-name column-primary" data-colname="Name">
+					<strong><a class="row-name" href="<?php echo admin_url('options-general.php?page=pickle-calendar&tab=taxonomies&action=edit&slug='.$taxonomy['slug']); ?>" aria-label="“<?php echo ucwords($taxonomy['label']); ?>” (Edit)"><?php echo ucwords($taxonomy['label']); ?></a></strong>
 				</td>
+				
+                <td class="actions column-actions" data-colname="Actions">
+					<strong><a class="delete" href="<?php echo admin_url('options-general.php?page=pickle-calendar&tab=taxonomies&action=delete&slug='.$taxonomy['slug']); ?>" aria-label="delete">Delete</a></strong>
+				</td>				
 			</tr>
 		<?php endforeach; ?>
 	</tbody>
 </table>
+
+<div class="tablenav bottom">
+    <div class="alignleft actions bulkactions">
+        <label for="bulk-action-selector-bottom" class="screen-reader-text">Select bulk action</label>
+        <select name="action" id="bulk-action-selector-bottom">
+            <option value="-1">Bulk Actions</option>
+            <option value="delete-all">Delete</option>
+        </select>
+        
+        <input type="submit" id="doaction2" class="button action" value="Apply">
+    </div>
+    <br class="clear">
+</div>

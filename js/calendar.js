@@ -47,6 +47,30 @@ jQuery(document).ready(function($) {
 
         // update filters //
     	$('#pickle-calendar-filters').data('filters', activeFiltersArr.join());
+    	
+    	// WE NEED TO APPLY FILTERS HERE //
+    	$('.pickle-calendar .pickle-calendar-event').each(function(e) {
+        	var classes=$(this).attr('class').split(' ');
+        	var match=0;
+
+        	if (activeFiltersArr.length === 0) {
+            	$(this).removeClass('filter-hide');
+        	} else {
+                for (var i = 0; i < activeFiltersArr.length; i++) {
+                    for (var j = 0; j < classes.length; j++) {
+                        if (activeFiltersArr[i] == classes[j]) {
+                            match++;
+                        }
+                    }
+                }
+                
+                if (match === 0) {
+                    $(this).addClass('filter-hide');
+                } else {
+                    $(this).removeClass('filter-hide');                
+                }            	
+        	}
+    	});
 	});
 	
 });

@@ -81,7 +81,7 @@ class Pickle_Calendar_Post_Types {
 		extract($args);		
 
 		register_taxonomy($slug, array($post_type), array(
-			'hierarchical'      => false,
+			'hierarchical'      => true,
 			'public'            => true,
 			'show_in_nav_menus' => true,
 			'show_ui'           => true,

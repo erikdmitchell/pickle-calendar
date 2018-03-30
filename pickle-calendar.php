@@ -3,7 +3,7 @@
  * Plugin Name: Pickle Calendar
  * Plugin URI: 
  * Description: Pickle Calendar
- * Version: 1.1.1
+ * Version: 1.2.0-beta
  * Author: Erik Mitchell
  * Author URI: 
  * License: GPL-2.0+
@@ -25,7 +25,7 @@ if (!defined('PICKLE_CALENDAR_PLUGIN_FILE')) {
 
 final class PickleCalendar {
 
-	public $version='1.2.0';
+	public $version='1.2.0-beta';
 	
 	public $settings='';
 	

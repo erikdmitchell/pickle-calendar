@@ -3,7 +3,7 @@
  * Plugin Name: Pickle Calendar
  * Plugin URI: 
  * Description: Pickle Calendar
- * Version: 1.1.1
+ * Version: 1.2.0-beta
  * Author: Erik Mitchell
  * Author URI: 
  * License: GPL-2.0+
@@ -17,21 +17,28 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+if (!defined('PICKLE_CALENDAR_PLUGIN_FILE')) {
+	define('PICKLE_CALENDAR_PLUGIN_FILE', __FILE__);
+}
+
 // our main class //
 
 final class PickleCalendar {
 
-	public $version='1.1.1';
+	public $version='1.2.0-beta';
 	
 	public $settings='';
 	
 	public $calendar='';
 	
 	public $import_export_events='';
+	
+	public $admin='';
 
 	public function __construct() {
 		$this->define_constants();
 		$this->includes();
+		$this->init_hooks();
 		$this->init();
 
 		do_action('pickle_calendar_loaded');
@@ -49,15 +56,25 @@ final class PickleCalendar {
 	}
 
 	public function includes() {
-		include_once(PICKLE_CALENDAR_PATH.'admin.php');
+		include_once(PICKLE_CALENDAR_PATH.'update-functions.php');
+		include_once(PICKLE_CALENDAR_PATH.'install.php');
+		include_once(PICKLE_CALENDAR_PATH.'functions.php');
+		include_once(PICKLE_CALENDAR_PATH.'admin/admin.php');
+		include_once(PICKLE_CALENDAR_PATH.'admin/functions.php');
 		include_once(PICKLE_CALENDAR_PATH.'calendar.php');
 		include_once(PICKLE_CALENDAR_PATH.'metabox.php');
 		include_once(PICKLE_CALENDAR_PATH.'post-type.php');
-		include_once(PICKLE_CALENDAR_PATH.'taxonomy.php');
 		include_once(PICKLE_CALENDAR_PATH.'import-export.php');
+		
+		if (is_admin())
+		    $this->admin=new Pickle_Calendar_Admin_Functions();
+	}
+	
+	private function init_hooks() {
+		register_activation_hook(PICKLE_CALENDAR_PLUGIN_FILE, array('Pickle_Calendar_Install', 'install'));
 	}
 
-	public function init() {
+	public function init() {		
 		$this->settings=$this->settings();
 		$this->calendar=new Pickle_Calendar();
 		$this->import_export_events=new Pickle_Calendar_Import_Export_Events();
@@ -65,14 +82,11 @@ final class PickleCalendar {
 		do_action('pickle_calendar_init');
 	}
 
-
-	public function settings() {
+	public function settings() {		
 		$default_settings=array(
 			'adminlabel' => 'Events',
 			'cpt_single' => 'Event',
 			'cpt_plural' => 'Events',
-			'tax_single' => 'Event Type',
-			'tax_plural' => 'Event Types',
 			'disable_editor' => false,
 			'include_details' => true,
 			'detail_options' => array(
@@ -85,7 +99,13 @@ final class PickleCalendar {
 		
 		$settings=$this->parse_args($db_settings, $default_settings);
 		
+		$settings['taxonomies']=get_option('pickle_calendar_taxonomies', '');
+		
 		return $settings;
+	}
+	
+	public function update_settings() {
+		$this->settings=$this->settings();
 	}
 	
 	public function parse_args(&$a, $b) {

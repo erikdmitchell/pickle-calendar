@@ -50,6 +50,8 @@ class Pickle_Calendar {
 			'days_of_week_format' => 'D',
 			'month_format' => 'F',
 			'echo' => true,
+			'show_filters' => true,
+			'filter_type' => 'checkbox',
 		);
 		$args=wp_parse_args($args, $default_args);	
 		
@@ -62,6 +64,9 @@ class Pickle_Calendar {
 			$html.=$this->days_of_week($args['days_of_week_format']);
 			$html.=$this->draw_calendar($args['month'], $args['year']);
 		$html.='</div>';
+		
+		if ($args['show_filters'])
+            $html.=apply_filters('pickle_calendar_filters', $this->filters($args['filter_type'], $args), $args);
 
 		$html.=apply_filters('pickle_calendar_after_calendar', '', $args);
 		
@@ -299,11 +304,6 @@ class Pickle_Calendar {
 
 		foreach ($events as $key => $event_id) :
 			$classes=array('event-'.$event_id);
-			$terms=wp_get_post_terms($event_id, 'pctype');
-
-			foreach ($terms as $term) :
-				$classes[]=$term->slug;
-			endforeach;
 		
 			if ($this->event_is_multiday($event_id, $date)) :		
 				$classes[]='multiday';
@@ -316,13 +316,15 @@ class Pickle_Calendar {
 			else :
 				$classes[]='single';
 			endif;
+			
+			// add terms as classes //
+			$classes=$this->add_terms_classes($event_id, $classes);
 
 			$title='<a href="'.get_permalink($event_id).'">'.get_the_title($event_id).'</a>';
 			$text=apply_filters('pickle_calendar_event_title', $title, $event_id); 
 			
 			if ($this->event_is_multiday($event_id, $date) && !$this->is_start_date($event_id, $date))
 				$text='&nbsp;';
-				//continue;
 
 			$content.='<div class="pickle-calendar-event '.implode(' ', $classes).'" data-event-id="'.$event_id.'" data-event-day-number="'.$key.'" data-event-date="'.$date.'" data-event-total-days='.$this->total_days($event_id, $date).'>'.$text.'</div>';
 	
@@ -409,6 +411,33 @@ class Pickle_Calendar {
 		$diff=$end_ts-$start_ts;
 		
 		return round($diff/86400) + 1;	
+	}
+	
+	/**
+	 * add_terms_classes function.
+	 * 
+	 * @access protected
+	 * @param mixed $event_id
+	 * @param mixed $classes
+	 * @return void
+	 */
+	protected function add_terms_classes($event_id, $classes) {
+    	if (!isset(picklecalendar()->settings['taxonomies']) || empty(picklecalendar()->settings['taxonomies']))
+    	    return $classes;
+    	    
+        $taxonomies=array();
+        
+        foreach (picklecalendar()->settings['taxonomies'] as $taxonomy) :
+            $taxonomies[]=$taxonomy['slug'];
+        endforeach;
+            	
+    	$terms=wp_get_post_terms($event_id, $taxonomies);
+
+        foreach ($terms as $term) :
+            $classes[]=$term->slug;
+        endforeach;
+   	
+    	return $classes;
 	}
 
 	/**
@@ -510,6 +539,44 @@ class Pickle_Calendar {
 		return $dates;
 	}
 	
+	public function filters($type='checkbox', $args='') {
+    	$html='';
+    	
+    	$html.='<div id="pickle-calendar-filters" class="pickle-calendar-filters '.$type.'" data-filters="">';
+    	
+        	switch ($type) :
+        	    default:
+        	        $html.=$this->checkbox_filter($args);
+            endswitch;
+
+        $html.='</div>';
+        
+        return $html;
+	}
+	
+	protected function checkbox_filter($args='') {
+    	$html='';
+    	
+    	if (!isset(picklecalendar()->settings['taxonomies']) || empty(picklecalendar()->settings['taxonomies']))
+    	    return;
+    	    
+        foreach (picklecalendar()->settings['taxonomies'] as $taxonomy) :
+            $terms=get_terms(array(
+                'taxonomy' => $taxonomy['slug'],    
+            ));
+           
+            $html.='<div class="filter '.$taxonomy['slug'].'">';
+                $html.='<div class="filter-label">'.ucwords($taxonomy['label']).'</div>';
+                
+                foreach ($terms as $term) :
+                    $html.='<label for=""><input type="checkbox" name="term[]" id="filter-term-'.$term->term_id.'" class="filter-term" value="'.$term->slug.'" /> '.$term->name.'</label>';
+                endforeach;
+            $html.='</div>';
+        endforeach;
+ 
+        return $html;  	
+	}
+	
 	/**
 	 * ajax_nav function.
 	 * 
@@ -536,7 +603,10 @@ class Pickle_Calendar {
 	 * @return void
 	 */
 	public function shortcode($atts) {
-		$args=shortcode_atts(array(), $atts);
+		$args=shortcode_atts(array(
+    		'show_filters' => true,
+    		'filter_type' => 'checkbox',
+		), $atts);
 		
 		$args['echo']=false;
 	

@@ -138,3 +138,6 @@
 .pickle-calendar-event a {
 	color: #fff;
 }
+.pickle-calendar-event.filter-hide {
+    display: none;
+}

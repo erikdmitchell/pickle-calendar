@@ -141,3 +141,39 @@
 .pickle-calendar-event.filter-hide {
     display: none;
 }
+/* filters */
+.pickle-calendar-filters {
+    overflow: hidden;
+}
+.pickle-calendar-filters.filter-type-tab {
+    margin-right: -15px;
+    margin-left: -15px;
+}
+.pickle-calendar-filters.filter-type-tab .filter {
+    overflow: hidden;    
+}
+.pickle-calendar-filters.filter-type-tab .filter .filter-label {
+    display: none;
+}
+.pickle-calendar-filters .filter .filter-tabs {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    float: right;
+}
+.pickle-calendar-filters .filter .filter-tab {
+    float: left;
+    background-color: #e3e3e3;
+    margin-left: 5px;
+}
+.pickle-calendar-filters .filter .filter-tab.active {
+    background-color: #657792;
+}
+.pickle-calendar-filters .filter .filter-tab a {
+    padding: 5px 15px;
+    color: #657792;
+}
+.pickle-calendar-filters .filter .filter-tab.active a {
+    background-color: #657792;
+    color: #fff;
+}

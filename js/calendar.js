@@ -24,9 +24,10 @@ jQuery(document).ready(function($) {
 		});
 	});
 	
-	// calendar filters //
+	// calendar filters (checkbox) //
 	$('body').on('change', '.pickle-calendar-filters .filter-term', function(e) {
-    	var activeFilters=$('#pickle-calendar-filters').data('filters'); // get filters
+    	var $PCFilter = $(this).parents('.pickle-calendar-filters');
+    	var activeFilters = $PCFilter.data('filters'); // get filters
     	var activeFiltersArr=activeFilters.split(','); // filters to arr
 
         // add or remove based on check //
@@ -46,9 +47,9 @@ jQuery(document).ready(function($) {
         });
 
         // update filters //
-    	$('#pickle-calendar-filters').data('filters', activeFiltersArr.join());
+    	$PCFilter.data('filters', activeFiltersArr.join());
     	
-    	// WE NEED TO APPLY FILTERS HERE //
+    	// apply fliters here //
     	$('.pickle-calendar .pickle-calendar-event').each(function(e) {
         	var classes=$(this).attr('class').split(' ');
         	var match=0;
@@ -73,6 +74,44 @@ jQuery(document).ready(function($) {
     	});
 	});
 	
+	// tab filter
+	$('body').on('click', '.pickle-calendar-filters .filter-tab', function(e) {
+        e.preventDefault();
+
+        var filter = $(this).data('tabSlug');
+        
+        $('.pickle-calendar-filters .filter-tab').each(function() {
+            $(this).removeClass('active');            
+        });
+
+        $(this).addClass('active');
+
+        if (filter == 'all')
+            filter = '';
+
+    	// apply fliters here //
+    	$('.pickle-calendar .pickle-calendar-event').each(function(e) {
+        	var classes=$(this).attr('class').split(' ');
+        	var match=0;
+
+        	if (filter.length === 0) {
+            	$(this).removeClass('filter-hide');
+        	} else {
+
+                for (var j = 0; j < classes.length; j++) {
+                    if (filter == classes[j]) {
+                        match++;
+                    }
+                }                
+                
+                if (match === 0) {
+                    $(this).addClass('filter-hide');
+                } else {
+                    $(this).removeClass('filter-hide');                
+                }            	
+        	}
+    	}); 
+    });
 });
 
 jQuery(window).load(function() {

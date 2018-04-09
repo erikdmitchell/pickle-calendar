@@ -26,6 +26,14 @@ $taxonomy=pickle_calendar_get_taxonomy($slug); ?>
 					<label for="tax_label_plural">Label Plural</label>
 					<input type="text" name="tax_details[label_plural]" id="tax_label_plural" class="" value="<?php echo $taxonomy['label_plural']; ?>" />
 				</div>				
+
+				<div class="tax-input-row radio">
+					<label for="tax_display">Display (frontend)</label>
+					<div class="radio-wrap">
+    					<label for="tax_display_checkboxes"><input type="radio" name="tax_details[display]" id="tax_display_checkboxes" class="" value="checkbox" <?php checked($taxonomy['display'], 'checkbox'); ?> />Checkboxes</label><br />
+                        <label for="tax_display_tabs"><input type="radio" name="tax_details[display]" id="tax_display_tabs" class="" value="tabs" <?php checked($taxonomy['display'], 'tabs'); ?> />Tabs</label>
+					</div>
+				</div>	
 			</div>
 			
 			<div id="postbox-container-1" class="postbox-container">

@@ -51,22 +51,28 @@ class Pickle_Calendar {
 			'month_format' => 'F',
 			'echo' => true,
 			'show_filters' => true,
-			'filter_type' => 'checkbox',
 		);
-		$args=wp_parse_args($args, $default_args);	
+		$args=wp_parse_args($args, $default_args);
+		$filters = array();
+		
+        if ($args['show_filters'])
+            $filters = apply_filters('pickle_calendar_filters', $this->filters($args), $args);
 		
 		wp_enqueue_style('pickle-calendar-style');
 		
 		$html.=apply_filters('pickle_calendar_before_calendar', '', $args);
+		
+		if ($args['show_filters'])
+    	    $html .= $this->filters_display($filters['tabs']);		
 		
 		$html.='<div class="col-xs-12 pickle-calendar">';
 			$html.=$this->create_header($args['month'], $args['year'], $args['month_format']);
 			$html.=$this->days_of_week($args['days_of_week_format']);
 			$html.=$this->draw_calendar($args['month'], $args['year']);
 		$html.='</div>';
-		
+
 		if ($args['show_filters'])
-            $html.=apply_filters('pickle_calendar_filters', $this->filters($args['filter_type'], $args), $args);
+    	    $html .= $this->filters_display($filters['checkboxes']);
 
 		$html.=apply_filters('pickle_calendar_after_calendar', '', $args);
 		
@@ -539,42 +545,74 @@ class Pickle_Calendar {
 		return $dates;
 	}
 	
-	public function filters($type='checkbox', $args='') {
-    	$html='';
-    	
-    	$html.='<div id="pickle-calendar-filters" class="pickle-calendar-filters '.$type.'" data-filters="">';
-    	
-        	switch ($type) :
-        	    default:
-        	        $html.=$this->checkbox_filter($args);
-            endswitch;
-
-        $html.='</div>';
-        
-        return $html;
-	}
-	
-	protected function checkbox_filter($args='') {
-    	$html='';
+	public function filters($args='') {
+    	$filters = array(
+            'checkboxes' => array(),
+            'tabs' => array(),	
+    	);
     	
     	if (!isset(picklecalendar()->settings['taxonomies']) || empty(picklecalendar()->settings['taxonomies']))
-    	    return;
-    	    
+    	    return $filters;
+ 
         foreach (picklecalendar()->settings['taxonomies'] as $taxonomy) :
-            $terms=get_terms(array(
-                'taxonomy' => $taxonomy['slug'],    
-            ));
+    	    switch ($taxonomy['display']) :
+        	    case 'tabs':
+            	    $filters['tabs'][] = $this->filter_tab($taxonomy['slug'], $taxonomy['label']);
+        	        break;
+    	        default:
+    	            $filters['checkboxes'][] = $this->filter_checkbox($taxonomy['slug'], $taxonomy['label']);
+            endswitch;            
+        endforeach;
+        
+        return $filters;
+	}
+	
+	protected function filter_checkbox($slug = '', $label = '') {
+    	$html='';
+    	
+        $terms=get_terms(array('taxonomy' => $slug));
            
-            $html.='<div class="filter '.$taxonomy['slug'].'">';
-                $html.='<div class="filter-label">'.ucwords($taxonomy['label']).'</div>';
-                
+        $html.='<div class="pickle-calendar-filters filter-type-checkbox" data-filters="">';
+            $html.='<div class="filter '.$slug.'">';
+                $html.='<div class="filter-label">'.ucwords($label).'</div>';
                 foreach ($terms as $term) :
-                    $html.='<label for=""><input type="checkbox" name="term[]" id="filter-term-'.$term->term_id.'" class="filter-term" value="'.$term->slug.'" /> '.$term->name.'</label>';
+                    $html.='<label for="filter-term-'.$term->term_id.'"><input type="checkbox" name="term[]" id="filter-term-'.$term->term_id.'" class="filter-term" value="'.$term->slug.'" /> '.$term->name.'</label>';
                 endforeach;
             $html.='</div>';
-        endforeach;
+        $html.='</div>';
  
         return $html;  	
+	}
+
+	protected function filter_tab($slug = '', $label = '') {
+    	$html='';
+    	
+        $terms=get_terms(array('taxonomy' => $slug));
+           
+        $html.='<div class="pickle-calendar-filters filter-type-tab" data-filters="">';
+            $html.='<div class="filter '.$slug.'">';
+                $html.='<div class="filter-label">'.ucwords($label).'</div>';
+                $html.='<ul class="filter-tabs">';
+                    $html.='<li class="filter-tab active" data-tab-slug="all"><a href="#">All</a></li>';
+                    
+                    foreach ($terms as $term) :
+                        $html.='<li class="filter-tab" data-tab-slug="'.$term->slug.'"><a href="#">'.$term->name.'</a></li>';
+                    endforeach;
+                $html.='</ul>';
+            $html.='</div>';
+        $html.='</div>';
+ 
+        return $html;   	
+	}
+	
+	protected function filters_display($filters = array()) {
+    	$html = '';
+    	
+    	foreach ($filters as $filter) :
+    	    $html .= $filter;
+    	endforeach;
+    	
+    	return $html;
 	}
 	
 	/**
@@ -605,7 +643,6 @@ class Pickle_Calendar {
 	public function shortcode($atts) {
 		$args=shortcode_atts(array(
     		'show_filters' => true,
-    		'filter_type' => 'checkbox',
 		), $atts);
 		
 		$args['echo']=false;

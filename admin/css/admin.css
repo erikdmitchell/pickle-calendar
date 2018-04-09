@@ -27,6 +27,12 @@
 	width: 150px;
 	display: inline-block;
 }
-.taxonomy-form .tax-input-row input {
+.taxonomy-form .tax-input-row input[type="text"] {
 	width: 25em;
+}
+.taxonomy-form .tax-input-row.radio label {
+    vertical-align: top;
+}
+.taxonomy-form .tax-input-row .radio-wrap {
+    display: inline-block;
 }

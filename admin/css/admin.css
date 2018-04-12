@@ -36,3 +36,7 @@
 .taxonomy-form .tax-input-row .radio-wrap {
     display: inline-block;
 }
+.taxonomy-form .tax-input-row .sub-option {
+    margin-top: 10px;
+    display: none;
+}

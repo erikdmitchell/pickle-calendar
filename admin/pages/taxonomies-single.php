@@ -1,6 +1,7 @@
 <?php 
 $slug=isset($_GET['slug']) ? $_GET['slug'] : '';	
-$taxonomy=pickle_calendar_get_taxonomy($slug); ?>
+$taxonomy=pickle_calendar_get_taxonomy($slug); 
+?>
 
 <h2 class="wp-heading-inline">Taxonomy</h2>
 
@@ -29,9 +30,18 @@ $taxonomy=pickle_calendar_get_taxonomy($slug); ?>
 
 				<div class="tax-input-row radio">
 					<label for="tax_display">Display (frontend)</label>
-					<div class="radio-wrap">
-    					<label for="tax_display_checkboxes"><input type="radio" name="tax_details[display]" id="tax_display_checkboxes" class="" value="checkbox" <?php checked($taxonomy['display'], 'checkbox'); ?> />Checkboxes</label><br />
-                        <label for="tax_display_tabs"><input type="radio" name="tax_details[display]" id="tax_display_tabs" class="" value="tabs" <?php checked($taxonomy['display'], 'tabs'); ?> />Tabs</label>
+					<div id="tax-display" class="radio-wrap">
+    					<label for="tax_display_yes"><input type="radio" name="tax_details[display]" id="tax_display_yes" class="tax-display" value="1" <?php checked($taxonomy['display'], 1); ?> />Yes</label><br />
+                        <label for="tax_display_no"><input type="radio" name="tax_details[display]" id="tax_display_no" class="tax-display" value="0" <?php checked($taxonomy['display'], 0); ?> />No</label>
+					
+    					<div id="tax-display-type" class="sub-option">
+        					<label for="tax_display_type_checkboxes"><input type="radio" name="tax_details[display_type]" id="tax_display_type_checkboxes" class="tax-display-type" value="checkbox" <?php checked($taxonomy['display_type'], 'checkbox'); ?> />Checkboxes</label><br />
+                            <label for="tax_display_type_tabs"><input type="radio" name="tax_details[display_type]" id="tax_display_type_tabs" class="tax-display-type" value="tabs" <?php checked($taxonomy['display_type'], 'tabs'); ?> />Tabs</label>
+                            
+                            <div id="tax-tabs-dsiplay-all-tab" class="sub-option">
+                                <label for="tax_type_tabs_display_all_tab"><input type="checkbox" name="tax_details[hide_all_tab]" id="tax_type_tabs_display_all_tab" class="" value="1" <?php checked($taxonomy['hide_all_tab'], 1); ?> />Hide 'All' tab</label>
+                            </div>
+    					</div>                       
 					</div>
 				</div>	
 			</div>

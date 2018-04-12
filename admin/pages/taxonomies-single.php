@@ -1,6 +1,7 @@
 <?php 
 $slug=isset($_GET['slug']) ? $_GET['slug'] : '';	
-$taxonomy=pickle_calendar_get_taxonomy($slug); ?>
+$taxonomy=pickle_calendar_get_taxonomy($slug); 
+?>
 
 <h2 class="wp-heading-inline">Taxonomy</h2>
 
@@ -29,9 +30,14 @@ $taxonomy=pickle_calendar_get_taxonomy($slug); ?>
 
 				<div class="tax-input-row radio">
 					<label for="tax_display">Display (frontend)</label>
-					<div class="radio-wrap">
-    					<label for="tax_display_checkboxes"><input type="radio" name="tax_details[display]" id="tax_display_checkboxes" class="" value="checkbox" <?php checked($taxonomy['display'], 'checkbox'); ?> />Checkboxes</label><br />
-                        <label for="tax_display_tabs"><input type="radio" name="tax_details[display]" id="tax_display_tabs" class="" value="tabs" <?php checked($taxonomy['display'], 'tabs'); ?> />Tabs</label>
+					<div id="tax-display" class="radio-wrap">
+    					<label for="tax_display_yes"><input type="radio" name="tax_details[display]" id="tax_display_yes" class="" value="1" <?php checked($taxonomy['display'], 1); ?> />Yes</label><br />
+                        <label for="tax_display_no"><input type="radio" name="tax_details[display]" id="tax_display_no" class="" value="0" <?php checked($taxonomy['display'], 0); ?> />No</label>
+					
+    					<div id="tax-display-type" class="sub-option">
+        					<label for="tax_display_type_checkboxes"><input type="radio" name="tax_details[display_type]" id="tax_display_type_checkboxes" class="" value="checkbox" <?php checked($taxonomy['display_type'], 'checkbox'); ?> />Checkboxes</label><br />
+                            <label for="tax_display_type_tabs"><input type="radio" name="tax_details[display_type]" id="tax_display_type_tabs" class="" value="tabs" <?php checked($taxonomy['display_type'], 'tabs'); ?> />Tabs</label>
+    					</div>                        
 					</div>
 				</div>	
 			</div>

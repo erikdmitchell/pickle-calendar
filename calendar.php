@@ -555,7 +555,10 @@ class Pickle_Calendar {
     	    return $filters;
  
         foreach (picklecalendar()->settings['taxonomies'] as $taxonomy) :
-    	    switch ($taxonomy['display']) :
+            if (!$taxonomy['display'])
+                continue;
+                
+    	    switch ($taxonomy['display_type']) :
         	    case 'tabs':
             	    $filters['tabs'][] = $this->filter_tab($taxonomy['slug'], $taxonomy['label']);
         	        break;

@@ -324,4 +324,3 @@ class Pickle_Calendar_Admin {
 }	
 
 new Pickle_Calendar_Admin();
-?>

@@ -3,7 +3,7 @@
  * Plugin Name: Pickle Calendar
  * Plugin URI: 
  * Description: Pickle Calendar
- * Version: 1.2.0-beta
+ * Version: 1.2.0-beta.3
  * Author: Erik Mitchell
  * Author URI: 
  * License: GPL-2.0+
@@ -25,7 +25,7 @@ if (!defined('PICKLE_CALENDAR_PLUGIN_FILE')) {
 
 final class PickleCalendar {
 
-	public $version='1.2.0-beta';
+	public $version='1.2.0-beta.3';
 	
 	public $settings='';
 	
@@ -47,6 +47,9 @@ final class PickleCalendar {
 	private function define_constants() {
 		$this->define('PICKLE_CALENDAR_PATH', plugin_dir_path(__FILE__));
 		$this->define('PICKLE_CALENDAR_URL', plugin_dir_url(__FILE__));
+		$this->define('PICKLE_CALENDAR_VERSION', $this->version);
+		$this->define('PICKLE_CALENDAR_REQUIRES', '3.8');
+		$this->define('PICKLE_CALENDAR_TESTED', '4.9.5');				
 	}
 
 	private function define($name, $value) {
@@ -65,6 +68,7 @@ final class PickleCalendar {
 		include_once(PICKLE_CALENDAR_PATH.'metabox.php');
 		include_once(PICKLE_CALENDAR_PATH.'post-type.php');
 		include_once(PICKLE_CALENDAR_PATH.'import-export.php');
+		include_once(PICKLE_CALENDAR_PATH.'updater/updater.php');
 		
 		if (is_admin())
 		    $this->admin=new Pickle_Calendar_Admin_Functions();
@@ -72,6 +76,8 @@ final class PickleCalendar {
 	
 	private function init_hooks() {
 		register_activation_hook(PICKLE_CALENDAR_PLUGIN_FILE, array('Pickle_Calendar_Install', 'install'));
+		
+		add_action('admin_init', array($this, 'update_plugin');
 	}
 
 	public function init() {		
@@ -107,6 +113,32 @@ final class PickleCalendar {
 	public function update_settings() {
 		$this->settings=$this->settings();
 	}
+
+    plugin function update_plugin() {    
+    	define( 'PICKLE_CALENDAR_GITHUB_FORCE_UPDATE', true );
+    	
+		$username='erikdmitchell';
+		$repo_name='pickle-calendar';
+		$folder_name='pickle-calendar';    	
+    
+    	if ( is_admin() ) :
+    
+    		$config = array(
+    			'slug' => plugin_basename( __FILE__ ),
+    			'proper_folder_name' => $folder_name,
+    			'api_url' => 'https://api.github.com/repos/'.$username.'/'.$repo_name,
+    			'raw_url' => 'https://raw.github.com/'.$username.'/'.$repo_name.'/master',
+    			'github_url' => 'https://github.com/'.$username.'/'.$repo_name,
+    			'zip_url' => 'https://github.com/'.$username.'/'.$repo_name.'/zipball/master',
+    			'sslverify' => true,
+    			'requires' => PICKLE_CALENDAR_REQUIRES,
+    			'tested' => PICKLE_CALENDAR_TESTED,
+    			'readme' => 'readme.txt',
+    		);   		
+    
+    		new Pickle_Calender_GitHub_Updater( $config );
+    	endif;
+    }
 	
 	public function parse_args(&$a, $b) {
 		$a = (array) $a;

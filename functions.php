@@ -6,6 +6,7 @@ function pickle_calendar_get_taxonomy($slug='') {
 		'label_plural' => '',
 		'display' => 1,
 		'display_type' => 'checkbox',
+		'hide_all_tab' => 0,
 	);
 	$tax=array();
 	

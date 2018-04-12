@@ -555,12 +555,12 @@ class Pickle_Calendar {
     	    return $filters;
  
         foreach (picklecalendar()->settings['taxonomies'] as $taxonomy) :
-            if (!$taxonomy['display'])
+            if (!isset($taxonomy['display']) || !$taxonomy['display'])
                 continue;
                 
     	    switch ($taxonomy['display_type']) :
         	    case 'tabs':
-            	    $filters['tabs'][] = $this->filter_tab($taxonomy['slug'], $taxonomy['label']);
+            	    $filters['tabs'][] = $this->filter_tab($taxonomy['slug'], $taxonomy['label'], $taxonomy);
         	        break;
     	        default:
     	            $filters['checkboxes'][] = $this->filter_checkbox($taxonomy['slug'], $taxonomy['label']);
@@ -587,7 +587,7 @@ class Pickle_Calendar {
         return $html;  	
 	}
 
-	protected function filter_tab($slug = '', $label = '') {
+	protected function filter_tab($slug = '', $label = '', $taxonomy = array()) {
     	$html='';
     	
         $terms=get_terms(array('taxonomy' => $slug));
@@ -596,7 +596,9 @@ class Pickle_Calendar {
             $html.='<div class="filter '.$slug.'">';
                 $html.='<div class="filter-label">'.ucwords($label).'</div>';
                 $html.='<ul class="filter-tabs">';
-                    $html.='<li class="filter-tab active" data-tab-slug="all"><a href="#">All</a></li>';
+                    if (!isset($taxonomy['hide_all_tab']) || $taxonomy['hide_all_tab'] != 1) :
+                        $html.='<li class="filter-tab active" data-tab-slug="all"><a href="#">All</a></li>';
+                    endif;
                     
                     foreach ($terms as $term) :
                         $html.='<li class="filter-tab" data-tab-slug="'.$term->slug.'"><a href="#">'.$term->name.'</a></li>';

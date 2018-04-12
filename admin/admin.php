@@ -55,7 +55,7 @@ class Pickle_Calendar_Admin {
 		$html=null;
 		$tabs=array(
 			'settings' => 'Settings',
-			'taxonomies' => 'Taxonomies',
+			'taxonomies' => 'Categories',
 		);
 		$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'settings';
 			

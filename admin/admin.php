@@ -133,11 +133,27 @@ class Pickle_Calendar_Admin {
 	public function update_taxonomy() {
 		if (!isset($_POST['pickle_calendar_admin']) || !wp_verify_nonce($_POST['pickle_calendar_admin'], 'update_taxonomy'))
 			return false; 
-	
+
 		$taxonomies=get_option('pickle_calendar_taxonomies');
+		$exists = false;
 		
-		if (!empty($_POST['tax_details']['slug']))
-			$taxonomies[]=$_POST['tax_details'];
+		// we added a check if tax exists, fixes a bug and provides some built in clean up.
+		if (!empty($_POST['tax_details']['slug'])) :
+		    // search for existing, update or add.
+			foreach ($taxonomies as $key => $tax_details) :
+			    if ($_POST['tax_details']['slug'] == $tax_details['slug']) :
+			        $taxonomies[$key] = $_POST['tax_details'];
+			        $exists = true;
+			    endif;
+			endforeach;
+			
+			// remove dups.
+			$taxonomies = array_map('unserialize', array_unique(array_map('serialize', $taxonomies)));
+			
+			// update if not exists.
+			if (!$exists)
+			    $taxonomies[] = $_POST['tax_details'];
+        endif;
 
 		update_option('pickle_calendar_taxonomies', $taxonomies);
 		

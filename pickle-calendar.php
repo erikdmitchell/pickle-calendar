@@ -77,7 +77,7 @@ final class PickleCalendar {
 	private function init_hooks() {
 		register_activation_hook(PICKLE_CALENDAR_PLUGIN_FILE, array('Pickle_Calendar_Install', 'install'));
 		
-		add_action('admin_init', array($this, 'update_plugin');
+		add_action('admin_init', array($this, 'update_plugin'));
 	}
 
 	public function init() {		
@@ -114,8 +114,8 @@ final class PickleCalendar {
 		$this->settings=$this->settings();
 	}
 
-    plugin function update_plugin() {    
-    	define( 'PICKLE_CALENDAR_GITHUB_FORCE_UPDATE', true );
+    public function update_plugin() {    
+    	$this->define( 'PICKLE_CALENDAR_GITHUB_FORCE_UPDATE', true );
     	
 		$username='erikdmitchell';
 		$repo_name='pickle-calendar';

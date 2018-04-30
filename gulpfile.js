@@ -37,7 +37,8 @@ var cssInclude = [
         '!**/*.min.css',
         '!node_modules/**/*',
         '!style.css.map',
-        '!vendor/**'
+        '!vendor/**/*',
+        '!admin/**/*'
     ];
     
 var jsInclude = [
@@ -48,7 +49,8 @@ var jsInclude = [
         '!**/*.min.js',
         '!node_modules/**/*',
         '!vendor/**',
-        '!**/gulpfile.js'       
+        '!**/gulpfile.js',
+        '!admin/**/*'              
     ];    
 
 // Load plugins

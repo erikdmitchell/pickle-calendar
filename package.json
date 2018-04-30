@@ -1,22 +1,22 @@
 {
-  "name": "boomi-user-roles",
-  "version": "0.1.0-alpha",
-  "description": "Custom user roles and permissions for Boomi.",
+  "name": "pickle-calendar",
+  "version": "1.2.0-beta.4",
+  "description": "Pickle Calendar.",
   "main": "gulpfile.js",
   "scripts": {
-    "test": "echo \"Boomi User Roles\" && exit 1"
+    "test": "echo \"Pickle Calendar\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://bitbucket.org/boomiweb/boomi-user-roles.git"
+    "url": "git+https://github.com/erikdmitchell/pickle-calendar.git"
   },
   "keywords": [],
   "author": "Erik Mitchell",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://bitbucket.org/boomiweb/boomi-user-roles/issues"
+    "url": "https://github.com/erikdmitchell/pickle-calendar/issues"
   },
-  "homepage": "https://bitbucket.org/boomiweb/boomi-user-roles#readme",
+  "homepage": "https://github.com/erikdmitchell/pickle-calendar#readme",
   "devDependencies": {
     "gulp": "^3.9.1",      
     "gulp-autoprefixer": "^5.0.0", 

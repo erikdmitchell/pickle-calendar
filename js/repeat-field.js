@@ -1,12 +1,12 @@
 (function($) {
 	
-	repeatField = function(settings) {
+	repeatField = function(options) {
 		var default_settings = {
 			container: '.repeatable-field',
 			datePicker: false
 		};
 
-		var settings = $.extend({}, default_settings, settings);
+		var settings = $.extend({}, default_settings, options);
 		
 		initalize(settings.container);
 
@@ -46,6 +46,6 @@
 			
 			counter++;
 		});
-	}
+	};
 	
 })(jQuery);

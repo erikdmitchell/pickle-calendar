@@ -133,14 +133,14 @@ jQuery(window).resize(function() {
 	pcalEqualHeight = function(container) {
 		var currentTallest = 0,
 		currentRowStart = 0,
-		rowDivs = new Array(),
+		rowDivs = [],
 		$el,
 		topPosition = 0;
 		
 		$(container).each(function() {
 		
 			$el = $(this);
-			$($el).height('auto')
+			$($el).height('auto');
 			topPostion = $el.position().top;
 			
 			if (currentRowStart != topPostion) {
@@ -203,7 +203,7 @@ function pcTextWidth(text, font) {
     $fakeEl.remove();
     
     return width;
-};
+}
 
 function PickleCalendarRowSetup() {
 	jQuery('.pickle-calendar-event.multiday').each(function() {

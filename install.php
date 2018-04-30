@@ -75,4 +75,3 @@ class Pickle_Calendar_Install {
 }
 
 Pickle_Calendar_Install::init();
-?>

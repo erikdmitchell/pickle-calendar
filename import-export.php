@@ -227,5 +227,4 @@ class Pickle_Calendar_Import_Export_Events {
 		
 		return $term;
 	}
-}	
-?>
+}

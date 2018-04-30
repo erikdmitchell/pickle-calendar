@@ -170,4 +170,3 @@ class Pickle_Calendar_Event_Details {
 }
  
 new Pickle_Calendar_Event_Details();
-?>

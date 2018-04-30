@@ -168,4 +168,3 @@ class Pickle_Calendar_Post_Types {
 }
 
 Pickle_Calendar_Post_Types::init();
-?>

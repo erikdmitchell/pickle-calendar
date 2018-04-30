@@ -23,7 +23,7 @@ class Pickle_Calendar {
 	 * @return void
 	 */
 	public function scripts_styles() {
-		wp_register_script('pickle-calendar-script', PICKLE_CALENDAR_URL.'js/calendar.js', array('jquery'), picklecalendar()->version, true);
+		wp_register_script('pickle-calendar-script', PICKLE_CALENDAR_URL.'js/calendar.min.js', array('jquery'), picklecalendar()->version, true);
 		
 		wp_localize_script('pickle-calendar-script', 'pickleCalOpts', array(
 			'ajax_url' => admin_url('admin-ajax.php')
@@ -31,7 +31,7 @@ class Pickle_Calendar {
 		
 		wp_enqueue_script('pickle-calendar-script');
 		
-		wp_register_style('pickle-calendar-style', PICKLE_CALENDAR_URL.'css/calendar.css', '', picklecalendar()->version);		
+		wp_register_style('pickle-calendar-style', PICKLE_CALENDAR_URL.'css/calendar.min.css', '', picklecalendar()->version);		
 	}
 	
 	/**
@@ -656,4 +656,3 @@ class Pickle_Calendar {
 	}
 	
 }
-?>

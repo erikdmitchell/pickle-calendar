@@ -21,4 +21,3 @@ function pickle_calendar_get_taxonomy($slug='') {
 	
 	return $tax;
 }
-?>

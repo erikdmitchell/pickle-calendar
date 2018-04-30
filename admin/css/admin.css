@@ -1,34 +1,34 @@
 .wrap h2.wp-heading-inline {
-	display: inline-block;
+    display: inline-block;
     margin-right: 5px;
 }
 
 .pickle-calendar-settings-form tr.details-box {
-	display: none;
+    display: none;
 }
 
 .taxonomy-form #poststuff .inside {
-	overflow: hidden;
-	padding: 12px;
-	margin: 0;
+    overflow: hidden;
+    padding: 12px;
+    margin: 0;
 }
 .taxonomy-form #delete-action .submitdelete {
-	color: red;
-	text-decoration: none;
+    color: red;
+    text-decoration: none;
 }
 .taxonomy-form #delete-action .submitdelete:hover {
-	text-decoration: underline;
+    text-decoration: underline;
 }
 .taxonomy-form .tax-input-row {
-	margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 .taxonomy-form .tax-input-row label {
-	font-weight: 600;
-	width: 150px;
-	display: inline-block;
+    font-weight: 600;
+    width: 150px;
+    display: inline-block;
 }
-.taxonomy-form .tax-input-row input[type="text"] {
-	width: 25em;
+.taxonomy-form .tax-input-row input[type='text'] {
+    width: 25em;
 }
 .taxonomy-form .tax-input-row.radio label {
     vertical-align: top;

@@ -22,8 +22,8 @@
     "gulp-autoprefixer": "^5.0.0", 
     "gulp-cache": "^1.0.2",
     "gulp-concat": "^2.6.1", 
-    "gulp-filter": "",
-    "gulp-ignore": "",
+    "gulp-filter": "^5.1.0",
+    "gulp-ignore": "^2.0.2",
     "gulp-imagemin": "",
     "gulp-jshint": "^2.0.4",    
     "gulp-load-plugins": "",
@@ -40,6 +40,7 @@
     "gulp-uglify": "^3.0.0", 
     "gulp-uglifycss": "",
     "gulp-util": "",
-    "jshint-stylish": ""       
+    "jshint-stylish": "",
+    "jshint": ""      
   }
 }

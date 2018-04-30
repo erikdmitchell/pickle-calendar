@@ -1,9 +1,18 @@
 <?php
+/**
+ * Main Pickle Calendar class
+ *
+ * @package PickleCalendar
+ * @since   1.0.0
+ */
 
+/**
+ * Pickle_Calendar class.
+ */
 class Pickle_Calendar {
 
     /**
-     * __construct function.
+     * Construct function.
      *
      * @access public
      * @return void
@@ -17,7 +26,7 @@ class Pickle_Calendar {
     }
 
     /**
-     * scripts_styles function.
+     * Scripts and styles function.
      *
      * @access public
      * @return void
@@ -37,11 +46,11 @@ class Pickle_Calendar {
     }
 
     /**
-     * calendar function.
+     * Main calendar function.
      *
      * @access public
-     * @param string $args (default: '')
-     * @return void
+     * @param string $args (default: '').
+     * @return html
      */
     public function calendar( $args = '' ) {
         $html = null;
@@ -82,20 +91,20 @@ class Pickle_Calendar {
         $html .= apply_filters( 'pickle_calendar_after_calendar', '', $args );
 
         if ( $args['echo'] ) {
-            echo $html;
+            echo esc_html( $html );
         }
 
         return $html;
     }
 
     /**
-     * create_header function.
+     * Calendar header function.
      *
      * @access protected
-     * @param mixed $month
-     * @param mixed $year
-     * @param mixed $month_format
-     * @return void
+     * @param mixed $month (month).
+     * @param mixed $year (year).
+     * @param mixed $month_format (month format).
+     * @return html
      */
     protected function create_header( $month, $year, $month_format ) {
         $html = null;
@@ -111,11 +120,11 @@ class Pickle_Calendar {
     }
 
     /**
-     * days_of_week function.
+     * Calendar days of the week function.
      *
      * @access protected
-     * @param mixed $format
-     * @return void
+     * @param mixed $format (format of day).
+     * @return html
      */
     protected function days_of_week( $format ) {
         $html = null;
@@ -134,11 +143,11 @@ class Pickle_Calendar {
     }
 
     /**
-     * format_day function.
+     * Formats day function.
      *
      * @access protected
-     * @param mixed $day
-     * @return void
+     * @param mixed $day (the day number).
+     * @return php date
      */
     protected function format_day( $day ) {
         $format = apply_filters( 'bscal_day_format', 'D' );
@@ -147,30 +156,30 @@ class Pickle_Calendar {
     }
 
     /**
-     * month function.
+     * Formats month function.
      *
      * @access protected
-     * @param mixed  $month
-     * @param string $format (default: 'F')
-     * @return void
+     * @param mixed  $month (number).
+     * @param string $format (default: 'F').
+     * @return php date
      */
     protected function month( $month, $format = 'F' ) {
         return date( $format, mktime( 0, 0, 0, $month ) );
     }
 
     /**
-     * draw_calendar function.
+     * Draws the calendar.
      *
      * @access protected
-     * @param mixed $month
-     * @param mixed $year
-     * @return void
+     * @param mixed $month (number).
+     * @param mixed $year (number).
+     * @return html
      */
     protected function draw_calendar( $month, $year ) {
         $html = null;
 
-        // days and weeks vars now //
-        $running_day = date( 'w', mktime( 0, 0, 0, $month, 1, $year ) ); // numeric rep of week
+        // days and weeks vars now.
+        $running_day = date( 'w', mktime( 0, 0, 0, $month, 1, $year ) ); // numeric rep of week.
         $days_in_month = date( 't', mktime( 0, 0, 0, $month, 1, $year ) );
         $days_in_this_week = 1;
         $day_counter = 0;
@@ -179,16 +188,16 @@ class Pickle_Calendar {
 
         $html .= '<div class="cal-wrap">';
 
-        // row for week one //
+        // row for week one.
         $html .= '<div class="row">';
 
-        // print "blank" days until the first of the current week //
+        // print "blank" days until the first of the current week.
         for ( $x = 0; $x < $running_day; $x++ ) :
             $html .= '<div class="calendar-day np"></div>';
             $days_in_this_week++;
         endfor;
 
-        // keep going with days //
+        // keep going with days.
         for ( $list_day = 1; $list_day <= $days_in_month; $list_day++ ) :
             $classes = array( 'calendar-day' );
             $pref_date = date( 'Y-m-d', strtotime( "$year-$month-$list_day" ) );
@@ -197,23 +206,23 @@ class Pickle_Calendar {
                 $classes[] = 'today';
             }
 
-            if ( $running_day == 0 ) :
+            if ( 0 == $running_day ) :
                 $classes[] = 'first-of-week';
                 $eow_day = date( 'Y-m-d', strtotime( $pref_date . ' +6 days' ) );
             endif;
 
-            if ( $running_day == 6 ) {
+            if ( 6 == $running_day ) {
                 $classes[] = 'last-of-week';
             }
 
             $html .= '<div class="' . implode( ' ', $classes ) . '">';
-                $html .= '<div class="day-number">' . $list_day . '</div>'; // add day number
+                $html .= '<div class="day-number">' . $list_day . '</div>'; // add day number.
 
                 $html .= apply_filters( 'pickle_calendar_single_day', $this->add_date_info( $pref_date ), $pref_date );
 
             $html .= '</div>';
 
-            if ( $running_day == 6 ) :
+            if ( 6 == $running_day ) :
                 $html .= '</div>';
 
                 if ( ( $day_counter + 1 ) != $days_in_month ) :
@@ -229,27 +238,27 @@ class Pickle_Calendar {
             $day_counter++;
         endfor;
 
-        // finish the rest of the days in the week //
+        // finish the rest of the days in the week.
         if ( $days_in_this_week < 8 ) :
             for ( $x = 1; $x <= ( 8 - $days_in_this_week ); $x++ ) :
                 $html .= '<div class="calendar-day np"></div>';
             endfor;
         endif;
 
-        // final row //
+        // final row.
         $html .= '</div>';
 
-        $html .= '</div>'; // cal-wrap
+        $html .= '</div>'; // cal-wrap.
 
         return $html;
     }
 
     /**
-     * next_month function.
+     * Gets the next month.
      *
      * @access protected
-     * @param mixed $month
-     * @return void
+     * @param mixed $month (number).
+     * @return integer
      */
     protected function next_month( $month ) {
         $next_month = $month + 1;
@@ -262,11 +271,11 @@ class Pickle_Calendar {
     }
 
     /**
-     * prev_month function.
+     * Gets previous month.
      *
      * @access protected
-     * @param mixed $month
-     * @return void
+     * @param mixed $month (number).
+     * @return integer
      */
     protected function prev_month( $month ) {
         $prev_month = $month - 1;
@@ -279,13 +288,13 @@ class Pickle_Calendar {
     }
 
     /**
-     * nav_year function.
+     * Gets the nav year.
      *
      * @access protected
-     * @param mixed $month
-     * @param mixed $year
-     * @param mixed $action
-     * @return void
+     * @param mixed $month (number).
+     * @param mixed $year (number).
+     * @param mixed $action (string: prev/next).
+     * @return year
      */
     protected function nav_year( $month, $year, $action ) {
         $nav_year = $year;
@@ -307,11 +316,11 @@ class Pickle_Calendar {
     }
 
     /**
-     * add_date_info function.
+     * Add date info function.
      *
      * @access protected
-     * @param string $date (default: '')
-     * @return void
+     * @param string $date (default: '').
+     * @return html
      */
     protected function add_date_info( $date = '' ) {
         $content = '';
@@ -336,7 +345,7 @@ class Pickle_Calendar {
                 $classes[] = 'single';
             endif;
 
-            // add terms as classes //
+            // add terms as classes.
             $classes = $this->add_terms_classes( $event_id, $classes );
 
             $title = '<a href="' . get_permalink( $event_id ) . '">' . get_the_title( $event_id ) . '</a>';
@@ -354,17 +363,17 @@ class Pickle_Calendar {
     }
 
     /**
-     * is_start_date function.
+     * Is it a start date?
      *
      * @access public
-     * @param int    $id (default: 0)
-     * @param string $date (default: '')
-     * @return void
+     * @param int    $id (default: 0).
+     * @param string $date (default: '').
+     * @return boolean
      */
     public function is_start_date( $id = 0, $date = '' ) {
         global $wpdb;
 
-        $meta_key = $wpdb->get_var( "SELECT meta_key FROM $wpdb->postmeta WHERE $wpdb->postmeta.post_id = $id AND meta_value = '$date'" );
+        $meta_key = $wpdb->get_var( $wpdb->prepare( "SELECT meta_key FROM $wpdb->postmeta WHERE $wpdb->postmeta.post_id = %d AND meta_value = %s", $id, $date ) );
 
         if ( strpos( $meta_key, '_start_date_' ) !== false ) {
             return true;
@@ -374,17 +383,17 @@ class Pickle_Calendar {
     }
 
     /**
-     * is_end_date function.
+     * Is it an end date?
      *
      * @access public
-     * @param int    $id (default: 0)
-     * @param string $date (default: '')
-     * @return void
+     * @param int    $id (default: 0).
+     * @param string $date (default: '').
+     * @return boolean
      */
     public function is_end_date( $id = 0, $date = '' ) {
         global $wpdb;
 
-        $meta_key = $wpdb->get_var( "SELECT meta_key FROM $wpdb->postmeta WHERE $wpdb->postmeta.post_id = $id AND meta_value = '$date'" );
+        $meta_key = $wpdb->get_var( $wpdb->prepare( "SELECT meta_key FROM $wpdb->postmeta WHERE $wpdb->postmeta.post_id = %d AND meta_value = %s", $id, $date ) );
 
         if ( strpos( $meta_key, '_end_date_' ) !== false ) {
             return true;
@@ -394,26 +403,31 @@ class Pickle_Calendar {
     }
 
     /**
-     * event_is_multiday function.
+     * Is the event multiple days?
      *
      * @access public
-     * @param int    $event_id (default: 0)
-     * @param string $date (default: '')
-     * @return void
+     * @param int    $event_id (default: 0).
+     * @param string $date (default: '').
+     * @return boolean
      */
     public function event_is_multiday( $event_id = 0, $date = '' ) {
         global $wpdb;
 
         $id = $wpdb->get_var(
-            "
+            $wpdb->prepare(
+                "
 			SELECT $wpdb->postmeta.post_id
 			FROM $wpdb->postmeta
 			INNER JOIN $wpdb->postmeta AS mt1 ON ( wp_postmeta.post_id = mt1.post_id ) 
-			WHERE $wpdb->postmeta.post_id = $event_id
+			WHERE $wpdb->postmeta.post_id = %d
 				AND ( REPLACE($wpdb->postmeta.meta_key, '_start_date_', '') = REPLACE(mt1.meta_key, '_end_date_', '') )
 				AND $wpdb->postmeta.meta_value != mt1.meta_value
-				AND ( $wpdb->postmeta.meta_value >= '$date' OR mt1.meta_value >= '$date')
-		"
+				AND ( $wpdb->postmeta.meta_value >= %s OR mt1.meta_value >= %s)
+            ",
+                $event_id,
+                $date,
+                $date
+            )
         );
 
         if ( $id ) {
@@ -423,13 +437,21 @@ class Pickle_Calendar {
         return false;
     }
 
+    /**
+     * Get total days.
+     *
+     * @access public
+     * @param int    $event_id (default: 0).
+     * @param string $start_date (default: '').
+     * @return ineger
+     */
     public function total_days( $event_id = 0, $start_date = '' ) {
         global $wpdb;
 
-        $meta_key = $wpdb->get_var( "SELECT meta_key FROM $wpdb->postmeta WHERE $wpdb->postmeta.post_id = $event_id AND $wpdb->postmeta.meta_value = '$start_date'" );
+        $meta_key = $wpdb->get_var( $wpdb->prepare( "SELECT meta_key FROM $wpdb->postmeta WHERE $wpdb->postmeta.post_id = %d AND $wpdb->postmeta.meta_value = %s", $event_id, $start_date ) );
         $date_id = str_replace( '_start_date_', '', $meta_key );
         $end_date_id = '_end_date_' . $date_id;
-        $end_date = $wpdb->get_var( "SELECT meta_value FROM $wpdb->postmeta WHERE $wpdb->postmeta.post_id = $event_id AND $wpdb->postmeta.meta_key = '$end_date_id'" );
+        $end_date = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM $wpdb->postmeta WHERE $wpdb->postmeta.post_id = %d AND $wpdb->postmeta.meta_key = %s", $event_id, $end_date_id ) );
 
         $start_ts = strtotime( $start_date );
         $end_ts = strtotime( $end_date );
@@ -439,12 +461,12 @@ class Pickle_Calendar {
     }
 
     /**
-     * add_terms_classes function.
+     * Add terms classes function.
      *
      * @access protected
-     * @param mixed $event_id
-     * @param mixed $classes
-     * @return void
+     * @param mixed $event_id (integer).
+     * @param mixed $classes (array).
+     * @return array
      */
     protected function add_terms_classes( $event_id, $classes ) {
         if ( ! isset( picklecalendar()->settings['taxonomies'] ) || empty( picklecalendar()->settings['taxonomies'] ) ) {
@@ -467,12 +489,12 @@ class Pickle_Calendar {
     }
 
     /**
-     * get_events function.
+     * Get the days events.
      *
      * @access protected
-     * @param string $date (default: '')
-     * @param string $args (default: '')
-     * @return void
+     * @param string $date (default: '').
+     * @param string $args (default: '').
+     * @return array
      */
     protected function get_events( $date = '', $args = '' ) {
         global $wpdb;
@@ -482,55 +504,27 @@ class Pickle_Calendar {
         );
         $args = wp_parse_args( $args, $default_args );
 
-        // AND wp_postmeta.meta_value != mt1.meta_value
+        // AND wp_postmeta.meta_value != mt1.meta_value.
         $post_ids = $wpdb->get_col(
-            "
+            $wpdb->prepare(
+                "
 			SELECT wp_posts.ID
 			FROM $wpdb->posts
 			INNER JOIN $wpdb->postmeta ON ( $wpdb->posts.ID = $wpdb->postmeta.post_id ) 
 			INNER JOIN $wpdb->postmeta AS mt1 ON ( $wpdb->posts.ID = mt1.post_id ) 
 			WHERE 1=1
-				AND ( ( $wpdb->postmeta.meta_key LIKE '_start_date_%' AND CAST($wpdb->postmeta.meta_value AS DATE) <= '$date' ) AND ( mt1.meta_key LIKE '_end_date_%' AND CAST(mt1.meta_value AS DATE) >= '$date' ) ) 
+				AND ( ( $wpdb->postmeta.meta_key LIKE %s AND CAST($wpdb->postmeta.meta_value AS DATE) <= %s ) AND ( mt1.meta_key LIKE %s AND CAST(mt1.meta_value AS DATE) >= %s ) ) 
 				AND ( REPLACE($wpdb->postmeta.meta_key, '_start_date_', '') = REPLACE(mt1.meta_key, '_end_date_', '') )
 				AND $wpdb->posts.post_type = 'pcevent' 
 				AND (($wpdb->posts.post_status = 'publish')) 
 			GROUP BY $wpdb->posts.ID
 			ORDER BY $wpdb->postmeta.meta_value ASC
-		"
-        );
-
-        if ( empty( $post_ids ) ) {
-            return;
-        }
-
-        $post_ids = apply_filters( 'pickle_calendar_get_events', $post_ids, $date );
-
-        return $post_ids;
-    }
-
-    protected function get_events_in_week( $args = '' ) {
-        global $wpdb;
-
-        $default_args = array(
-            'post_type' => 'pcevent',
-            'start' => '',
-            'end' => '',
-        );
-        $args = wp_parse_args( $args, $default_args );
-
-        $post_ids = $wpdb->get_col(
-            "
-			SELECT wp_posts.ID
-			FROM $wpdb->posts
-			INNER JOIN $wpdb->postmeta ON ( $wpdb->posts.ID = $wpdb->postmeta.post_id ) 
-			INNER JOIN $wpdb->postmeta AS mt1 ON ( $wpdb->posts.ID = mt1.post_id ) 
-			WHERE 1=1
-				AND ( ( $wpdb->postmeta.meta_key LIKE '_start_date_%' AND CAST($wpdb->postmeta.meta_value AS DATE) >= '" . $args['start'] . "' ) AND ( mt1.meta_key LIKE '_end_date_%' AND CAST(mt1.meta_value AS DATE) <= '" . $args['end'] . "' ) ) 
-				AND $wpdb->posts.post_type = 'pcevent' 
-				AND (($wpdb->posts.post_status = 'publish')) 
-			GROUP BY $wpdb->posts.ID
-			ORDER BY $wpdb->postmeta.meta_value ASC
-		"
+            ",
+                '_start_date_%',
+                $date,
+                '_end_date_%',
+                $date
+            )
         );
 
         if ( empty( $post_ids ) ) {
@@ -543,11 +537,58 @@ class Pickle_Calendar {
     }
 
     /**
-     * get_event_dates function.
+     * Get events in week.
+     *
+     * @access protected
+     * @param string $args (default: '').
+     * @return array
+     */
+    protected function get_events_in_week( $args = '' ) {
+        global $wpdb;
+
+        $default_args = array(
+            'post_type' => 'pcevent',
+            'start' => '',
+            'end' => '',
+        );
+        $args = wp_parse_args( $args, $default_args );
+
+        $post_ids = $wpdb->get_col(
+            $wpdb->prepare(
+                "
+			SELECT wp_posts.ID
+			FROM $wpdb->posts
+			INNER JOIN $wpdb->postmeta ON ( $wpdb->posts.ID = $wpdb->postmeta.post_id ) 
+			INNER JOIN $wpdb->postmeta AS mt1 ON ( $wpdb->posts.ID = mt1.post_id ) 
+			WHERE 1=1
+				AND ( ( $wpdb->postmeta.meta_key LIKE %s AND CAST($wpdb->postmeta.meta_value AS DATE) >= %s ) AND ( mt1.meta_key LIKE %s AND CAST(mt1.meta_value AS DATE) <= %s ) ) 
+				AND $wpdb->posts.post_type = 'pcevent' 
+				AND (($wpdb->posts.post_status = 'publish')) 
+			GROUP BY $wpdb->posts.ID
+			ORDER BY $wpdb->postmeta.meta_value ASC
+		",
+                '_start_date_%',
+                $args['start'],
+                '_end_date_%',
+                $args['end']
+            )
+        );
+
+        if ( empty( $post_ids ) ) {
+            return;
+        }
+
+        $post_ids = apply_filters( 'pickle_calendar_get_events', $post_ids, $date );
+
+        return $post_ids;
+    }
+
+    /**
+     * Get the events dates.
      *
      * @access public
-     * @param int $post_id (default: 0)
-     * @return void
+     * @param int $post_id (default: 0).
+     * @return array
      */
     public function get_event_dates( $post_id = 0 ) {
         $dates = array();
@@ -570,6 +611,13 @@ class Pickle_Calendar {
         return $dates;
     }
 
+    /**
+     * Filters function.
+     *
+     * @access public
+     * @param string $args (default: '').
+     * @return array
+     */
     public function filters( $args = '' ) {
         $filters = array(
             'checkboxes' => array(),
@@ -597,6 +645,14 @@ class Pickle_Calendar {
         return $filters;
     }
 
+    /**
+     * Filter checkbox.
+     *
+     * @access protected
+     * @param string $slug (default: '').
+     * @param string $label (default: '').
+     * @return html
+     */
     protected function filter_checkbox( $slug = '', $label = '' ) {
         $html = '';
 
@@ -614,6 +670,15 @@ class Pickle_Calendar {
         return $html;
     }
 
+    /**
+     * Filter tab.
+     *
+     * @access protected
+     * @param string $slug (default: '').
+     * @param string $label (default: '').
+     * @param array  $taxonomy (default: array()).
+     * @return html
+     */
     protected function filter_tab( $slug = '', $label = '', $taxonomy = array() ) {
         $html = '';
 
@@ -623,7 +688,7 @@ class Pickle_Calendar {
             $html .= '<div class="filter ' . $slug . '">';
                 $html .= '<div class="filter-label">' . ucwords( $label ) . '</div>';
                 $html .= '<ul class="filter-tabs">';
-        if ( ! isset( $taxonomy['hide_all_tab'] ) || $taxonomy['hide_all_tab'] != 1 ) :
+        if ( ! isset( $taxonomy['hide_all_tab'] ) || 1 != $taxonomy['hide_all_tab'] ) :
             $html .= '<li class="filter-tab active" data-tab-slug="all"><a href="#">All</a></li>';
                     endif;
 
@@ -637,6 +702,13 @@ class Pickle_Calendar {
         return $html;
     }
 
+    /**
+     * Display filters.
+     *
+     * @access protected
+     * @param array $filters (default: array()).
+     * @return html
+     */
     protected function filters_display( $filters = array() ) {
         $html = '';
 
@@ -648,29 +720,31 @@ class Pickle_Calendar {
     }
 
     /**
-     * ajax_nav function.
+     * AJAX nav function.
      *
      * @access public
-     * @return void
      */
     public function ajax_nav() {
+        $month = ! empty( $_POST['month'] ) ? sanitize_text_field( wp_unslash( $_POST['month'] ) ) : '';
+        $year = ! empty( $_POST['year'] ) ? sanitize_text_field( wp_unslash( $_POST['year'] ) ) : '';
+
         $args = array(
-            'month' => $_POST['month'],
-            'year' => $_POST['year'],
+            'month' => $month,
+            'year' => $year,
             'echo' => false,
         );
 
-        echo $this->calendar( $args );
+        echo esc_attr( $this->calendar( $args ) );
 
         wp_die();
     }
 
     /**
-     * shortcode function.
+     * Our shortcode.
      *
      * @access public
-     * @param mixed $atts
-     * @return void
+     * @param mixed $atts (array).
+     * @return calendar
      */
     public function shortcode( $atts ) {
         $args = shortcode_atts(

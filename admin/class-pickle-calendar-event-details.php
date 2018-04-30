@@ -1,9 +1,18 @@
 <?php
-
+/**
+ * Pickle Calendar Event Details
+ *
+ * @package PickleCalendar
+ * @since   1.0.0
+ */
+ 
+/**
+ * Pickle_Calendar_Event_Details class.
+ */
 class Pickle_Calendar_Event_Details {
 
     /**
-     * __construct function.
+     * Construct function.
      *
      * @access public
      * @return void
@@ -16,7 +25,7 @@ class Pickle_Calendar_Event_Details {
     }
 
     /**
-     * init_metabox function.
+     * Init function.
      *
      * @access public
      * @return void
@@ -28,7 +37,7 @@ class Pickle_Calendar_Event_Details {
     }
 
     /**
-     * admin_scripts_styles function.
+     * Admin scripts/styles.
      *
      * @access public
      * @return void
@@ -43,7 +52,7 @@ class Pickle_Calendar_Event_Details {
     }
 
     /**
-     * add_metabox function.
+     * Add metabox function.
      *
      * @access public
      * @return void
@@ -61,11 +70,11 @@ class Pickle_Calendar_Event_Details {
     }
 
     /**
-     * render_metabox function.
+     * Render metabox function.
      *
      * @access public
-     * @param mixed $post
-     * @return void
+     * @param mixed $post (post data).
+     * @return html
      */
     public function render_metabox( $post ) {
         $html = '';
@@ -102,11 +111,11 @@ class Pickle_Calendar_Event_Details {
     }
 
     /**
-     * save_metabox function.
+     * Save metabox function.
      *
      * @access public
-     * @param mixed $post_id
-     * @param mixed $post
+     * @param mixed $post_id (integer).
+     * @param mixed $post (post).
      * @return void
      */
     public function save_metabox( $post_id, $post ) {
@@ -156,6 +165,14 @@ class Pickle_Calendar_Event_Details {
         endforeach;
     }
 
+    /**
+     * Parse args function.
+     *
+     * @access public
+     * @param mixed &$a (array).
+     * @param mixed $b (array).
+     * @return void
+     */
     public function _wp_parse_args( &$a, $b ) {
         $a = (array) $a;
         $b = (array) $b;

@@ -1,20 +1,48 @@
 <?php
+/**
+ * Pickle Calendar import/export
+ *
+ * @package PickleCalendar
+ * @since   1.0.0
+ */
 
 /**
  * Pickle_Calendar_Import_Export_Events class.
  */
 class Pickle_Calendar_Import_Export_Events {
 
+    /**
+     * Post Type
+     *
+     * (default value: 'pcevent').
+     *
+     * @var string
+     * @access protected
+     */
     protected $post_type = 'pcevent';
 
+    /**
+     * Taxonomy
+     *
+     * (default value: 'pctype').
+     *
+     * @var string
+     * @access protected
+     */
     protected $taxonomy = 'pctype';
 
+    /**
+     * Construct function.
+     *
+     * @access public
+     * @return void
+     */
     public function construct() {
 
     }
 
     /**
-     * export function.
+     * Export function.
      *
      * @access public
      * @return void
@@ -39,39 +67,39 @@ class Pickle_Calendar_Import_Export_Events {
     }
 
     /**
-     * get_events function.
+     * Get events function.
      *
      * @access protected
-     * @return void
+     * @return object
      */
     protected function get_events() {
         global $wpdb;
 
-        $events = $wpdb->get_results( "SELECT * FROM $wpdb->posts WHERE post_type = '$this->post_type'" );
+        $events = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $wpdb->posts WHERE post_type = %s", $this->post_type ) );
 
-        // get event dates and types //
+        // get event dates and types.
         foreach ( $events as $event ) :
             $event->dates = picklecalendar()->calendar->get_event_dates( $event->ID );
-            $event->event_types = wp_get_post_terms( $event->ID, $this->taxonomy ); // object
+            $event->event_types = wp_get_post_terms( $event->ID, $this->taxonomy ); // object.
         endforeach;
 
         return $events;
     }
 
     /**
-     * get_event_types function.
+     * Get event types function.
      *
      * @access protected
-     * @return void
+     * @return array
      */
     protected function get_event_types() {
         $tax_terms = (array) get_terms( $this->taxonomy, array( 'get' => 'all' ) );
         $terms = array();
 
         if ( ! empty( $tax_terms ) ) :
-            // put terms in order with no child going before its parent
+            // put terms in order with no child going before its parent.
             while ( $t = array_shift( $tax_terms ) ) :
-                if ( $t->parent == 0 || isset( $terms[ $t->parent ] ) ) :
+                if ( 0 == $t->parent || isset( $terms[ $t->parent ] ) ) :
                     $terms[ $t->term_id ] = $t;
                 else :
                     $tax_terms[] = $t;
@@ -83,11 +111,11 @@ class Pickle_Calendar_Import_Export_Events {
     }
 
     /**
-     * import function.
+     * Import function.
      *
      * @access public
-     * @param string $import_arr (default: '')
-     * @return void
+     * @param string $import_arr (default: '').
+     * @return boolean
      */
     public function import( $import_arr = '' ) {
         if ( empty( $import_arr ) ) {
@@ -114,7 +142,7 @@ class Pickle_Calendar_Import_Export_Events {
 
                 unset( $event->dates, $event->event_types );
 
-                if ( $post != null ) :
+                if ( null != $post ) :
                     $updated_post = $this->parse_object_args( $event, $post );
                     wp_update_post( $updated_post );
 
@@ -125,7 +153,7 @@ class Pickle_Calendar_Import_Export_Events {
                     $post_id = wp_insert_post( get_object_vars( $event ) );
                 endif;
 
-                // use post id for event_dates and event_types
+                // use post id for event_dates and event_types.
                 $this->update_event_dates( $post_id, $event_dates );
                 $this->update_event_types( $post_id, $events_event_types );
             endforeach;
@@ -149,12 +177,12 @@ class Pickle_Calendar_Import_Export_Events {
     }
 
     /**
-     * parse_object_args function.
+     * Parse object args function.
      *
      * @access protected
-     * @param mixed  $args
-     * @param string $defaults (default: '')
-     * @return void
+     * @param mixed  $args (object).
+     * @param string $defaults (default: '').
+     * @return array
      */
     protected function parse_object_args( $args, $defaults = '' ) {
         if ( is_object( $args ) ) :
@@ -171,18 +199,18 @@ class Pickle_Calendar_Import_Export_Events {
     }
 
     /**
-     * update_event_dates function.
+     * Update event dates function.
      *
      * @access protected
-     * @param int   $event_id (default: 0)
-     * @param array $event_dates (default: array())
+     * @param int   $event_id (default: 0).
+     * @param array $event_dates (default: array()).
      * @return void
      */
     protected function update_event_dates( $event_id = 0, $event_dates = array() ) {
-        // from our save metabox code //
+        // from our save metabox code.
         global $wpdb;
 
-        // delete all existing dates //
+        // delete all existing dates.
         $wpdb->query(
             $wpdb->prepare(
                 "DELETE FROM $wpdb->postmeta WHERE post_id = %d AND ( meta_key LIKE %s OR meta_key LIKE %s )",
@@ -199,15 +227,15 @@ class Pickle_Calendar_Import_Export_Events {
     }
 
     /**
-     * update_event_types function.
+     * Update event types function.
      *
      * @access protected
-     * @param int   $event_id (default: 0)
-     * @param array $event_types (default: array())
+     * @param int   $event_id (default: 0).
+     * @param array $event_types (default: array()).
      * @return void
      */
     protected function update_event_types( $event_id = 0, $event_types = array() ) {
-        // remove existing terms //
+        // remove existing terms.
         wp_set_object_terms( $event_id, null, $this->taxonomy );
 
         foreach ( $event_types as $event_type ) :
@@ -216,11 +244,11 @@ class Pickle_Calendar_Import_Export_Events {
     }
 
     /**
-     * setup_term function.
+     * Setup term function.
      *
      * @access protected
-     * @param string $term (default: '')
-     * @return void
+     * @param string $term (default: '').
+     * @return term
      */
     protected function setup_term( $term = '' ) {
         if ( empty( $term ) ) {

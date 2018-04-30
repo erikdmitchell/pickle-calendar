@@ -1,4 +1,18 @@
 <?php
+/**
+ * Pickle Calendar functions
+ *
+ * @package PickleCalendar
+ * @since   1.0.0
+ */
+
+/**
+ * Pickle Calendar get taxonomy function.
+ *
+ * @access public
+ * @param string $slug (default: '').
+ * @return array
+ */
 function pickle_calendar_get_taxonomy( $slug = '' ) {
     $default = array(
         'slug' => '',

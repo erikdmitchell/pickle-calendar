@@ -37,9 +37,20 @@ var cssInclude = [
         '!**/*.min.css',
         '!node_modules/**/*',
         '!style.css.map',
+        '!vendor/**/*'
+    ];
+    
+var cssMinInclude = [
+        // include css
+        '**/*.css',
+
+        // exclude files and folders
+        '!**/*.min.css',
+        '!node_modules/**/*',
+        '!style.css.map',
         '!vendor/**/*',
         '!admin/**/*'
-    ];
+    ];    
     
 var jsInclude = [
         // include js
@@ -49,9 +60,20 @@ var jsInclude = [
         '!**/*.min.js',
         '!node_modules/**/*',
         '!vendor/**',
+        '!**/gulpfile.js'             
+    ]; 
+    
+var jsMinInclude = [
+        // include js
+        '**/*.js',
+
+        // exclude files and folders
+        '!**/*.min.js',
+        '!node_modules/**/*',
+        '!vendor/**',
         '!**/gulpfile.js',
         '!admin/**/*'              
-    ];    
+    ];        
 
 // Load plugins
 var gulp = require('gulp'),
@@ -108,7 +130,7 @@ gulp.task('sass', function () {
 
 // minify all css
 gulp.task('mincss', function () {
-    gulp.src(cssInclude)
+    gulp.src(cssMinInclude)
         .pipe(plumber())
         .pipe(sourcemaps.init())
         .pipe(sourcemaps.write({
@@ -144,7 +166,7 @@ gulp.task('lintcss', function lintCssTask() {
 
 // min all js files
 gulp.task('scripts', function () {
-    return gulp.src(jsInclude)
+    return gulp.src(jsMinInclude)
         .pipe(rename({
             suffix: '.min'
         }))

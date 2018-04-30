@@ -41,6 +41,6 @@
     "gulp-uglifycss": "",
     "gulp-util": "",
     "jshint-stylish": "",
-    "jshint": ""      
+    "jshint": ""
   }
 }

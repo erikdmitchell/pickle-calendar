@@ -734,7 +734,8 @@ class Pickle_Calendar {
             'echo' => false,
         );
 
-        echo esc_attr( $this->calendar( $args ) );
+        //echo esc_attr( $this->calendar( $args ) );
+        echo $this->calendar( $args );
 
         wp_die();
     }

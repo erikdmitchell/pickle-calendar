@@ -44,11 +44,11 @@ class Pickle_Calendar_Event_Details {
      */
     public function admin_scripts_styles() {
         wp_enqueue_script( 'jquery-ui-datepicker' );
-        wp_enqueue_script( 'pced-script', PICKLE_CALENDAR_URL . 'js/event-details.js', array( 'jquery-ui-datepicker' ), '0.1.0', true );
-        wp_enqueue_script( 'pc-repeat-field-script', PICKLE_CALENDAR_URL . 'js/repeat-field.js', array( 'jquery' ), '0.1.0', true );
+        wp_enqueue_script( 'pced-script', PICKLE_CALENDAR_URL . 'admin/js/event-details.js', array( 'jquery-ui-datepicker' ), '0.1.0', true );
+        wp_enqueue_script( 'pc-repeat-field-script', PICKLE_CALENDAR_URL . 'admin/js/repeat-field.js', array( 'jquery' ), '0.1.0', true );
 
-        wp_enqueue_style( 'jquery-ui-style', PICKLE_CALENDAR_URL . 'css/jquery-ui.min.css', '', '1.12.1' );
-        wp_enqueue_style( 'bted-style', PICKLE_CALENDAR_URL . 'css/event-details.css', '', '0.1.0' );
+        wp_enqueue_style( 'jquery-ui-style', PICKLE_CALENDAR_URL . 'admin/css/jquery-ui.min.css', '', '1.12.1' );
+        wp_enqueue_style( 'bted-style', PICKLE_CALENDAR_URL . 'admin/css/event-details.css', '', '0.1.0' );
     }
 
     /**

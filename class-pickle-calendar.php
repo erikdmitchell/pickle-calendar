@@ -37,6 +37,8 @@ class Pickle_Calendar {
         wp_localize_script(
             'pickle-calendar-script', 'pickleCalOpts', array(
                 'ajax_url' => admin_url( 'admin-ajax.php' ),
+                'pluginURL' => PICKLE_CALENDAR_URL,
+                'pluginPath' => PICKLE_CALENDAR_PATH
             )
         );
 

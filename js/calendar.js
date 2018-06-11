@@ -4,16 +4,19 @@ jQuery(document).ready(function($) {
 	$('body').on('click', '.pickle-calendar .cal-nav', function(e) {
 		e.preventDefault();
 
+        //var $parent=$('.pickle-calendar').parent();
 		var data={
 			'action' : 'bscal_nav',
 			'month' : $(this).data('month'),
 			'year' : $(this).data('year')
 		};
+  		
+        pcShowAJAXLoader('.pickle-calendar');	
 	
 		$.post(pickleCalOpts.ajax_url, data, function(response) {
+    		
 			var $parent=$('.pickle-calendar').parent();
-
-console.log(response);			
+			
 			$parent.html(''); // clear html
 			$parent.append(response); // add calendar
 			
@@ -215,3 +218,31 @@ function PickleCalendarRowSetup() {
 		jQuery(this).pcEventOffset(); // tweak margin	
 	});
 }
+
+/**
+ * pcShowAJAXLoader function.
+ *
+ * @access public
+ * @param mixed self
+ * @return void
+ */
+function pcShowAJAXLoader(self) {
+	var loaderContainer = jQuery( '<div/>', {
+		'class': 'pc-loader-image-container'
+	}).appendTo( self ).show();
+
+	var loader = jQuery( '<img/>', {
+		src: pickleCalOpts.pluginURL + 'images/ajax-loader.gif',
+		'class': 'pc-loader-image'
+	}).appendTo( loaderContainer );
+}
+
+/**
+ * pcHideAJAXLoader function.
+ *
+ * @access public
+ * @return void
+ */
+function pcHideAJAXLoader() {
+	jQuery('.pc-loader-image-container').remove();
+} 

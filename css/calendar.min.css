@@ -1,4 +1,4 @@
-.pickle-calendar{width:100%}.pickle-calendar a{text-decoration:none;-webkit-box-shadow:none;box-shadow:none}
+.pickle-calendar{width:100%;position:relative}.pickle-calendar a{text-decoration:none;-webkit-box-shadow:none;box-shadow:none}
 .pickle-calendar .row{margin-right:-15px;margin-left:-15px}.pickle-calendar .row .row:before{display:table;content:' '}
 .pickle-calendar .row .row:after{clear:both;display:table;content:' '}
 .pickle-calendar .row.header{padding:10px 0;background:#0087cc;color:#fff;font-size:20px;text-transform:uppercase;letter-spacing:3px}
@@ -14,6 +14,8 @@
 .pickle-calendar .cal-wrap .row .calendar-day:last-child{border-right-width:1px}.pickle-calendar .cal-wrap .row .calendar-day .day-number{text-align:right;padding-top:5px;padding-right:7px;padding-bottom:5px;line-height:1}
 .pickle-calendar .cal-wrap .row .calendar-day.today{background:#0087cc;color:#fff}
 .pickle-calendar .cal-wrap .row .calendar-day.today a{color:#fff}.pickle-calendar .cal-wrap .row:last-child .calendar-day{border-bottom-width:1px}
+.pickle-calendar .pc-loader-image-container{background:rgba(234,234,234,0.7);position:absolute;top:0;left:0;width:100%;height:100%;display:none}
+.pickle-calendar .pc-loader-image-container .pc-loader-image{position:absolute;top:50%;left:50%;width:150px;height:150px}
 .pickle-calendar-event{position:relative;background:#fd0000;color:#fff;margin-left:5px;padding:5px;margin-bottom:5px;margin-right:5px;line-height:1}
 .pickle-calendar-event.multiday{opacity:0}.pickle-calendar-event.multiday.start{opacity:1}
 .pickle-calendar-event a{color:#fff}.pickle-calendar-event .filter-hide{display:none}

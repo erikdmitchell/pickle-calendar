@@ -40,18 +40,6 @@ var cssInclude = [
         '!vendor/**/*'
     ];
     
-var cssMinInclude = [
-        // include css
-        '**/*.css',
-
-        // exclude files and folders
-        '!**/*.min.css',
-        '!node_modules/**/*',
-        '!style.css.map',
-        '!vendor/**/*',
-        '!admin/**/*'
-    ];    
-    
 var jsInclude = [
         // include js
         '**/*.js',
@@ -61,19 +49,7 @@ var jsInclude = [
         '!node_modules/**/*',
         '!vendor/**',
         '!**/gulpfile.js'             
-    ]; 
-    
-var jsMinInclude = [
-        // include js
-        '**/*.js',
-
-        // exclude files and folders
-        '!**/*.min.js',
-        '!node_modules/**/*',
-        '!vendor/**',
-        '!**/gulpfile.js',
-        '!admin/**/*'              
-    ];        
+    ];         
 
 // Load plugins
 var gulp = require('gulp'),
@@ -108,7 +84,7 @@ var gulp = require('gulp'),
  
 // compile sass
 gulp.task('sass', function () {
-    gulp.src('**/sass/*.scss')
+    gulp.src('**/css/*.scss')
         .pipe(plumber())
         .pipe(sourcemaps.init())
         .pipe(sass({
@@ -130,7 +106,7 @@ gulp.task('sass', function () {
 
 // minify all css
 gulp.task('mincss', function () {
-    gulp.src(cssMinInclude)
+    gulp.src(cssInclude)
         .pipe(plumber())
         .pipe(sourcemaps.init())
         .pipe(sourcemaps.write({
@@ -166,7 +142,7 @@ gulp.task('lintcss', function lintCssTask() {
 
 // min all js files
 gulp.task('scripts', function () {
-    return gulp.src(jsMinInclude)
+    return gulp.src(jsInclude)
         .pipe(rename({
             suffix: '.min'
         }))

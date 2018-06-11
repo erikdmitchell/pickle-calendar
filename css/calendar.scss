@@ -7,7 +7,8 @@
     width: 100%;
     
     a {
-        text-decoration: none;        
+        text-decoration: none;  
+        box-shadow: none;      
     }
 
     .row {
@@ -22,53 +23,62 @@
             clear: both;
             display: table;
             content: ' ';
-        }        
+        } 
+        
+        /* Month header */
+        &.header {
+            padding: 10px 0;
+            background: #0087cc;
+            color: #fff;
+            font-size: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            
+            &:after {
+                content: "";
+                clear: both;
+                display: table;
+            }            
+        
+            .prev, 
+            .month, 
+            .year,
+            .next {
+                position: relative;
+                min-height: 1px;
+                padding-right: 15px;
+                padding-left: 15px;
+                float: left;
+            }
+            .prev,
+            .next {
+                width: 16.66666667%;
+            }
+            .next {
+                text-align: right;
+            }
+            .month {
+                width: 41.66666667%;
+                text-align: center;
+            }
+            .year {
+                width: 25%;
+                text-align: center;
+            }        
+        
+            .cal-nav,
+            .cal-nav:visited {
+                color: #fff;
+            }
+            
+            .cal-nav:hover,
+            .cal-nav:active {
+                color: #fff;
+            }
+        }               
     }
 
-    .prev, 
-    .month, 
-    .year,
-    .next {
-        position: relative;
-        min-height: 1px;
-        padding-right: 15px;
-        padding-left: 15px;
-        float: left;
-    }
-    .prev,
-    .next {
-        width: 16.66666667%;
-    }
-    .next {
-        text-align: right;
-    }
-    .month {
-        width: 41.66666667%;
-        text-align: center;
-    }
-    .year {
-        width: 25%;
-        text-align: center;
-    }
-    
-    /* Month header */
-    .header {
-        padding: 10px 0;
-        background: #0087cc;
-        color: #fff;
-        font-size: 20px;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-    
-        .header a,
-        .header a:visited {
-            color: #fff;
-        }
-        .header a:hover,
-        .header a:active {
-            text-decoration: none;
-        }
-    }
+
 
     /* Weekdays (Mon-Sun) */
     .weekdays {
@@ -168,36 +178,36 @@
         .filter {
             overflow: hidden;
     
-.filter-label {
-    display: none;
-}
+            .filter-label {
+                display: none;
+            }
 
-            
-        }
-    }
-}
-.filter-tabs {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    float: right;
-}
-.filter-tab {
-    float: left;
-    background-color: #e3e3e3;
-    margin-left: 5px;
-    
-    &.active {
-        background-color: #657792;
+            .filter-tabs {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                float: right;
         
-        a {
-            background-color: #657792;
-            color: #fff;            
+                .filter-tab {
+                    float: left;
+                    background-color: #e3e3e3;
+                    margin-left: 5px;
+                    
+                    &.active {
+                        background-color: #657792;
+                        
+                        a {
+                            background-color: #657792;
+                            color: #fff;            
+                        }
+                    }
+                 
+                    a {
+                        padding: 5px 15px;
+                        color: #657792;
+                    }      
+                } 
+            }
         }
     }
- 
-    a {
-        padding: 5px 15px;
-        color: #657792;
-    }      
 }

@@ -84,6 +84,7 @@
 .pickle-calendar .cal-wrap .row {
     overflow: hidden;
     background: #eee;
+    flex-wrap: nowrap;
 }
 .pickle-calendar .cal-wrap .row .calendar-day {
     float: left;

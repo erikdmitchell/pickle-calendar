@@ -12,7 +12,8 @@ jQuery(document).ready(function($) {
 	
 		$.post(pickleCalOpts.ajax_url, data, function(response) {
 			var $parent=$('.pickle-calendar').parent();
-			
+
+console.log(response);			
 			$parent.html(''); // clear html
 			$parent.append(response); // add calendar
 			

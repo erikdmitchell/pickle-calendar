@@ -135,8 +135,6 @@ final class PickleCalendar {
      */
     private function init_hooks() {
         register_activation_hook( PICKLE_CALENDAR_PLUGIN_FILE, array( 'Pickle_Calendar_Install', 'install' ) );
-
-        add_action( 'admin_init', array( $this, 'update_plugin' ) );
     }
 
     /**
@@ -189,38 +187,6 @@ final class PickleCalendar {
      */
     public function update_settings() {
         $this->settings = $this->settings();
-    }
-
-    /**
-     * Updates plugin function.
-     *
-     * @access public
-     * @return void
-     */
-    public function update_plugin() {
-        $this->define( 'PICKLE_CALENDAR_GITHUB_FORCE_UPDATE', true );
-
-        $username = 'erikdmitchell';
-        $repo_name = 'pickle-calendar';
-        $folder_name = 'pickle-calendar';
-
-        if ( is_admin() ) :
-
-            $config = array(
-                'slug' => plugin_basename( __FILE__ ),
-                'proper_folder_name' => $folder_name,
-                'api_url' => 'https://api.github.com/repos/' . $username . '/' . $repo_name,
-                'raw_url' => 'https://raw.github.com/' . $username . '/' . $repo_name . '/master',
-                'github_url' => 'https://github.com/' . $username . '/' . $repo_name,
-                'zip_url' => 'https://github.com/' . $username . '/' . $repo_name . '/zipball/master',
-                'sslverify' => true,
-                'requires' => PICKLE_CALENDAR_REQUIRES,
-                'tested' => PICKLE_CALENDAR_TESTED,
-                'readme' => 'readme.txt',
-            );
-
-            new Pickle_Calender_GitHub_Updater( $config );
-        endif;
     }
 
     /**

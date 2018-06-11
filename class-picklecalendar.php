@@ -120,7 +120,6 @@ final class PickleCalendar {
         include_once( PICKLE_CALENDAR_PATH . 'admin/class-pickle-calendar-event-details.php' );
         include_once( PICKLE_CALENDAR_PATH . 'post-type.php' );
         include_once( PICKLE_CALENDAR_PATH . 'class-pickle-calendar-import-export-events.php' );
-        include_once( PICKLE_CALENDAR_PATH . 'updater/updater.php' );
 
         if ( is_admin() ) {
             $this->admin = new Pickle_Calendar_Admin_Functions();

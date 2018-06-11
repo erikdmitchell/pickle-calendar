@@ -206,6 +206,6 @@ gulp.task('styles', function (cb) {
 
 // Watch Task
 gulp.task('default', ['styles', 'scripts'], function () {
-    gulp.watch('./sass/**/*', ['sass']);
+    gulp.watch('./css/**/*', ['sass']);
     gulp.watch('./js/**/*.js', ['scripts']);
 });

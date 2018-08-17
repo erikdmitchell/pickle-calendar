@@ -19,7 +19,7 @@ final class PickleCalendar {
      * @var string
      * @access public
      */
-    public $version = '1.2.0-beta.4';
+    public $version = '1.3.0';
 
     /**
      * Settings.

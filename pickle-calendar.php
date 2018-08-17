@@ -4,7 +4,7 @@
  * Plugin Name: Pickle Calendar
  * Plugin URI:
  * Description: Pickle Calendar
- * Version: 1.2.0-beta.4
+ * Version: 1.3.0
  * Author: Erik Mitchell
  * Author URI:
  * License: GPL-2.0+

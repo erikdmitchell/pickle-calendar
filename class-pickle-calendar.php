@@ -212,7 +212,7 @@ class Pickle_Calendar {
                                 
                 if (picklecalendar()->settings['hide_weekends'] && (0 == $x || 6 == $x)) :
                     if (6 == $running_day) :
-                        break;
+                        break; // the whole first week will be empty, so do not create.
                     else :
                         continue;
                     endif;
@@ -290,8 +290,11 @@ class Pickle_Calendar {
                     $classes = array('calendar-day', 'np');
                     
                     if (picklecalendar()->settings['hide_weekends'] && (1 == $x || 8 == $x)) :
-                        //$classes[] = 'hidden';
+                    if (6 == (8 - $days_in_this_week)) :
+                        break; // the whole first last will be empty, so do not create.
+                    else :
                         continue;
+                    endif;
                     endif;
                     
                     $html .= '<div class="' . implode( ' ', $classes ) . '"></div>';

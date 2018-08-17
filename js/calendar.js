@@ -172,14 +172,29 @@ jQuery(window).resize(function() {
 		var thisOffset=jQuery(this).offset();		
 		var date=new Date(jQuery(this).data('eventDate') + 'T00:00:00');
 		var newDate=new Date(jQuery(this).data('eventDate') + 'T00:00:00');
+        var firstOfWeek = false;
+        var lastOfWeek = false;		
+		var $day = jQuery(this).parents('.calendar-day')
 		
 		newDate.setDate(newDate.getDate() - 1);
 		
+		if ($day.hasClass('first-of-week')) {
+    		firstOfWeek = true;
+		}
+
+		if ($day.hasClass('last-of-week')) {
+    		lastOfWeek = true;
+		}
+	
 		var nd=new Date(newDate);
 		var prevDay=('0' + nd.getDate()).slice(-2);
 		var prevMonth=('0' + (nd.getMonth() + 1)).slice(-2);
 		var prevDate=nd.getFullYear() + '-' + prevMonth + '-' + prevDay;
 		var prevEvent=jQuery('.pickle-calendar').find(".pickle-calendar-event[data-event-date='" + prevDate + "'][data-event-id='" + jQuery(this).data('eventId') + "']");
+		
+		if (true === firstOfWeek) {
+    		return;
+		}
 		
 		if (typeof prevEvent.offset() != 'undefined' && prevEvent.offset().top != thisOffset.top) {
 			jQuery(this).css({

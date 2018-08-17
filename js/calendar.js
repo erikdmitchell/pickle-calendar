@@ -197,6 +197,7 @@ jQuery(window).resize(function() {
 	};	
 })(jQuery);
 
+/*
 function pcTextWidth(text, font) { 
     $fakeEl=jQuery('<span>').hide().appendTo(document.body);
     	
@@ -208,12 +209,13 @@ function pcTextWidth(text, font) {
     
     return width;
 }
+*/
 
 function PickleCalendarRowSetup() {
 	jQuery('.pickle-calendar-event.multiday').each(function() {
-		var eventTotalDays=jQuery(this).data('eventTotalDays');
+		//var eventTotalDays=jQuery(this).data('eventTotalDays');
 	
-		jQuery(this).css('width', eventTotalDays * 98 + '%'); // set width //
+		//jQuery(this).css('width', eventTotalDays * 98 + '%'); // set width //
 			
 		jQuery(this).pcEventOffset(); // tweak margin	
 	});

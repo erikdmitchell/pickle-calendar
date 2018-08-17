@@ -56,6 +56,7 @@ class Pickle_Calendar_Admin {
         $tabs = array(
             'settings' => 'Settings',
             'taxonomies' => 'Categories',
+            'import-export' => 'Import/Export',
         );
         $active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
 
@@ -81,6 +82,9 @@ class Pickle_Calendar_Admin {
                     else :
                         $html .= $this->get_admin_page( 'taxonomies' );
                     endif;
+                break;
+            case 'import-export':
+                $html .= $this->get_admin_page( 'import-export' );
                 break;
             default:
                 $html .= $this->get_admin_page( 'settings' );

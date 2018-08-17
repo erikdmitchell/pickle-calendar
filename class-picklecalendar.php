@@ -193,7 +193,7 @@ final class PickleCalendar {
      * Parse args function.
      *
      * @access public
-     * @param mixed &$a (array).
+     * @param mixed $a (array).
      * @param mixed $b (array).
      * @return array
      */

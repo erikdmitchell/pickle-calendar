@@ -186,7 +186,7 @@ jQuery(window).resize(function() {
 				'margin-top' : prevEvent.offset().top - thisOffset.top
 			});
 			
-			// double check //
+			// double check.
 			if (prevEvent.offset().top != jQuery(this).offset().top) {
 				jQuery(this).css({
 					'margin-top' : parseInt(jQuery(this).css('margin-top')) + (prevEvent.offset().top - jQuery(this).offset().top)
@@ -197,26 +197,14 @@ jQuery(window).resize(function() {
 	};	
 })(jQuery);
 
-/*
-function pcTextWidth(text, font) { 
-    $fakeEl=jQuery('<span>').hide().appendTo(document.body);
-    	
-    $fakeEl.text(text).css('font', font);
-    
-    var width = $fakeEl.width();
-    
-    $fakeEl.remove();
-    
-    return width;
-}
-*/
-
+/**
+ * PickleCalendarRowSetup function.
+ * 
+ * @access public
+ * @return void
+ */
 function PickleCalendarRowSetup() {
 	jQuery('.pickle-calendar-event.multiday').each(function() {
-		//var eventTotalDays=jQuery(this).data('eventTotalDays');
-	
-		//jQuery(this).css('width', eventTotalDays * 98 + '%'); // set width //
-			
 		jQuery(this).pcEventOffset(); // tweak margin	
 	});
 }

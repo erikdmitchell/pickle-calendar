@@ -19,7 +19,6 @@
 .pickle-calendar .cal-wrap.no-weekends .row .calendar-day{width:20%}.pickle-calendar .pc-loader-image-container{background:rgba(234,234,234,0.7);position:absolute;top:0;left:0;width:100%;height:100%;display:none}
 .pickle-calendar .pc-loader-image-container .pc-loader-image{position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}
 .pickle-calendar-event{position:relative;background:#fd0000;color:#fff;margin-left:5px;padding:5px;margin-bottom:5px;margin-right:5px;line-height:1}
-.pickle-calendar-event.multiday{opacity:0}.pickle-calendar-event.multiday.start{opacity:1}
 .pickle-calendar-event a{color:#fff}.pickle-calendar-event .filter-hide{display:none}
 .pickle-calendar-filters{overflow:hidden}.pickle-calendar-filters.filter-type-tab{margin-right:-15px;margin-left:-15px}
 .pickle-calendar-filters.filter-type-tab .filter{overflow:hidden}.pickle-calendar-filters.filter-type-tab .filter .filter-label{display:none}

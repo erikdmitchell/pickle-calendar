@@ -209,10 +209,13 @@ class Pickle_Calendar {
             // print "blank" days until the first of the current week.
             for ( $x = 0; $x < $running_day; $x++ ) :
                 $classes = array('calendar-day', 'np');
-                
+                                
                 if (picklecalendar()->settings['hide_weekends'] && (0 == $x || 6 == $x)) :
-                    //$classes[] = 'hidden';
-                    continue;
+                    if (6 == $running_day) :
+                        break;
+                    else :
+                        continue;
+                    endif;
                 endif;
                 
                 $html .= '<div class="' . implode( ' ', $classes ) . '"></div>';

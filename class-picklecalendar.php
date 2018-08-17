@@ -162,6 +162,7 @@ final class PickleCalendar {
             'cpt_single' => 'Event',
             'cpt_plural' => 'Events',
             'disable_editor' => false,
+            'hide_weekends' => false,
             'include_details' => true,
             'detail_options' => array(
                 'start_date' => true,

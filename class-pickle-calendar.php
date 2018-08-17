@@ -130,9 +130,11 @@ class Pickle_Calendar {
      */
     protected function days_of_week( $format ) {
         $html = '';
+        $classes = array('dow');
         
         if (picklecalendar()->settings['hide_weekends']) :
             $dow = array( 1, 2, 3, 4, 5 );
+            $classes[] = 'no-weekends';
         else :
             $dow = array( 0, 1, 2, 3, 4, 5, 6 );        
         endif;
@@ -142,7 +144,7 @@ class Pickle_Calendar {
         $html .= '<div class="row weekdays">';
 
             foreach ( $dow_formatted as $day ) :
-                $html .= '<div class="dow">' . $day . '</div>';
+                $html .= '<div class="' . implode( ' ', $classes ) . '">' . $day . '</div>';
             endforeach;
 
         $html .= '</div>';
@@ -193,8 +195,13 @@ class Pickle_Calendar {
         $day_counter = 0;
         $dates_array = array();
         $current_date = date( 'Y-m-d' );
+        $cw_classes = array('cal-wrap');
 
-        $html .= '<div class="cal-wrap">';
+        if (picklecalendar()->settings['hide_weekends']) :
+            $cw_classes[] = 'no-weekends';
+        endif;
+
+        $html .= '<div class="' . implode( ' ', $cw_classes ) . '">';
 
         // row for week one.
         $html .= '<div class="row">';
@@ -204,7 +211,8 @@ class Pickle_Calendar {
                 $classes = array('calendar-day', 'np');
                 
                 if (picklecalendar()->settings['hide_weekends'] && (0 == $x || 6 == $x)) :
-                    $classes[] = 'hidden';
+                    //$classes[] = 'hidden';
+                    continue;
                 endif;
                 
                 $html .= '<div class="' . implode( ' ', $classes ) . '"></div>';
@@ -217,7 +225,24 @@ class Pickle_Calendar {
                 $pref_date = date( 'Y-m-d', strtotime( "$year-$month-$list_day" ) );
     
                 if (picklecalendar()->settings['hide_weekends'] && (0 == $running_day || 6 == $running_day)) :
-                    $classes[] = 'hidden';
+                    //$classes[] = 'hidden';
+                    
+                    if ( 6 == $running_day ) :
+                        $html .= '</div>';
+        
+                        if ( ( $day_counter + 1 ) != $days_in_month ) :
+                            $html .= '<div class="row">';
+                        endif;
+        
+                        $running_day = -1;
+                        $days_in_this_week = 0;
+                    endif;
+        
+                    $days_in_this_week++;
+                    $running_day++;
+                    $day_counter++;
+                                    
+                    continue;
                 endif;
     
                 if ( $pref_date == $current_date ) {
@@ -262,7 +287,8 @@ class Pickle_Calendar {
                     $classes = array('calendar-day', 'np');
                     
                     if (picklecalendar()->settings['hide_weekends'] && (1 == $x || 8 == $x)) :
-                        $classes[] = 'hidden';
+                        //$classes[] = 'hidden';
+                        continue;
                     endif;
                     
                     $html .= '<div class="' . implode( ' ', $classes ) . '"></div>';

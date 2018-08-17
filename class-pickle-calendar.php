@@ -129,14 +129,20 @@ class Pickle_Calendar {
      * @return html
      */
     protected function days_of_week( $format ) {
-        $html = null;
-        $dow = array( 0, 1, 2, 3, 4, 5, 6 );
+        $html = '';
+        
+        if (picklecalendar()->settings['hide_weekends']) :
+            $dow = array( 1, 2, 3, 4, 5 );
+        else :
+            $dow = array( 0, 1, 2, 3, 4, 5, 6 );        
+        endif;
+        
         $dow_formatted = array_map( array( $this, 'format_day' ), $dow );
 
         $html .= '<div class="row weekdays">';
 
-        foreach ( $dow_formatted as $day ) :
-            $html .= '<div class="dow">' . $day . '</div>';
+            foreach ( $dow_formatted as $day ) :
+                $html .= '<div class="dow">' . $day . '</div>';
             endforeach;
 
         $html .= '</div>';
@@ -193,62 +199,78 @@ class Pickle_Calendar {
         // row for week one.
         $html .= '<div class="row">';
 
-        // print "blank" days until the first of the current week.
-        for ( $x = 0; $x < $running_day; $x++ ) :
-            $html .= '<div class="calendar-day np"></div>';
-            $days_in_this_week++;
-        endfor;
-
-        // keep going with days.
-        for ( $list_day = 1; $list_day <= $days_in_month; $list_day++ ) :
-            $classes = array( 'calendar-day' );
-            $pref_date = date( 'Y-m-d', strtotime( "$year-$month-$list_day" ) );
-
-            if ( $pref_date == $current_date ) {
-                $classes[] = 'today';
-            }
-
-            if ( 0 == $running_day ) :
-                $classes[] = 'first-of-week';
-                $eow_day = date( 'Y-m-d', strtotime( $pref_date . ' +6 days' ) );
-            endif;
-
-            if ( 6 == $running_day ) {
-                $classes[] = 'last-of-week';
-            }
-
-            $html .= '<div class="' . implode( ' ', $classes ) . '">';
-                $html .= '<div class="day-number">' . $list_day . '</div>'; // add day number.
-
-                $html .= apply_filters( 'pickle_calendar_single_day', $this->add_date_info( $pref_date ), $pref_date );
-
-            $html .= '</div>';
-
-            if ( 6 == $running_day ) :
-                $html .= '</div>';
-
-                if ( ( $day_counter + 1 ) != $days_in_month ) :
-                    $html .= '<div class="row">';
+            // print "blank" days until the first of the current week.
+            for ( $x = 0; $x < $running_day; $x++ ) :
+                $classes = array('calendar-day', 'np');
+                
+                if (picklecalendar()->settings['hide_weekends'] && (0 == $x || 6 == $x)) :
+                    $classes[] = 'hidden';
                 endif;
-
-                $running_day = -1;
-                $days_in_this_week = 0;
-            endif;
-
-            $days_in_this_week++;
-            $running_day++;
-            $day_counter++;
-        endfor;
-
-        // finish the rest of the days in the week.
-        if ( $days_in_this_week < 8 ) :
-            for ( $x = 1; $x <= ( 8 - $days_in_this_week ); $x++ ) :
-                $html .= '<div class="calendar-day np"></div>';
+                
+                $html .= '<div class="' . implode( ' ', $classes ) . '"></div>';
+                $days_in_this_week++;
             endfor;
-        endif;
-
-        // final row.
-        $html .= '</div>';
+    
+            // keep going with days.
+            for ( $list_day = 1; $list_day <= $days_in_month; $list_day++ ) :                
+                $classes = array( 'calendar-day' );
+                $pref_date = date( 'Y-m-d', strtotime( "$year-$month-$list_day" ) );
+    
+                if (picklecalendar()->settings['hide_weekends'] && (0 == $running_day || 6 == $running_day)) :
+                    $classes[] = 'hidden';
+                endif;
+    
+                if ( $pref_date == $current_date ) {
+                    $classes[] = 'today';
+                }
+    
+                if ( 0 == $running_day ) :
+                    $classes[] = 'first-of-week';
+                    $eow_day = date( 'Y-m-d', strtotime( $pref_date . ' +6 days' ) );
+                endif;
+    
+                if ( 6 == $running_day ) {
+                    $classes[] = 'last-of-week';
+                }
+    
+                $html .= '<div class="' . implode( ' ', $classes ) . '">';
+                    $html .= '<div class="day-number">' . $list_day . '</div>'; // add day number.
+    
+                    $html .= apply_filters( 'pickle_calendar_single_day', $this->add_date_info( $pref_date ), $pref_date );
+    
+                $html .= '</div>';
+    
+                if ( 6 == $running_day ) :
+                    $html .= '</div>';
+    
+                    if ( ( $day_counter + 1 ) != $days_in_month ) :
+                        $html .= '<div class="row">';
+                    endif;
+    
+                    $running_day = -1;
+                    $days_in_this_week = 0;
+                endif;
+    
+                $days_in_this_week++;
+                $running_day++;
+                $day_counter++;
+            endfor;
+    
+            // finish the rest of the days in the week.
+            if ( $days_in_this_week < 8 ) :
+                for ( $x = 1; $x <= ( 8 - $days_in_this_week ); $x++ ) :                
+                    $classes = array('calendar-day', 'np');
+                    
+                    if (picklecalendar()->settings['hide_weekends'] && (1 == $x || 8 == $x)) :
+                        $classes[] = 'hidden';
+                    endif;
+                    
+                    $html .= '<div class="' . implode( ' ', $classes ) . '"></div>';
+                endfor;
+            endif;
+    
+            // final row.
+            $html .= '</div>';
 
         $html .= '</div>'; // cal-wrap.
 

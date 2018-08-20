@@ -5,7 +5,7 @@
  * @package PickleCalendar
  * @since   1.0.0
  */
- 
+
 /**
  * Pickle_Calendar_Post_Types class.
  */
@@ -13,7 +13,7 @@ class Pickle_Calendar_Post_Types {
 
     /**
      * Init.
-     * 
+     *
      * @access public
      * @static
      * @return void
@@ -31,7 +31,7 @@ class Pickle_Calendar_Post_Types {
 
     /**
      * Register post types.
-     * 
+     *
      * @access public
      * @static
      * @return void
@@ -83,7 +83,7 @@ class Pickle_Calendar_Post_Types {
 
     /**
      * Register taxonomies.
-     * 
+     *
      * @access public
      * @static
      * @return void
@@ -96,7 +96,7 @@ class Pickle_Calendar_Post_Types {
 
     /**
      * Generate taxonomies.
-     * 
+     *
      * @access protected
      * @static
      * @param array $taxonomy (default: array())
@@ -170,7 +170,7 @@ class Pickle_Calendar_Post_Types {
 
     /**
      * Update admin messages.
-     * 
+     *
      * @access public
      * @static
      * @param mixed $messages (array).
@@ -205,7 +205,7 @@ class Pickle_Calendar_Post_Types {
 
     /**
      * Removed Yoast SEO scripts.
-     * 
+     *
      * @access public
      * @static
      * @return void
@@ -221,7 +221,7 @@ class Pickle_Calendar_Post_Types {
     }
     /**
      * Removed Yoast SEO meta box.
-     * 
+     *
      * @access public
      * @static
      * @return void
@@ -238,7 +238,7 @@ class Pickle_Calendar_Post_Types {
 
     /**
      * Flush rewrite rules.
-     * 
+     *
      * @access public
      * @static
      * @return void

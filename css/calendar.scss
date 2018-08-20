@@ -198,6 +198,19 @@
     .filter-hide {
         display: none;
     }
+    
+    &.multiday {
+        margin-right: -1px;
+        margin-left: 0;
+        
+        &.start {
+            margin-left: 5px;
+        }
+        
+        &.end {
+            margin-right: 5px;
+        }
+    }
 }
 
 /* filters */

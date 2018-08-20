@@ -45,7 +45,7 @@ function pc_get_event_details( $the_post = '' ) {
 
 /**
  * PC get posts.
- * 
+ *
  * @access public
  * @param mixed $args (default: null).
  * @return array
@@ -54,7 +54,7 @@ function pc_get_posts( $args = null ) {
     global $wpdb;
 
     $posts = array();
-    $today = date('Y-m-d');
+    $today = date( 'Y-m-d' );
     $defaults = array(
         'events' => 5,
         'orderby' => 'start_date',
@@ -64,36 +64,38 @@ function pc_get_posts( $args = null ) {
     );
 
     $args = wp_parse_args( $args, $defaults );
-    $select = "SELECT wp_posts.ID";
+    $select = 'SELECT wp_posts.ID';
     $db_from = "FROM $wpdb->posts INNER JOIN $wpdb->postmeta ON ( $wpdb->posts.ID = $wpdb->postmeta.post_id ) INNER JOIN $wpdb->postmeta AS mt1 ON ( $wpdb->posts.ID = mt1.post_id )";
-    $where_data = array("1=1", "AND $wpdb->posts.post_type = 'pcevent'", "AND (($wpdb->posts.post_status = 'publish'))", "AND ( REPLACE($wpdb->postmeta.meta_key, '_start_date_', '') = REPLACE(mt1.meta_key, '_end_date_', '') )");
-    
+    $where_data = array( '1=1', "AND $wpdb->posts.post_type = 'pcevent'", "AND (($wpdb->posts.post_status = 'publish'))", "AND ( REPLACE($wpdb->postmeta.meta_key, '_start_date_', '') = REPLACE(mt1.meta_key, '_end_date_', '') )" );
+
     // this is where our "options are run".
     // anything from today onwards (default) -- CAN SET DATE FOR START DATE
-    if (!empty($args['start_date']) && empty($args['end_date'])) :
+    if ( ! empty( $args['start_date'] ) && empty( $args['end_date'] ) ) :
         $where_data[] = "AND ( ( mt1.meta_key LIKE '_end_date_%' AND CAST(mt1.meta_value AS DATE) >= {$args['start_date']} ) )"; // anything from start date onwards.
-    elseif (!empty($args['end_date']) && empty($args['start_date'])) :
+    elseif ( ! empty( $args['end_date'] ) && empty( $args['start_date'] ) ) :
         $where_data[] = "AND ( ( mt1.meta_key LIKE '_end_date_%' AND CAST(mt1.meta_value AS DATE) <= $today ) )"; // anything before today.
-    elseif (!empty($args['start_date']) && !empty($args['end_date'])) :
+    elseif ( ! empty( $args['start_date'] ) && ! empty( $args['end_date'] ) ) :
         $where_data[] = "AND ( ( $wpdb->postmeta.meta_key LIKE '_start_date_%' AND CAST($wpdb->postmeta.meta_value AS DATE) >= {$args['start_date']} ) AND ( mt1.meta_key LIKE '_end_date_%' AND CAST(mt1.meta_value AS DATE) <= {$args['end_date']} ) )"; // between two dates.
     else :
         $where_data[] = "AND ( ( mt1.meta_key LIKE '_end_date_%' AND CAST(mt1.meta_value AS DATE) >= $today ) )"; // anything from today onwards (default).
     endif;
-    
-    $where = implode(' ', $where_data);
-    $post_ids = $wpdb->get_col("
+
+    $where = implode( ' ', $where_data );
+    $post_ids = $wpdb->get_col(
+        "
 		$select
 		$db_from
 		WHERE $where
 		GROUP BY $wpdb->posts.ID
 		ORDER BY $wpdb->postmeta.meta_value {$args['order']}
 		LIMIT {$args['events']}        
-    ");  
-    
-    foreach ($post_ids as $post_id) :
-        $post = get_post($post_id);
+    "
+    );
+
+    foreach ( $post_ids as $post_id ) :
+        $post = get_post( $post_id );
         $post->event_dates = pc_get_event_dates( $post_id );
-        
+
         $posts[] = $post;
     endforeach;
 
@@ -102,7 +104,7 @@ function pc_get_posts( $args = null ) {
 
 /**
  * Get event dates.
- * 
+ *
  * @access public
  * @param int $post_id (default: 0).
  * @return array

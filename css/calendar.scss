@@ -191,20 +191,25 @@
     margin-right: 5px;
     line-height: 1;
 
-    &.multiday {
-        opacity: 0;
-        
-        &.start {
-            opacity: 1;
-        }
-    }
-
     a {
         color: #fff;
     }
 
     .filter-hide {
         display: none;
+    }
+    
+    &.multiday {
+        margin-right: -1px;
+        margin-left: 0;
+        
+        &.start {
+            margin-left: 5px;
+        }
+        
+        &.end {
+            margin-right: 5px;
+        }
     }
 }
 

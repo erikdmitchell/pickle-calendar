@@ -223,64 +223,64 @@ class Pickle_Calendar {
             endfor;
 
             // keep going with days.
-        for ( $list_day = 1; $list_day <= $days_in_month; $list_day++ ) :
-            $classes = array( 'calendar-day' );
-            $pref_date = date( 'Y-m-d', strtotime( "$year-$month-$list_day" ) );
-
-            if ( picklecalendar()->settings['hide_weekends'] && ( 0 == $running_day || 6 == $running_day ) ) :
-                // $classes[] = 'hidden';
+            for ( $list_day = 1; $list_day <= $days_in_month; $list_day++ ) :
+                $classes = array( 'calendar-day' );
+                $pref_date = date( 'Y-m-d', strtotime( "$year-$month-$list_day" ) );
+    
+                if ( picklecalendar()->settings['hide_weekends'] && ( 0 == $running_day || 6 == $running_day ) ) :
+                    // $classes[] = 'hidden';
+                    if ( 6 == $running_day ) :
+                        $html .= '</div>';
+    
+                        if ( ( $day_counter + 1 ) != $days_in_month ) :
+                            $html .= '<div class="row">';
+                            endif;
+    
+                        $running_day = -1;
+                        $days_in_this_week = 0;
+                        endif;
+    
+                    $days_in_this_week++;
+                    $running_day++;
+                    $day_counter++;
+    
+                    continue;
+                    endif;
+    
+                if ( $pref_date == $current_date ) {
+                    $classes[] = 'today';
+                }
+    
+                if ( 0 == $running_day ) :
+                    $classes[] = 'first-of-week';
+                    $eow_day = date( 'Y-m-d', strtotime( $pref_date . ' +6 days' ) );
+                    endif;
+    
+                if ( 6 == $running_day ) {
+                    $classes[] = 'last-of-week';
+                }
+    
+                $html .= '<div class="' . implode( ' ', $classes ) . '">';
+                    $html .= '<div class="day-number">' . $list_day . '</div>'; // add day number.
+    
+                    $html .= apply_filters( 'pickle_calendar_single_day', $this->add_date_info( $pref_date ), $pref_date );
+    
+                $html .= '</div>';
+    
                 if ( 6 == $running_day ) :
                     $html .= '</div>';
-
+    
                     if ( ( $day_counter + 1 ) != $days_in_month ) :
                         $html .= '<div class="row">';
                         endif;
-
+    
                     $running_day = -1;
                     $days_in_this_week = 0;
                     endif;
-
+    
                 $days_in_this_week++;
                 $running_day++;
                 $day_counter++;
-
-                continue;
-                endif;
-
-            if ( $pref_date == $current_date ) {
-                $classes[] = 'today';
-            }
-
-            if ( 0 == $running_day ) :
-                $classes[] = 'first-of-week';
-                $eow_day = date( 'Y-m-d', strtotime( $pref_date . ' +6 days' ) );
-                endif;
-
-            if ( 6 == $running_day ) {
-                $classes[] = 'last-of-week';
-            }
-
-            $html .= '<div class="' . implode( ' ', $classes ) . '">';
-                $html .= '<div class="day-number">' . $list_day . '</div>'; // add day number.
-
-                $html .= apply_filters( 'pickle_calendar_single_day', $this->add_date_info( $pref_date ), $pref_date );
-
-            $html .= '</div>';
-
-            if ( 6 == $running_day ) :
-                $html .= '</div>';
-
-                if ( ( $day_counter + 1 ) != $days_in_month ) :
-                    $html .= '<div class="row">';
-                    endif;
-
-                $running_day = -1;
-                $days_in_this_week = 0;
-                endif;
-
-            $days_in_this_week++;
-            $running_day++;
-            $day_counter++;
             endfor;
 
             // finish the rest of the days in the week.
@@ -405,10 +405,6 @@ class Pickle_Calendar {
 
             $title = '<a href="' . get_permalink( $event_id ) . '">' . get_the_title( $event_id ) . '</a>';
             $text = apply_filters( 'pickle_calendar_event_title', $title, $event_id );
-
-            if ( $this->event_is_multiday( $event_id, $date ) && ! $this->is_start_date( $event_id, $date ) ) {
-                $text = '&nbsp;';
-            }
 
             $content .= '<div class="pickle-calendar-event ' . implode( ' ', $classes ) . '" data-event-id="' . $event_id . '" data-event-day-number="' . $key . '" data-event-date="' . $date . '" data-event-total-days=' . $this->total_days( $event_id, $date ) . '>' . $text . '</div>';
 

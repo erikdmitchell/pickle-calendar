@@ -110,16 +110,8 @@ class Pickle_Calendar_Admin {
 
         // for checkboxes //
         foreach ( $new_settings as $key => $value ) :
-            if ( is_array( $value ) ) :
-                foreach ( $value as $sub_key => $sub_value ) :
-                    if ( ! isset( $_POST['settings'][ $key ][ $sub_key ] ) ) :
-                        $new_settings[ $key ][ $sub_key ] = 0;
-                    endif;
-                endforeach;
-            else :
-                if ( ! isset( $_POST['settings'][ $key ] ) ) :
-                    $new_settings[ $key ] = 0;
-                endif;
+            if ( ! isset( $_POST['settings'][ $key ] ) ) :
+                $new_settings[ $key ] = 0;
             endif;
         endforeach;
 

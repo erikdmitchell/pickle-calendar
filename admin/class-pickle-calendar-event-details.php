@@ -58,10 +58,6 @@ class Pickle_Calendar_Event_Details {
      * @return void
      */
     public function add_metabox() {
-        if ( ! picklecalendar()->settings['include_details'] ) {
-            return;
-        }
-
         add_meta_box(
             'event-details',
             __( 'Event Details', 'pickle-calendar' ),
@@ -92,7 +88,7 @@ class Pickle_Calendar_Event_Details {
         $dates = $this->_wp_parse_args( $event_dates, $default_dates );
 
         // bail if no start/end date in settings.
-        if ( ! picklecalendar()->settings['detail_options']['start_date'] && ! picklecalendar()->settings['detail_options']['end_date'] ) {
+        if ( ! picklecalendar()->settings['show_start_date'] && ! picklecalendar()->settings['show_end_date'] ) {
             return;
         }
 
@@ -102,12 +98,12 @@ class Pickle_Calendar_Event_Details {
 
             $html .= '<div class="event-date-wrap" data-row-id="' . $key . '">';
 
-            if ( picklecalendar()->settings['detail_options']['start_date'] ) :
+            if ( picklecalendar()->settings['show_start_date'] ) :
                 $html .= '<label for="start_date">Start Date</label>';
                 $html .= '<input type="text" name="details[dates][' . $key . '][start_date]" id="" class="pcdetail-pickr start-date" value="' . $date['start_date'] . '" />';
                     endif;
 
-            if ( picklecalendar()->settings['detail_options']['end_date'] ) :
+            if ( picklecalendar()->settings['show_end_date'] ) :
                 $html .= '<label for="end_date">End Date</label>';
                 $html .= '<input type="text" name="details[dates][' . $key . '][end_date]" id="" class="pcdetail-pickr end-date" value="' . $date['end_date'] . '" />';
                     endif;

@@ -51,7 +51,5 @@ get_header(); ?>
     <?php get_sidebar(); ?>
 </div><!-- .wrap -->
 
-<?php pc_get_posts(); ?>
-
 <?php
 get_footer();

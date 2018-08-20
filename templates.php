@@ -27,13 +27,15 @@ function pc_single_event_template($single) {
 add_filter('single_template', 'pc_single_event_template');
 
 /**
- * Lcate template.
+ * pc_locate_template function.
  * 
  * @access public
- * @param string $template_name (default: '').
- * @return path
+ * @param mixed $template_name string.
+ * @param bool $load (default: false).
+ * @param bool $require_once (default: true).
+ * @return file
  */
-function pc_locate_template( $template_name = '' ) {
+function pc_locate_template( $template_name, $load = false, $require_once = true ) {
     // Templates dir.
     $templates_dir = PICKLE_CALENDAR_PATH . 'templates/';
 
@@ -53,6 +55,35 @@ function pc_locate_template( $template_name = '' ) {
 		$located = trailingslashit( $templates_dir ) . $template_name;
 	}
 
-    return $located;
+	if ( ( true == $load ) && ! empty( $located ) )
+		load_template( $located, $require_once );
+ 
+	return $located;
 }
 
+/**
+ * Get template part.
+ * 
+ * @access public
+ * @param mixed $slug (slug).
+ * @param mixed $name (default: null).
+ * @param bool $load (default: true).
+ * @return template
+ */
+function pc_get_template_part( $slug, $name = null, $load = true ) {
+	// Execute code for this part
+	do_action( 'get_template_part_' . $slug, $slug, $name );
+ 
+	// Setup possible parts
+	if ( isset( $name ) ) :
+		$template = $slug . '-' . $name . '.php';
+    else :
+	    $template = $slug . '.php';
+    endif;
+ 
+	// Allow template parts to be filtered
+	$template = apply_filters( 'pc_get_template_part', $template, $slug, $name );
+
+	// Return the part that is found
+	return pc_locate_template( $template, $load, false );
+}

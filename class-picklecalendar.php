@@ -163,7 +163,7 @@ final class PickleCalendar {
             'cpt_plural' => 'Events',
             'enable_editor' => false,
             'show_start_date' => true,
-            'show_end_date' => true,            
+            'show_end_date' => true,
             'hide_weekends' => false,
         );
 

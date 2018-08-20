@@ -20,13 +20,12 @@ class Pickle_Calendar_Post_Types {
         if ( post_type_exists( 'pcevent' ) ) {
             return;
         }
-        
+
         $supports = array( 'title' );
-        
+
         if ( picklecalendar()->settings['enable_editor'] ) {
             $supports[] = 'editor';
         }
-
 
         register_post_type(
             'pcevent', array(

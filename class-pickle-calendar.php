@@ -555,7 +555,6 @@ class Pickle_Calendar {
         );
         $args = wp_parse_args( $args, $default_args );
 
-        // AND wp_postmeta.meta_value != mt1.meta_value.
         $post_ids = $wpdb->get_col(
             $wpdb->prepare(
                 "

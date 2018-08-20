@@ -174,7 +174,7 @@ jQuery(window).resize(function() {
 		var newDate=new Date(jQuery(this).data('eventDate') + 'T00:00:00');
         var firstOfWeek = false;
         var lastOfWeek = false;		
-		var $day = jQuery(this).parents('.calendar-day')
+		var $day = jQuery(this).parents('.calendar-day');
 		
 		newDate.setDate(newDate.getDate() - 1);
 		

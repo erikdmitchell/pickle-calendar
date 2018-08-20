@@ -32,8 +32,8 @@
         <tbody>
         
             <tr>
-                <th scope="row"><label for="disable_editor">Disable Editor</label></th>
-                <td><label for="disable_editor"><input name="settings[disable_editor]" type="checkbox" id="disable_editor" value="1" <?php checked( picklecalendar()->settings['disable_editor'], 1 ); ?>>Disable Editor</label></td>
+                <th scope="row"><label for="enable_editor">Enable Editor</label></th>
+                <td><label for="enable_editor"><input name="settings[enable_editor]" type="checkbox" id="enable_editor" value="1" <?php checked( picklecalendar()->settings['enable_editor'], 1 ); ?>>Enable Editor</label></td>
             </tr>
         
             <tr>

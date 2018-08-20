@@ -118,7 +118,7 @@ final class PickleCalendar {
         include_once( PICKLE_CALENDAR_PATH . 'admin/functions.php' );
         include_once( PICKLE_CALENDAR_PATH . 'class-pickle-calendar.php' );
         include_once( PICKLE_CALENDAR_PATH . 'admin/class-pickle-calendar-event-details.php' );
-        include_once( PICKLE_CALENDAR_PATH . 'post-type.php' );
+        include_once( PICKLE_CALENDAR_PATH . 'class-pickle-calendar-post-types.php' );
         include_once( PICKLE_CALENDAR_PATH . 'class-pickle-calendar-import-export-events.php' );
 
         if ( is_admin() ) {
@@ -161,7 +161,7 @@ final class PickleCalendar {
             'adminlabel' => 'Events',
             'cpt_single' => 'Event',
             'cpt_plural' => 'Events',
-            'disable_editor' => false,
+            'enable_editor' => false,
             'show_start_date' => true,
             'show_end_date' => true,            
             'hide_weekends' => false,

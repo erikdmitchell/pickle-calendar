@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Pickle_Calendar_Post_Types class.
+ */
 class Pickle_Calendar_Post_Types {
 
     public static function init() {
@@ -17,6 +20,13 @@ class Pickle_Calendar_Post_Types {
         if ( post_type_exists( 'pcevent' ) ) {
             return;
         }
+        
+        $supports = array( 'title' );
+        
+        if ( picklecalendar()->settings['enable_editor'] ) {
+            $supports[] = 'editor';
+        }
+
 
         register_post_type(
             'pcevent', array(
@@ -39,8 +49,7 @@ class Pickle_Calendar_Post_Types {
                 'hierarchical'      => false,
                 'show_ui'           => true,
                 'show_in_nav_menus' => true,
-                // 'supports'          => array( 'title', 'editor', 'thumbnail' ),
-                'supports'          => array( 'title' ),
+                'supports'          => $supports,
                 'has_archive'       => true,
                 'rewrite'           => true,
                 'query_var'         => true,

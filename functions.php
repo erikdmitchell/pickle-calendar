@@ -6,7 +6,14 @@
  * @since   1.0.0
  */
 
-function pc_event_details( $the_post = '' ) {
+/**
+ * Get event details.
+ * 
+ * @access public
+ * @param string $the_post (default: '').
+ * @return array
+ */
+function pc_get_event_details( $the_post = '' ) {
     global $post;
     
 	if ( is_int($the_post) ) :
@@ -16,25 +23,8 @@ function pc_event_details( $the_post = '' ) {
         $post = $the_post;
 	endif;
 	
-    $details = pc_get_event_details( $post->ID );
-    
-    pc_get_template_part('event-details');
-}
-
-/**
- * PC get event details.
- * 
- * @access public
- * @param int $post_id (default: 0).
- * @return array
- */
-function pc_get_event_details( $post_id = 0 ) {
     $dates = array();
-        
-    if (empty(!$post_id) || !$post_id)
-        return $dates;
-	
-    $meta = get_post_meta( $post_id );
+    $meta = get_post_meta( $post->ID );
 
     foreach ( $meta as $key => $value ) :
         if ( strpos( $key, '_start_date_' ) !== false ) :

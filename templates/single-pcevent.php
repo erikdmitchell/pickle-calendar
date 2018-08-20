@@ -38,9 +38,7 @@ get_header(); ?>
                 		?>
                 	</div><!-- .entry-content -->
                 	
-                	<div class="event-details">
-                    	<?php pc_event_details(); ?>
-                	</div>
+                    <?php pc_get_template_part('event-details'); ?>
                 
                 </article><!-- #post-## -->
 

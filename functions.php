@@ -6,32 +6,21 @@
  * @since   1.0.0
  */
 
-/**
- * Pickle Calendar get taxonomy function.
- *
- * @access public
- * @param string $slug (default: '').
- * @return array
- */
-function pickle_calendar_get_taxonomy( $slug = '' ) {
-    $default = array(
-        'slug' => '',
-        'label' => '',
-        'label_plural' => '',
-        'display' => 1,
-        'display_type' => 'checkbox',
-        'hide_all_tab' => 0,
-    );
-    $tax = array();
 
-    foreach ( picklecalendar()->settings['taxonomies'] as $taxonomy ) :
-        if ( $taxonomy['slug'] == $slug ) :
-            $tax = $taxonomy;
-            break;
-        endif;
-    endforeach;
+/* Filter the single_template with our custom function*/
+add_filter('single_template', 'my_custom_template');
 
-    $tax = picklecalendar()->parse_args( $tax, $default );
+function my_custom_template($single) {
 
-    return $tax;
+    global $post;
+
+    /* Checks for single template by post type */
+    if ( $post->post_type == 'POST TYPE NAME' ) {
+        if ( file_exists( PLUGIN_PATH . '/Custom_File.php' ) ) {
+            return PLUGIN_PATH . '/Custom_File.php';
+        }
+    }
+
+    return $single;
+
 }

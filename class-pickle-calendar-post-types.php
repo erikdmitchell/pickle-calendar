@@ -1,10 +1,23 @@
 <?php
-
+/**
+ * Pickle Calendar Event Details
+ *
+ * @package PickleCalendar
+ * @since   1.0.0
+ */
+ 
 /**
  * Pickle_Calendar_Post_Types class.
  */
 class Pickle_Calendar_Post_Types {
 
+    /**
+     * Init.
+     * 
+     * @access public
+     * @static
+     * @return void
+     */
     public static function init() {
         add_action( 'init', array( __CLASS__, 'register_post_types' ), 5 );
         add_action( 'init', array( __CLASS__, 'register_taxonomies' ), 5 );
@@ -16,6 +29,13 @@ class Pickle_Calendar_Post_Types {
         // potential rewrite flush rules hook/action here
     }
 
+    /**
+     * Register post types.
+     * 
+     * @access public
+     * @static
+     * @return void
+     */
     public static function register_post_types() {
         if ( post_type_exists( 'pcevent' ) ) {
             return;
@@ -61,12 +81,27 @@ class Pickle_Calendar_Post_Types {
 
     }
 
+    /**
+     * Register taxonomies.
+     * 
+     * @access public
+     * @static
+     * @return void
+     */
     public static function register_taxonomies() {
         foreach ( picklecalendar()->settings['taxonomies'] as $taxonomy ) :
             self::generate_taxonomy( $taxonomy );
         endforeach;
     }
 
+    /**
+     * Generate taxonomies.
+     * 
+     * @access protected
+     * @static
+     * @param array $taxonomy (default: array())
+     * @return void
+     */
     protected static function generate_taxonomy( $taxonomy = array() ) {
         if ( empty( $taxonomy ) ) {
             return;
@@ -133,6 +168,14 @@ class Pickle_Calendar_Post_Types {
         );
     }
 
+    /**
+     * Update admin messages.
+     * 
+     * @access public
+     * @static
+     * @param mixed $messages (array).
+     * @return array
+     */
     public static function updated_messages( $messages ) {
         global $post;
 
@@ -160,6 +203,13 @@ class Pickle_Calendar_Post_Types {
         return $messages;
     }
 
+    /**
+     * Removed Yoast SEO scripts.
+     * 
+     * @access public
+     * @static
+     * @return void
+     */
     public static function pcevents_dequeue_wp_seo_scripts() {
         global $post;
 
@@ -169,7 +219,13 @@ class Pickle_Calendar_Post_Types {
 
         wp_dequeue_script( 'yoast-seo-post-scraper' );
     }
-
+    /**
+     * Removed Yoast SEO meta box.
+     * 
+     * @access public
+     * @static
+     * @return void
+     */
     public static function pcevents_remove_wp_seo_meta_box() {
         global $post;
 
@@ -180,6 +236,13 @@ class Pickle_Calendar_Post_Types {
         remove_meta_box( 'wpseo_meta', 'pcevent', 'normal' );
     }
 
+    /**
+     * Flush rewrite rules.
+     * 
+     * @access public
+     * @static
+     * @return void
+     */
     public static function flush_rewrite_rules() {
         flush_rewrite_rules();
     }

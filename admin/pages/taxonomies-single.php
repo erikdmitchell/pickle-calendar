@@ -1,6 +1,6 @@
 <?php
 $slug = isset( $_GET['slug'] ) ? $_GET['slug'] : '';
-$taxonomy = pickle_calendar_get_taxonomy( $slug );
+$taxonomy = picklecalendar()->admin->pickle_calendar_get_taxonomy( $slug );
 ?>
 
 <h2 class="wp-heading-inline">Taxonomy</h2>

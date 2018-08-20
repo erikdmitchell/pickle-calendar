@@ -37,6 +37,10 @@ get_header(); ?>
                 		);
                 		?>
                 	</div><!-- .entry-content -->
+                	
+                	<div class="event-details">
+                    	<?php pc_event_details(); ?>
+                	</div>
                 
                 </article><!-- #post-## -->
 

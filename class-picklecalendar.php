@@ -113,6 +113,7 @@ final class PickleCalendar {
     public function includes() {
         include_once( PICKLE_CALENDAR_PATH . 'update-functions.php' );
         include_once( PICKLE_CALENDAR_PATH . 'class-pickle-calendar-install.php' );
+        include_once( PICKLE_CALENDAR_PATH . 'templates.php' );
         include_once( PICKLE_CALENDAR_PATH . 'functions.php' );
         include_once( PICKLE_CALENDAR_PATH . 'admin/admin.php' );
         include_once( PICKLE_CALENDAR_PATH . 'admin/functions.php' );

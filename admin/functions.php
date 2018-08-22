@@ -1,7 +1,23 @@
 <?php
+/**
+ * Pickle Calendar functions
+ *
+ * @package PickleCalendar
+ * @since   1.0.0
+ */
 
+
+/**
+ * Pickle_Calendar_Admin_Functions class.
+ */
 class Pickle_Calendar_Admin_Functions {
 
+    /**
+     * __construct function.
+     *
+     * @access public
+     * @return void
+     */
     public function __construct() {}
 
     /**
@@ -66,6 +82,36 @@ class Pickle_Calendar_Admin_Functions {
         foreach ( $taxonomies as $taxonomy ) :
             $this->remove_taxonomy( $taxonomy );
         endforeach;
+    }
+
+    /**
+     * Pickle Calendar get taxonomy function.
+     *
+     * @access public
+     * @param string $slug (default: '').
+     * @return array
+     */
+    function pickle_calendar_get_taxonomy( $slug = '' ) {
+        $default = array(
+            'slug' => '',
+            'label' => '',
+            'label_plural' => '',
+            'display' => 1,
+            'display_type' => 'checkbox',
+            'hide_all_tab' => 0,
+        );
+        $tax = array();
+
+        foreach ( picklecalendar()->settings['taxonomies'] as $taxonomy ) :
+            if ( $taxonomy['slug'] == $slug ) :
+                $tax = $taxonomy;
+                break;
+            endif;
+        endforeach;
+
+        $tax = picklecalendar()->parse_args( $tax, $default );
+
+        return $tax;
     }
 
 }

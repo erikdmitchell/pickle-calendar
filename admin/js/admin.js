@@ -1,9 +1,5 @@
 jQuery(document).ready(function($) {
-	
-	if ($('input#include_details').is(':checked')) {
-		$('.pickle-calendar-settings-form tr.details-box').show();	
-	}
-	
+
 	// taxonomy display options onload.
     if ($("#tax-display input[type=radio]:checked").val() == 1) {
         $('#tax-display-type').show(); // show display options.

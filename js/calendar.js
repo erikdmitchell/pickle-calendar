@@ -172,21 +172,36 @@ jQuery(window).resize(function() {
 		var thisOffset=jQuery(this).offset();		
 		var date=new Date(jQuery(this).data('eventDate') + 'T00:00:00');
 		var newDate=new Date(jQuery(this).data('eventDate') + 'T00:00:00');
+        var firstOfWeek = false;
+        var lastOfWeek = false;		
+		var $day = jQuery(this).parents('.calendar-day');
 		
 		newDate.setDate(newDate.getDate() - 1);
 		
+		if ($day.hasClass('first-of-week')) {
+    		firstOfWeek = true;
+		}
+
+		if ($day.hasClass('last-of-week')) {
+    		lastOfWeek = true;
+		}
+	
 		var nd=new Date(newDate);
 		var prevDay=('0' + nd.getDate()).slice(-2);
 		var prevMonth=('0' + (nd.getMonth() + 1)).slice(-2);
 		var prevDate=nd.getFullYear() + '-' + prevMonth + '-' + prevDay;
 		var prevEvent=jQuery('.pickle-calendar').find(".pickle-calendar-event[data-event-date='" + prevDate + "'][data-event-id='" + jQuery(this).data('eventId') + "']");
 		
+		if (true === firstOfWeek) {
+    		return;
+		}
+		
 		if (typeof prevEvent.offset() != 'undefined' && prevEvent.offset().top != thisOffset.top) {
 			jQuery(this).css({
 				'margin-top' : prevEvent.offset().top - thisOffset.top
 			});
 			
-			// double check //
+			// double check.
 			if (prevEvent.offset().top != jQuery(this).offset().top) {
 				jQuery(this).css({
 					'margin-top' : parseInt(jQuery(this).css('margin-top')) + (prevEvent.offset().top - jQuery(this).offset().top)
@@ -197,24 +212,14 @@ jQuery(window).resize(function() {
 	};	
 })(jQuery);
 
-function pcTextWidth(text, font) { 
-    $fakeEl=jQuery('<span>').hide().appendTo(document.body);
-    	
-    $fakeEl.text(text).css('font', font);
-    
-    var width = $fakeEl.width();
-    
-    $fakeEl.remove();
-    
-    return width;
-}
-
+/**
+ * PickleCalendarRowSetup function.
+ * 
+ * @access public
+ * @return void
+ */
 function PickleCalendarRowSetup() {
 	jQuery('.pickle-calendar-event.multiday').each(function() {
-		var eventTotalDays=jQuery(this).data('eventTotalDays');
-	
-		jQuery(this).css('width', eventTotalDays * 98 + '%'); // set width //
-			
 		jQuery(this).pcEventOffset(); // tweak margin	
 	});
 }

@@ -3,7 +3,7 @@ Contributors: erikdmitchell
 Tags: calendar, events, responsive
 Requires at least: 3.8
 Tested up to: 4.9.5
-Stable tag: 1.2.0-beta.3
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 

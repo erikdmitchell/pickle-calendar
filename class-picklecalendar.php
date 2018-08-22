@@ -19,7 +19,7 @@ final class PickleCalendar {
      * @var string
      * @access public
      */
-    public $version = '1.2.0-beta.4';
+    public $version = '1.3.0';
 
     /**
      * Settings.
@@ -113,12 +113,13 @@ final class PickleCalendar {
     public function includes() {
         include_once( PICKLE_CALENDAR_PATH . 'update-functions.php' );
         include_once( PICKLE_CALENDAR_PATH . 'class-pickle-calendar-install.php' );
+        include_once( PICKLE_CALENDAR_PATH . 'templates.php' );
         include_once( PICKLE_CALENDAR_PATH . 'functions.php' );
         include_once( PICKLE_CALENDAR_PATH . 'admin/admin.php' );
         include_once( PICKLE_CALENDAR_PATH . 'admin/functions.php' );
         include_once( PICKLE_CALENDAR_PATH . 'class-pickle-calendar.php' );
         include_once( PICKLE_CALENDAR_PATH . 'admin/class-pickle-calendar-event-details.php' );
-        include_once( PICKLE_CALENDAR_PATH . 'post-type.php' );
+        include_once( PICKLE_CALENDAR_PATH . 'class-pickle-calendar-post-types.php' );
         include_once( PICKLE_CALENDAR_PATH . 'class-pickle-calendar-import-export-events.php' );
 
         if ( is_admin() ) {
@@ -161,12 +162,10 @@ final class PickleCalendar {
             'adminlabel' => 'Events',
             'cpt_single' => 'Event',
             'cpt_plural' => 'Events',
-            'disable_editor' => false,
-            'include_details' => true,
-            'detail_options' => array(
-                'start_date' => true,
-                'end_date' => true,
-            ),
+            'enable_editor' => false,
+            'show_start_date' => true,
+            'show_end_date' => true,
+            'hide_weekends' => false,
         );
 
         $db_settings = get_option( 'pickle_calendar_settings', '' );
@@ -192,7 +191,7 @@ final class PickleCalendar {
      * Parse args function.
      *
      * @access public
-     * @param mixed &$a (array).
+     * @param mixed $a (array).
      * @param mixed $b (array).
      * @return array
      */

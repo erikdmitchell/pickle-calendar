@@ -56,6 +56,7 @@ class Pickle_Calendar_Admin {
         $tabs = array(
             'settings' => 'Settings',
             'taxonomies' => 'Categories',
+            'import-export' => 'Import/Export',
         );
         $active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
 
@@ -82,6 +83,9 @@ class Pickle_Calendar_Admin {
                         $html .= $this->get_admin_page( 'taxonomies' );
                     endif;
                 break;
+            case 'import-export':
+                $html .= $this->get_admin_page( 'import-export' );
+                break;
             default:
                 $html .= $this->get_admin_page( 'settings' );
             endswitch;
@@ -106,16 +110,8 @@ class Pickle_Calendar_Admin {
 
         // for checkboxes //
         foreach ( $new_settings as $key => $value ) :
-            if ( is_array( $value ) ) :
-                foreach ( $value as $sub_key => $sub_value ) :
-                    if ( ! isset( $_POST['settings'][ $key ][ $sub_key ] ) ) :
-                        $new_settings[ $key ][ $sub_key ] = 0;
-                    endif;
-                endforeach;
-            else :
-                if ( ! isset( $_POST['settings'][ $key ] ) ) :
-                    $new_settings[ $key ] = 0;
-                endif;
+            if ( ! isset( $_POST['settings'][ $key ] ) ) :
+                $new_settings[ $key ] = 0;
             endif;
         endforeach;
 

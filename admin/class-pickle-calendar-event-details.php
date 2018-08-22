@@ -5,7 +5,7 @@
  * @package PickleCalendar
  * @since   1.0.0
  */
- 
+
 /**
  * Pickle_Calendar_Event_Details class.
  */
@@ -58,9 +58,6 @@ class Pickle_Calendar_Event_Details {
      * @return void
      */
     public function add_metabox() {
-        if (!picklecalendar()->settings['include_details'])
-            return;
-            
         add_meta_box(
             'event-details',
             __( 'Event Details', 'pickle-calendar' ),
@@ -91,8 +88,9 @@ class Pickle_Calendar_Event_Details {
         $dates = $this->_wp_parse_args( $event_dates, $default_dates );
 
         // bail if no start/end date in settings.
-        if (!picklecalendar()->settings['detail_options']['start_date'] && !picklecalendar()->settings['detail_options']['end_date'])
+        if ( ! picklecalendar()->settings['show_start_date'] && ! picklecalendar()->settings['show_end_date'] ) {
             return;
+        }
 
         $html .= wp_nonce_field( 'update_settings', 'boomi_trust_admin', true, false );
 
@@ -100,16 +98,16 @@ class Pickle_Calendar_Event_Details {
 
             $html .= '<div class="event-date-wrap" data-row-id="' . $key . '">';
 
-                    if (picklecalendar()->settings['detail_options']['start_date']) :
-                        $html .= '<label for="start_date">Start Date</label>';
-                        $html .= '<input type="text" name="details[dates][' . $key . '][start_date]" id="" class="pcdetail-pickr start-date" value="' . $date['start_date'] . '" />';
+            if ( picklecalendar()->settings['show_start_date'] ) :
+                $html .= '<label for="start_date">Start Date</label>';
+                $html .= '<input type="text" name="details[dates][' . $key . '][start_date]" id="" class="pcdetail-pickr start-date" value="' . $date['start_date'] . '" />';
                     endif;
 
-                    if (picklecalendar()->settings['detail_options']['end_date']) :                    
-                        $html .= '<label for="end_date">End Date</label>';
-                        $html .= '<input type="text" name="details[dates][' . $key . '][end_date]" id="" class="pcdetail-pickr end-date" value="' . $date['end_date'] . '" />';
+            if ( picklecalendar()->settings['show_end_date'] ) :
+                $html .= '<label for="end_date">End Date</label>';
+                $html .= '<input type="text" name="details[dates][' . $key . '][end_date]" id="" class="pcdetail-pickr end-date" value="' . $date['end_date'] . '" />';
                     endif;
-                    
+
                     $html .= '<button class="pc-remove-row">-</button>';
 
             $html .= '</div>';
@@ -172,14 +170,14 @@ class Pickle_Calendar_Event_Details {
 
         foreach ( $_POST['details']['dates'] as $key => $dates ) :
             add_post_meta( $post_id, '_start_date_' . sanitize_key( $key ), $dates['start_date'] );
-            
+
             // if we have a start date, but no end date, make end = start.
-            if (!empty($dates['start_date']) && empty($dates['end_date'])) :
+            if ( ! empty( $dates['start_date'] ) && empty( $dates['end_date'] ) ) :
                 $end_date = $dates['start_date'];
             else :
-                $end_date = $dates['end_date'];  
+                $end_date = $dates['end_date'];
             endif;
-    
+
             add_post_meta( $post_id, '_end_date_' . sanitize_key( $key ), $end_date );
         endforeach;
     }

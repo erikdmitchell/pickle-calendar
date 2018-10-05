@@ -2,8 +2,8 @@
 Contributors: erikdmitchell
 Tags: calendar, events, responsive
 Requires at least: 3.8
-Tested up to: 4.9.5
-Stable tag: 1.3.0
+Tested up to: 4.9.8
+Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,6 +29,12 @@ Coming soon.
 apply_filters('pickle_calendar_event_title', $title, $event_id)
 
 == Changelog ==
+
+= 1.3.1 =
+
+= 1.3.0 =
+
+= 1.2.0 =
 
 = 1.1.1 =
 

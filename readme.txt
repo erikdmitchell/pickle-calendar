@@ -32,7 +32,7 @@ apply_filters('pickle_calendar_event_title', $title, $event_id)
 
 = 1.3.2 =
 
- * Fixed multi-day event showing event each day.
+ * Fixed multi-day event showing event title each day.
 
 = 1.3.1 =
 

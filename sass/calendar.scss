@@ -1,5 +1,4 @@
 /**
- * calendar.scss
  * Governs the general look and feel of the calendar
  */
  
@@ -205,10 +204,18 @@
         
         &.start {
             margin-left: 5px;
+            
+            a {
+                opacity: 1;
+            }
         }
         
         &.end {
             margin-right: 5px;
+        }
+        
+        a {
+            opacity: 0;
         }
     }
 }

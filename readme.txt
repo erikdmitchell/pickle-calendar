@@ -3,7 +3,7 @@ Contributors: erikdmitchell
 Tags: calendar, events, responsive
 Requires at least: 3.8
 Tested up to: 4.9.8
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,6 +29,10 @@ Coming soon.
 apply_filters('pickle_calendar_event_title', $title, $event_id)
 
 == Changelog ==
+
+= 1.3.2 =
+
+ * Fixed multi-day event showing event title each day.
 
 = 1.3.1 =
 

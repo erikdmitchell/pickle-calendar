@@ -32,6 +32,8 @@ apply_filters('pickle_calendar_event_title', $title, $event_id)
 
 = 1.3.2 =
 
+ * Fixed multi-day event showing event each day.
+
 = 1.3.1 =
 
 * Moved sass files to new folder. No real effect on plugin.

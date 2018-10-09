@@ -203,7 +203,7 @@ gulp.task('phpcbf', function () {
 gulp.task('zip', function () {
   return gulp.src(buildInclude)
     .pipe(zip('pickle-calendar.zip'))
-    .pipe(gulp.dest('./'));
+    .pipe(gulp.dest('./../'));
 }); 
 
 // Package Distributable - sort of

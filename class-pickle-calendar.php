@@ -41,6 +41,7 @@ class Pickle_Calendar {
                 'ajax_url' => admin_url( 'admin-ajax.php' ),
                 'pluginURL' => PICKLE_CALENDAR_URL,
                 'pluginPath' => PICKLE_CALENDAR_PATH,
+                'ajax_nonce' => wp_create_nonce( 'pc_bscal_nav' ),
             )
         );
 
@@ -777,6 +778,8 @@ class Pickle_Calendar {
      * @access public
      */
     public function ajax_nav() {
+        check_ajax_referer( 'pc_bscal_nav', 'security' );
+
         $month = ! empty( $_POST['month'] ) ? sanitize_text_field( wp_unslash( $_POST['month'] ) ) : '';
         $year = ! empty( $_POST['year'] ) ? sanitize_text_field( wp_unslash( $_POST['year'] ) ) : '';
 

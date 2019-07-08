@@ -8,7 +8,8 @@ jQuery(document).ready(function($) {
 		var data={
 			'action' : 'bscal_nav',
 			'month' : $(this).data('month'),
-			'year' : $(this).data('year')
+			'year' : $(this).data('year'),
+			'security': pickleCalOpts.ajax_nonce
 		};
   		
         pcShowAJAXLoader('.pickle-calendar');	

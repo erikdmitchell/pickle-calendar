@@ -69,7 +69,7 @@ var gulp = require('gulp'),
     rename = require('gulp-rename'),
     concat = require('gulp-concat'),
     notify = require('gulp-notify'),
-    runSequence = require('gulp-run-sequence'),
+    runSequence = require('run-sequence'),
     sass = require('gulp-sass'),
     plugins = require('gulp-load-plugins')({
         camelize: true
@@ -84,7 +84,9 @@ var gulp = require('gulp'),
     phpcs = require('gulp-phpcs'), // Gulp plugin for running PHP Code Sniffer.
     phpcbf = require('gulp-phpcbf'), // PHP Code Beautifier
     gutil = require('gulp-util'), // gulp util
-    zip = require('gulp-zip'); // gulp zip
+    zip = require('gulp-zip'), // gulp zip
+    beautify = require('gulp-jsbeautifier'),
+    cssbeautify = require('gulp-cssbeautify');
 
 /**
  * Styles
@@ -144,6 +146,13 @@ gulp.task('lintcss', function lintCssTask() {
     }));
 });	
 
+// make pretty
+gulp.task('beautifycss', () =>
+    gulp.src(cssInclude)
+        .pipe(cssbeautify())
+        .pipe(gulp.dest('./'))
+);	
+
 /**
  * Scripts
  */
@@ -164,6 +173,13 @@ gulp.task('lintjs', function() {
     .pipe(jshint())
     .pipe(jshint.reporter(stylish));
 });
+
+// make pretty
+gulp.task('beautifyjs', () =>
+    gulp.src(jsInclude)
+        .pipe(beautify())
+        .pipe(gulp.dest('./'))
+);	
 
 /**
  * PHP
@@ -194,12 +210,6 @@ gulp.task('phpcbf', function () {
 });
 
 // ==== TASKS ==== //
-/**
- * Gulp Default Task
- *
- * Compiles styles, watches js and php files.
- *
- */
  
 // gulp zip
 gulp.task('zip', function () {

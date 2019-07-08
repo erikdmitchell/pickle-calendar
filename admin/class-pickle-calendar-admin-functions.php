@@ -35,10 +35,10 @@ class Pickle_Calendar_Admin_Functions {
         endif;
 
         // bulk actions.
-        if ( isset( $_POST['action'] ) ) :
-            switch ( $_POST['action'] ) :
+        if ( isset( $_POST['action'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification
+            switch ( $_POST['action'] ) : // phpcs:ignore WordPress.Security.NonceVerification
                 case 'deleteall':
-                    $this->taxonomy_bulk_delete( isset( $_POST['pickle_calendar_taxonomy'] ) ? pc_sanitize_array( wp_unslash( $_POST['pickle_calendar_taxonomy'] ) ) : '' );
+                    $this->taxonomy_bulk_delete( isset( $_POST['pickle_calendar_taxonomy'] ) ? pc_sanitize_array( wp_unslash( $_POST['pickle_calendar_taxonomy'] ) ) : '' ); // phpcs:ignore WordPress.Security.NonceVerification
                     break;
             endswitch;
         endif;

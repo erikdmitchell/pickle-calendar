@@ -34,11 +34,11 @@ class Pickle_Calendar_Admin_Functions {
             $this->remove_taxonomy( $slug );
         endif;
 
-        // bulk actions //
+        // bulk actions.
         if ( isset( $_POST['action'] ) ) :
             switch ( $_POST['action'] ) :
                 case 'deleteall':
-                    $this->taxonomy_bulk_delete( $_POST['pickle_calendar_taxonomy'] );
+                    $this->taxonomy_bulk_delete( isset( $_POST['pickle_calendar_taxonomy'] ) ? pc_sanitize_array( wp_unslash( $_POST['pickle_calendar_taxonomy'] ) ) : '' );
                     break;
             endswitch;
         endif;
@@ -93,7 +93,7 @@ class Pickle_Calendar_Admin_Functions {
      * @param string $slug (default: '').
      * @return array
      */
-    function pickle_calendar_get_taxonomy( $slug = '' ) {
+    public function pickle_calendar_get_taxonomy( $slug = '' ) {
         $default = array(
             'slug' => '',
             'label' => '',

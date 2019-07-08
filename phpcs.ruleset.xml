@@ -6,7 +6,7 @@
 	<description>PHP_CodeSniffer ruleset.</description>
 
 	<!-- Configs -->
-	<config name="minimum_supported_wp_version" value="5.2" />
+	<config name="minimum_supported_wp_version" value="4.7" />
 	<config name="testVersion" value="7.1-"/>
 
     <!-- Include file/paths -->

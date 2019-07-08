@@ -1,4 +1,5 @@
 /* global pickleCalOpts */
+/* jshint unused:false */
 
 jQuery(document).ready(function($) {
 
@@ -137,42 +138,6 @@ jQuery(window).resize(function() {
  * our equal heights function for calendar days
  */
 (function($) {
-
-    var pcalEqualHeight = function(container) {
-        var currentTallest = 0,
-            currentRowStart = 0,
-            rowDivs = [],
-            $el,
-            topPosition = 0,
-            currentDiv = 0;
-
-        $(container).each(function() {
-
-            $el = $(this);
-            $($el).height('auto');
-            topPosition = $el.position().top;
-
-            if (currentRowStart !== topPosition) {
-                for (currentDiv = 0; currentDiv < rowDivs.length; currentDiv++) {
-                    rowDivs[currentDiv].height(currentTallest);
-                }
-
-                rowDivs.length = 0; // empty the array
-                currentRowStart = topPosition;
-                currentTallest = $el.height();
-                rowDivs.push($el);
-            } else {
-                rowDivs.push($el);
-                currentTallest = (currentTallest < $el.height()) ? ($el.height()) : (currentTallest);
-            }
-
-            for (currentDiv = 0; currentDiv < rowDivs.length; currentDiv++) {
-                rowDivs[currentDiv].height(currentTallest);
-            }
-
-        });
-    };
-
     $.fn.pcEventOffset = function() {
         var thisOffset = jQuery(this).offset();
         //var date = new Date(jQuery(this).data('eventDate') + 'T00:00:00');
@@ -216,6 +181,49 @@ jQuery(window).resize(function() {
 
     };
 })(jQuery);
+
+
+/**
+ * Equal height rows.
+ * 
+ * @access public
+ * @param mixed container
+ * @return void
+ */
+function pcalEqualHeight(container) {
+    var currentTallest = 0,
+        currentRowStart = 0,
+        rowDivs = [],
+        $el,
+        topPosition = 0,
+        currentDiv = 0;
+
+    jQuery(container).each(function() {
+
+        $el = jQuery(this);
+        jQuery($el).height('auto');
+        topPosition = $el.position().top;
+
+        if (currentRowStart !== topPosition) {
+            for (currentDiv = 0; currentDiv < rowDivs.length; currentDiv++) {
+                rowDivs[currentDiv].height(currentTallest);
+            }
+
+            rowDivs.length = 0; // empty the array
+            currentRowStart = topPosition;
+            currentTallest = $el.height();
+            rowDivs.push($el);
+        } else {
+            rowDivs.push($el);
+            currentTallest = (currentTallest < $el.height()) ? ($el.height()) : (currentTallest);
+        }
+
+        for (currentDiv = 0; currentDiv < rowDivs.length; currentDiv++) {
+            rowDivs[currentDiv].height(currentTallest);
+        }
+
+    });
+}
 
 /**
  * PickleCalendarRowSetup function.

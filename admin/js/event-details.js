@@ -1,3 +1,5 @@
+/* global repeatField, resetIDs */
+
 jQuery(document).ready(function($) {
 
     var fpConf = {

@@ -32,8 +32,8 @@ var buildInclude = [
     
 var phpSrc = [
         '**/*.php', // Include all files    
-        '!node_modules/**/*', // Exclude node_modules/
-        '!vendor/**' // Exclude vendor/    
+        '!node_modules/**/*', // Exclude node_modules
+        '!vendor/**' // Exclude vendor   
     ];
 
 var cssInclude = [
@@ -44,7 +44,7 @@ var cssInclude = [
         '!**/*.min.css',
         '!node_modules/**/*',
         '!style.css.map',
-        '!vendor/**/*'
+        '!vendor/**'
     ];
     
 var jsInclude = [
@@ -55,8 +55,8 @@ var jsInclude = [
         '!**/*.min.js',
         '!node_modules/**/*',
         '!vendor/**',
-        '!**/gulpfile.js'             
-    ];         
+        '!**/gulpfile.js'       
+    ];    
 
 // Load plugins
 var gulp = require('gulp'),
@@ -94,7 +94,7 @@ var gulp = require('gulp'),
  
 // compile sass
 gulp.task('sass', function () {
-    gulp.src('./sass/*.scss')
+    gulp.src('**/sass/*.scss')
         .pipe(plumber())
         .pipe(sourcemaps.init())
         .pipe(sass({
@@ -111,7 +111,7 @@ gulp.task('sass', function () {
         .pipe(autoprefixer('last 2 version', '> 1%', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
         .pipe(sourcemaps.write('.'))
         .pipe(plumber.stop())
-        .pipe(gulp.dest('./css/'))
+        .pipe(gulp.dest('./'))
 });
 
 // minify all css
@@ -144,7 +144,7 @@ gulp.task('lintcss', function lintCssTask() {
         {formatter: 'string', console: true}
       ]
     }));
-});	
+});
 
 // make pretty
 gulp.task('beautifycss', () =>
@@ -174,12 +174,29 @@ gulp.task('lintjs', function() {
     .pipe(jshint.reporter(stylish));
 });
 
+// combine scripts into one file and min it.
+gulp.task('scriptscombine', function () {
+    return gulp.src(jsInclude)
+        .pipe(concat('scripts.js'))
+        .pipe(gulp.dest('./inc/js'))
+        .pipe(rename({
+            basename: "scripts",
+            suffix: '.min'
+        }))
+        .pipe(uglify())
+        .pipe(gulp.dest('./inc/js/'))
+        .pipe(notify({
+            message: 'Scripts combined',
+            onLast: true
+        }));
+});
+
 // make pretty
 gulp.task('beautifyjs', () =>
     gulp.src(jsInclude)
         .pipe(beautify())
         .pipe(gulp.dest('./'))
-);	
+);
 
 /**
  * PHP
@@ -210,15 +227,15 @@ gulp.task('phpcbf', function () {
 });
 
 // ==== TASKS ==== //
- 
+
 // gulp zip
 gulp.task('zip', function () {
   return gulp.src(buildInclude)
     .pipe(zip('pickle-calendar.zip'))
     .pipe(gulp.dest('./../'));
-}); 
+});  
 
-// Package Distributable - sort of
+// Package Distributable
 gulp.task('build', function (cb) {
     runSequence('styles', 'scripts', 'zip', cb);
 });
@@ -231,6 +248,6 @@ gulp.task('styles', function (cb) {
 
 // Watch Task
 gulp.task('default', ['styles', 'scripts'], function () {
-    gulp.watch('./css/**/*', ['sass']);
+    gulp.watch('./sass/**/*', ['sass']);
     gulp.watch('./js/**/*.js', ['scripts']);
 });

@@ -32,11 +32,11 @@ function pc_get_event_details( $the_post = '' ) {
                 preg_match( '/([0-9]+)/', $key, $matches );
                 $dates[ $matches[1] ]['start_date'] = $value[0];
             endif;
-        elseif ( strpos( $key, '_end_date_' ) !== false ) :
-            if ( isset( $value[0] ) ) :
-                preg_match( '/([0-9]+)/', $key, $matches );
-                $dates[ $matches[1] ]['end_date'] = $value[0];
-            endif;
+            elseif ( strpos( $key, '_end_date_' ) !== false ) :
+                if ( isset( $value[0] ) ) :
+                    preg_match( '/([0-9]+)/', $key, $matches );
+                    $dates[ $matches[1] ]['end_date'] = $value[0];
+                endif;
         endif;
     endforeach;
 
@@ -119,11 +119,11 @@ function pc_get_event_dates( $post_id = 0 ) {
                 preg_match( '/([0-9]+)/', $key, $matches );
                 $dates[ $matches[1] ]['start_date'] = $value[0];
             endif;
-        elseif ( strpos( $key, '_end_date_' ) !== false ) :
-            if ( isset( $value[0] ) ) :
-                preg_match( '/([0-9]+)/', $key, $matches );
-                $dates[ $matches[1] ]['end_date'] = $value[0];
-            endif;
+            elseif ( strpos( $key, '_end_date_' ) !== false ) :
+                if ( isset( $value[0] ) ) :
+                    preg_match( '/([0-9]+)/', $key, $matches );
+                    $dates[ $matches[1] ]['end_date'] = $value[0];
+                endif;
         endif;
     endforeach;
 

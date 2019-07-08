@@ -48,7 +48,8 @@ class Pickle_Calendar_Post_Types {
         }
 
         register_post_type(
-            'pcevent', array(
+            'pcevent',
+            array(
                 'labels'            => array(
                     'name'                => __( picklecalendar()->settings['cpt_plural'], 'pickle-calendar' ),
                     'singular_name'       => __( picklecalendar()->settings['cpt_single'], 'pickle-calendar' ),
@@ -129,7 +130,9 @@ class Pickle_Calendar_Post_Types {
         extract( $args );
 
         register_taxonomy(
-            $slug, array( $post_type ), array(
+            $slug,
+            array( $post_type ),
+            array(
                 'hierarchical'      => true,
                 'public'            => true,
                 'show_in_nav_menus' => true,
@@ -195,7 +198,8 @@ class Pickle_Calendar_Post_Types {
             9 => sprintf(
                 __( picklecalendar()->settings['cpt_single'] . ' scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview ' . picklecalendar()->settings['cpt_single'] . '</a>', 'pickle-calendar' ),
                 // translators: Publish box date format, see http://php.net/date
-                date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( $permalink )
+                date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ),
+                esc_url( $permalink )
             ),
             10 => sprintf( __( picklecalendar()->settings['cpt_single'] . ' draft updated. <a target="_blank" href="%s">Preview ' . picklecalendar()->settings['cpt_single'] . '</a>', 'pickle-calendar' ), esc_url( add_query_arg( 'preview', 'true', $permalink ) ) ),
         );

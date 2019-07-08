@@ -35,7 +35,9 @@ class Pickle_Calendar {
         wp_register_script( 'pickle-calendar-script', PICKLE_CALENDAR_URL . 'js/calendar.min.js', array( 'jquery' ), picklecalendar()->version, true );
 
         wp_localize_script(
-            'pickle-calendar-script', 'pickleCalOpts', array(
+            'pickle-calendar-script',
+            'pickleCalOpts',
+            array(
                 'ajax_url' => admin_url( 'admin-ajax.php' ),
                 'pluginURL' => PICKLE_CALENDAR_URL,
                 'pluginPath' => PICKLE_CALENDAR_PATH,
@@ -396,17 +398,17 @@ class Pickle_Calendar {
                 elseif ( $this->is_end_date( $event_id, $date ) ) :
                     $classes[] = 'end';
                 endif;
-            else :
-                $classes[] = 'single';
+                else :
+                    $classes[] = 'single';
             endif;
 
-            // add terms as classes.
-            $classes = $this->add_terms_classes( $event_id, $classes );
+                // add terms as classes.
+                $classes = $this->add_terms_classes( $event_id, $classes );
 
-            $title = '<a href="' . get_permalink( $event_id ) . '">' . get_the_title( $event_id ) . '</a>';
-            $text = apply_filters( 'pickle_calendar_event_title', $title, $event_id );
+                $title = '<a href="' . get_permalink( $event_id ) . '">' . get_the_title( $event_id ) . '</a>';
+                $text = apply_filters( 'pickle_calendar_event_title', $title, $event_id );
 
-            $content .= '<div class="pickle-calendar-event ' . implode( ' ', $classes ) . '" data-event-id="' . $event_id . '" data-event-day-number="' . $key . '" data-event-date="' . $date . '" data-event-total-days=' . $this->total_days( $event_id, $date ) . '>' . $text . '</div>';
+                $content .= '<div class="pickle-calendar-event ' . implode( ' ', $classes ) . '" data-event-id="' . $event_id . '" data-event-day-number="' . $key . '" data-event-date="' . $date . '" data-event-total-days=' . $this->total_days( $event_id, $date ) . '>' . $text . '</div>';
 
         endforeach;
 
@@ -650,11 +652,11 @@ class Pickle_Calendar {
                     preg_match( '/([0-9]+)/', $key, $matches );
                     $dates[ $matches[1] ]['start_date'] = $value[0];
                 endif;
-            elseif ( strpos( $key, '_end_date_' ) !== false ) :
-                if ( isset( $value[0] ) ) :
-                    preg_match( '/([0-9]+)/', $key, $matches );
-                    $dates[ $matches[1] ]['end_date'] = $value[0];
-                endif;
+                elseif ( strpos( $key, '_end_date_' ) !== false ) :
+                    if ( isset( $value[0] ) ) :
+                        preg_match( '/([0-9]+)/', $key, $matches );
+                        $dates[ $matches[1] ]['end_date'] = $value[0];
+                    endif;
             endif;
         endforeach;
 
@@ -801,7 +803,8 @@ class Pickle_Calendar {
         $args = shortcode_atts(
             array(
                 'show_filters' => true,
-            ), $atts
+            ),
+            $atts
         );
 
         $args['echo'] = false;

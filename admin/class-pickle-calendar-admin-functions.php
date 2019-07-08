@@ -1,11 +1,10 @@
 <?php
 /**
- * Pickle Calendar functions
+ * Pickle Calendar admin functions
  *
  * @package PickleCalendar
  * @since   1.0.0
  */
-
 
 /**
  * Pickle_Calendar_Admin_Functions class.
@@ -21,15 +20,18 @@ class Pickle_Calendar_Admin_Functions {
     public function __construct() {}
 
     /**
-     * check_remove_taxonomy function.
+     * Check remove taxonomy.
      *
      * @access public
      * @return void
      */
     public function check_remove_taxonomy() {
-        // remove single taxonomy //
-        if ( ( isset( $_GET['action'] ) && $_GET['action'] == 'delete' ) && isset( $_GET['slug'] ) ) :
-            $this->remove_taxonomy( $_GET['slug'] );
+        // remove single taxonomy.
+        $action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : '';
+        $slug = isset( $_GET['slug'] ) ? sanitize_text_field( wp_unslash( $_GET['slug'] ) ) : '';
+
+        if ( ( 'delete' == $action ) && isset( $_GET['slug'] ) ) :
+            $this->remove_taxonomy( $slug );
         endif;
 
         // bulk actions //
@@ -43,10 +45,10 @@ class Pickle_Calendar_Admin_Functions {
     }
 
     /**
-     * remove_taxonomy function.
+     * Remove taxonomy.
      *
      * @access public
-     * @param string $tax_slug (default: '')
+     * @param string $tax_slug (default: '').
      * @return void
      */
     public function remove_taxonomy( $tax_slug = '' ) {
@@ -68,10 +70,10 @@ class Pickle_Calendar_Admin_Functions {
     }
 
     /**
-     * taxonomy_bulk_delete function.
+     * Bulk delete taxonomies.
      *
      * @access protected
-     * @param string $taxonomies (default: '')
+     * @param string $taxonomies (default: '').
      * @return void
      */
     protected function taxonomy_bulk_delete( $taxonomies = '' ) {

@@ -39,4 +39,13 @@
 			<property name="text_domain" type="array" value="pickle-calendar" />
 		</properties>
 	</rule>
+	
+    <!-- Custom sanitizing functions. -->	
+    <rule ref="WordPress.Security.ValidatedSanitizedInput">
+        <properties>
+            <property name="customSanitizingFunctions" type="array">
+                <element value="pc_sanitize_array"/>
+            </property>
+        </properties>
+    </rule>		
 </ruleset>

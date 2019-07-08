@@ -130,3 +130,27 @@ function pc_get_event_dates( $post_id = 0 ) {
     return $dates;
 }
 
+/**
+ * Sanitize array.
+ *
+ * @access public
+ * @param array $data (default: array()).
+ * @return array
+ */
+function pc_sanitize_array( $data = array() ) {
+    if ( ! is_array( $data ) || ! count( $data ) ) {
+        return array();
+    }
+
+    foreach ( $data as $k => $v ) {
+        if ( ! is_array( $v ) && ! is_object( $v ) ) {
+            $data[ $k ] = sanitize_text_field( $v );
+        }
+
+        if ( is_array( $v ) ) {
+            $data[ $k ] = pc_sanitize_array( $v );
+        }
+    }
+
+    return $data;
+}

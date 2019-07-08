@@ -40,37 +40,37 @@ apply_filters('pickle_calendar_event_title', $title, $event_id)
 
 = 1.3.1 =
 
-* Moved sass files to new folder. No real effect on plugin.
+ * Moved sass files to new folder. No real effect on plugin.
 
 = 1.3.0 =
 
-* Fixed Weekday only option
-* Fixed Layout of multi day events
+ * Fixed Weekday only option
+ * Fixed Layout of multi day events
 
-* Added Single template for events
-* Added pc_get_posts()
+ * Added Single template for events
+ * Added pc_get_posts()
 
 = 1.2.0 =
 
-* Fixed options so single date works.
+ * Fixed options so single date works.
 
-* Added support for multiple categories.
-* Added ability to hide weekends.
+ * Added support for multiple categories.
+ * Added ability to hide weekends.
 
-* Reworked multiday layout.
+ * Reworked multiday layout.
 
 = 1.1.1 =
 
-* Removed for text width and duplication
-* Implemented percentage width for multi day events
+ * Removed for text width and duplication
+ * Implemented percentage width for multi day events
 
 = 1.1.0 =
 
-* Added import/export settings and events
+ * Added import/export settings and events
 
 = 1.0.0 =
 
-* Initial version.
+ * Initial version.
 
 == Upgrade Notice ==
 

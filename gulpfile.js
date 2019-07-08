@@ -1,20 +1,21 @@
 // Project configuration
 var buildInclude = [
         // include common file types
-        //'**/*.php',
-        //'**/*.html',
-        //'**/*.css',
-        //'**/*.js',
-        //'**/*.svg',
-        //'**/*.ttf',
-        //'**/*.otf',
-        //'**/*.eot',
-        //'**/*.woff',
-        //'**/*.woff2',
-        
-        './**/*',
+        '**/*.php',
+        '**/*.html',
+        '**/*.css',
+        '**/*.js',
+        '**/*.svg',
+        '**/*.ttf',
+        '**/*.otf',
+        '**/*.eot',
+        '**/*.woff',
+        '**/*.woff2',
+        '**/*.png',
         
         // include specific files and folders
+        'screenshot.png',
+        'readme.txt',
 
         // exclude files and folders
         '!./composer.json', 
@@ -26,6 +27,7 @@ var buildInclude = [
         '!./{sass,sass/**/*}',
         '!./.stylelintrc',
         '!./{vendor,vendor/**/*}',
+        '!svn/**'
     ];
     
 var phpSrc = [

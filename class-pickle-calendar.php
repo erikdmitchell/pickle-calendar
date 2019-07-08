@@ -80,7 +80,7 @@ class Pickle_Calendar {
             $html .= $this->filters_display( $filters['tabs'] );
         }
 
-        $html .= '<div class="col-xs-12 pickle-calendar">';
+        $html .= '<div class="pc-col-12 pickle-calendar">';
             $html .= $this->create_header( $args['month'], $args['year'], $args['month_format'] );
             $html .= $this->days_of_week( $args['days_of_week_format'] );
             $html .= $this->draw_calendar( $args['month'], $args['year'] );
@@ -111,11 +111,11 @@ class Pickle_Calendar {
     protected function create_header( $month, $year, $month_format ) {
         $html = null;
 
-        $html .= '<div class="row header">';
-            $html .= '<div class="col-xs-2 prev"><a class="cal-nav" href="#" data-month="' . $this->prev_month( $month ) . '" data-year="' . $this->nav_year( $month, $year, 'prev' ) . '">&#10094;</a></div>';
-            $html .= '<div class="col-xs-5 month">' . $this->month( $month, $month_format ) . '</div>';
-            $html .= '<div class="col-xs-3 year">' . $year . '</div>';
-            $html .= '<div class="col-xs-2 next"><a class="cal-nav" href="#" data-month="' . $this->next_month( $month ) . '" data-year="' . $this->nav_year( $month, $year, 'next' ) . '">&#10095;</a></div>';
+        $html .= '<div class="pc-row header">';
+            $html .= '<div class="pc-col-2 prev"><a class="cal-nav" href="#" data-month="' . $this->prev_month( $month ) . '" data-year="' . $this->nav_year( $month, $year, 'prev' ) . '">&#10094;</a></div>';
+            $html .= '<div class="pc-col-5 month">' . $this->month( $month, $month_format ) . '</div>';
+            $html .= '<div class="pc-col-3 year">' . $year . '</div>';
+            $html .= '<div class="pc-col-2 next"><a class="cal-nav" href="#" data-month="' . $this->next_month( $month ) . '" data-year="' . $this->nav_year( $month, $year, 'next' ) . '">&#10095;</a></div>';
         $html .= '</div>';
 
         return apply_filters( 'pickle_calendar_create_header', $html, $month, $year );
@@ -141,7 +141,7 @@ class Pickle_Calendar {
 
         $dow_formatted = array_map( array( $this, 'format_day' ), $dow );
 
-        $html .= '<div class="row weekdays">';
+        $html .= '<div class="pc-row weekdays">';
 
         foreach ( $dow_formatted as $day ) :
             $html .= '<div class="' . implode( ' ', $classes ) . '">' . $day . '</div>';

@@ -786,8 +786,7 @@ class Pickle_Calendar {
             'echo' => false,
         );
 
-        // echo esc_attr( $this->calendar( $args ) ); -- doth not work.
-        echo $this->calendar( $args );
+        echo $this->calendar( $args ); // phpcs:ignore
 
         wp_die();
     }

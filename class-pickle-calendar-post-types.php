@@ -26,7 +26,7 @@ class Pickle_Calendar_Post_Types {
 
         add_action( 'wp_print_scripts', array( __CLASS__, 'pcevents_dequeue_wp_seo_scripts' ), 100 );
         add_action( 'add_meta_boxes', array( __CLASS__, 'pcevents_remove_wp_seo_meta_box' ), 100 );
-        // potential rewrite flush rules hook/action here
+        // potential rewrite flush rules hook/action here.
     }
 
     /**
@@ -47,23 +47,26 @@ class Pickle_Calendar_Post_Types {
             $supports[] = 'editor';
         }
 
+        $cpt_plural = picklecalendar()->settings['cpt_plural'];
+        $cpt_single = picklecalendar()->settings['cpt_single'];
+
         register_post_type(
             'pcevent',
             array(
                 'labels'            => array(
-                    'name'                => __( picklecalendar()->settings['cpt_plural'], 'pickle-calendar' ),
-                    'singular_name'       => __( picklecalendar()->settings['cpt_single'], 'pickle-calendar' ),
-                    'all_items'           => __( 'All ' . picklecalendar()->settings['cpt_plural'], 'pickle-calendar' ),
-                    'new_item'            => __( 'New ' . picklecalendar()->settings['cpt_single'], 'pickle-calendar' ),
+                    'name'                => $cpt_plural,
+                    'singular_name'       => $cpt_single,
+                    'all_items'           => 'All ' . $cpt_plural,
+                    'new_item'            => 'New ' . $cpt_single,
                     'add_new'             => __( 'Add New', 'pickle-calendar' ),
-                    'add_new_item'        => __( 'Add New ' . picklecalendar()->settings['cpt_single'], 'pickle-calendar' ),
-                    'edit_item'           => __( 'Edit ' . picklecalendar()->settings['cpt_single'], 'pickle-calendar' ),
-                    'view_item'           => __( 'View ' . picklecalendar()->settings['cpt_single'], 'pickle-calendar' ),
-                    'search_items'        => __( 'Search ' . picklecalendar()->settings['cpt_plural'], 'pickle-calendar' ),
-                    'not_found'           => __( 'No ' . picklecalendar()->settings['cpt_plural'] . ' found', 'pickle-calendar' ),
-                    'not_found_in_trash'  => __( 'No ' . picklecalendar()->settings['cpt_plural'] . ' found in trash', 'pickle-calendar' ),
-                    'parent_item_colon'   => __( 'Parent ' . picklecalendar()->settings['cpt_single'], 'pickle-calendar' ),
-                    'menu_name'           => __( picklecalendar()->settings['adminlabel'], 'pickle-calendar' ),
+                    'add_new_item'        => 'Add New ' . $cpt_single,
+                    'edit_item'           => 'Edit ' . $cpt_single,
+                    'view_item'           => 'View ' . $cpt_single,
+                    'search_items'        => 'Search ' . $cpt_plural,
+                    'not_found'           => 'No ' . $cpt_plural . ' found',
+                    'not_found_in_trash'  => 'No ' . $cpt_plural . ' found in trash',
+                    'parent_item_colon'   => 'Parent ' . $cpt_single,
+                    'menu_name'           => _picklecalendar()->settings['adminlabel'],
                 ),
                 'public'            => true,
                 'hierarchical'      => false,
@@ -100,8 +103,8 @@ class Pickle_Calendar_Post_Types {
      *
      * @access protected
      * @static
-     * @param array $taxonomy (default: array())
-     * @return void
+     * @param array $taxonomy (default: array()).
+     * @return bool
      */
     protected static function generate_taxonomy( $taxonomy = array() ) {
         if ( empty( $taxonomy ) ) {
@@ -110,7 +113,6 @@ class Pickle_Calendar_Post_Types {
 
         $defaults = array(
             'post_type' => 'pcevent',
-            'textdomain' => 'pickle-calendar',
             'slug' => '',
         );
         $args = wp_parse_args( $taxonomy, $defaults );
@@ -127,11 +129,9 @@ class Pickle_Calendar_Post_Types {
             preg_replace( '/_|-/', ' ', strtolower( $args['slug'] ) );
         endif;
 
-        extract( $args );
-
         register_taxonomy(
-            $slug,
-            array( $post_type ),
+            $args['slug'],
+            array( $args['post_type'] ),
             array(
                 'hierarchical'      => true,
                 'public'            => true,
@@ -147,25 +147,25 @@ class Pickle_Calendar_Post_Types {
                     'assign_terms'  => 'edit_posts',
                 ),
                 'labels'            => array(
-                    'name'                       => __( ucwords( $label_plural ), $textdomain ),
-                    'singular_name'              => _x( ucwords( $label ), 'taxonomy general name', $textdomain ),
-                    'search_items'               => __( 'Search ' . ucwords( $label_plural ), $textdomain ),
-                    'popular_items'              => __( 'Popular ' . ucwords( $label_plural ), $textdomain ),
-                    'all_items'                  => __( 'All ' . ucwords( $label_plural ), $textdomain ),
-                    'parent_item'                => __( 'Parent ' . ucwords( $label ), $textdomain ),
-                    'parent_item_colon'          => __( 'Parent ' . ucwords( $label ) . ':', $textdomain ),
-                    'edit_item'                  => __( 'Edit ' . ucwords( $label ), $textdomain ),
-                    'update_item'                => __( 'Update ' . ucwords( $label ), $textdomain ),
-                    'add_new_item'               => __( 'New ' . ucwords( $label ), $textdomain ),
-                    'new_item_name'              => __( 'New ' . ucwords( $label ), $textdomain ),
-                    'separate_items_with_commas' => __( 'Separate ' . ucwords( $label_plural ) . ' with commas', $textdomain ),
-                    'add_or_remove_items'        => __( 'Add or remove ' . ucwords( $label_plural ), $textdomain ),
-                    'choose_from_most_used'      => __( 'Choose from the most used ' . ucwords( $label_plural ), $textdomain ),
-                    'not_found'                  => __( 'No ' . ucwords( $label_plural ) . ' found.', $textdomain ),
-                    'menu_name'                  => __( ucwords( $label_plural ), $textdomain ),
+                    'name'                       => ucwords( $args['label_plural'] ),
+                    'singular_name'              => ucwords( $args['label'] ),
+                    'search_items'               => 'Search ' . ucwords( $args['label_plural'] ),
+                    'popular_items'              => 'Popular ' . ucwords( $args['label_plural'] ),
+                    'all_items'                  => 'All ' . ucwords( $args['label_plural'] ),
+                    'parent_item'                => 'Parent ' . ucwords( $args['label'] ),
+                    'parent_item_colon'          => 'Parent ' . ucwords( $args['label'] ) . ':',
+                    'edit_item'                  => 'Edit ' . ucwords( $args['label'] ),
+                    'update_item'                => 'Update ' . ucwords( $args['label'] ),
+                    'add_new_item'               => 'New ' . ucwords( $args['label'] ),
+                    'new_item_name'              => 'New ' . ucwords( $args['label'] ),
+                    'separate_items_with_commas' => 'Separate ' . ucwords( $args['label_plural'] ) . ' with commas',
+                    'add_or_remove_items'        => 'Add or remove ' . ucwords( $args['label_plural'] ),
+                    'choose_from_most_used'      => 'Choose from the most used ' . ucwords( $args['label_plural'] ),
+                    'not_found'                  => 'No ' . ucwords( $args['label_plural'] ) . ' found.',
+                    'menu_name'                  => ucwords( $args['label_plural'] ),
                 ),
                 'show_in_rest'      => true,
-                'rest_base'         => $slug,
+                'rest_base'         => $args['slug'],
                 'rest_controller_class' => 'WP_REST_Terms_Controller',
             )
         );
@@ -186,22 +186,29 @@ class Pickle_Calendar_Post_Types {
 
         $messages['pcevent'] = array(
             0 => '', // Unused. Messages start at index 1.
-            1 => sprintf( __( picklecalendar()->settings['cpt_single'] . ' updated. <a target="_blank" href="%s">View ' . picklecalendar()->settings['cpt_single'] . '</a>', 'pickle-calendar' ), esc_url( $permalink ) ),
+            1 => sprintf( '%1$s updated. <a target="_blank" href="%2$s">View %3$s</a>', picklecalendar()->settings['cpt_single'], esc_url( $permalink ), picklecalendar()->settings['cpt_single'] ),
             2 => __( 'Custom field updated.', 'pickle-calendar' ),
             3 => __( 'Custom field deleted.', 'pickle-calendar' ),
-            4 => __( picklecalendar()->settings['cpt_single'] . ' updated.', 'pickle-calendar' ),
+            4 => picklecalendar()->settings['cpt_single'] . ' updated.',
             /* translators: %s: date and time of the revision */
-            5 => isset( $_GET['revision'] ) ? sprintf( __( picklecalendar()->settings['cpt_single'] . ' restored to revision from %s', 'pickle-calendar' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-            6 => sprintf( __( picklecalendar()->settings['cpt_single'] . ' published. <a href="%s">View ' . picklecalendar()->settings['cpt_single'] . '</a>', 'pickle-calendar' ), esc_url( $permalink ) ),
-            7 => __( picklecalendar()->settings['cpt_single'] . ' saved.', 'pickle-calendar' ),
-            8 => sprintf( __( picklecalendar()->settings['cpt_single'] . ' submitted. <a target="_blank" href="%s">Preview ' . picklecalendar()->settings['cpt_single'] . '</a>', 'pickle-calendar' ), esc_url( add_query_arg( 'preview', 'true', $permalink ) ) ),
+            5 => isset( $_GET['revision'] ) ? sprintf( '%1$s restored to revision from %2$s', picklecalendar()->settings['cpt_single'], wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+            6 => sprintf( '%1$s published. <a href="%2$s">View %3$s</a>', picklecalendar()->settings['cpt_single'], esc_url( $permalink ), picklecalendar()->settings['cpt_single'] ),
+            7 => sprintf( '%1$s saved.', picklecalendar()->settings['cpt_single'] ),
+            8 => sprintf( '%1$s submitted. <a target="_blank" href="%2$s">Preview %3$s</a>', picklecalendar()->settings['cpt_single'], esc_url( add_query_arg( 'preview', 'true', $permalink ) ), picklecalendar()->settings['cpt_single'] ),
             9 => sprintf(
-                __( picklecalendar()->settings['cpt_single'] . ' scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview ' . picklecalendar()->settings['cpt_single'] . '</a>', 'pickle-calendar' ),
-                // translators: Publish box date format, see http://php.net/date
-                date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ),
-                esc_url( $permalink )
+                '%1$s scheduled for: <strong>%2$s</strong>. <a target="_blank" href="%3$s">Preview %4$s</a>',
+                picklecalendar()->settings['cpt_single'],
+                // translators: Publish box date format, see http://php.net/date.
+                date_i18n( __( 'M j, Y @ G:i', 'pickle-calendar' ), strtotime( $post->post_date ) ),
+                esc_url( $permalink ),
+                picklecalendar()->settings['cpt_single']
             ),
-            10 => sprintf( __( picklecalendar()->settings['cpt_single'] . ' draft updated. <a target="_blank" href="%s">Preview ' . picklecalendar()->settings['cpt_single'] . '</a>', 'pickle-calendar' ), esc_url( add_query_arg( 'preview', 'true', $permalink ) ) ),
+            10 => sprintf(
+                '%1$s draft updated. <a target="_blank" href="%2$s">Preview %3$s</a>',
+                picklecalendar()->settings['cpt_single'],
+                esc_url( add_query_arg( 'preview', 'true', $permalink ) )
+            ),
+            picklecalendar()->settings['cpt_single'],
         );
 
         return $messages;
@@ -217,7 +224,7 @@ class Pickle_Calendar_Post_Types {
     public static function pcevents_dequeue_wp_seo_scripts() {
         global $post;
 
-        if ( isset( $post->post_type ) && $post->post_type != 'pcevents' ) {
+        if ( isset( $post->post_type ) && 'pcevents' != $post->post_type ) {
             return;
         }
 
@@ -233,7 +240,7 @@ class Pickle_Calendar_Post_Types {
     public static function pcevents_remove_wp_seo_meta_box() {
         global $post;
 
-        if ( $post->post_type != 'pcevents' ) {
+        if ( 'pcevents' != $post->post_type ) {
             return;
         }
 

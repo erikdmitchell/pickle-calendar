@@ -17,14 +17,14 @@ function pc_get_event_details( $the_post = '' ) {
     global $post;
 
     if ( is_int( $the_post ) ) :
-        // get the post object of the passed ID
-        $post = get_post( $the_post );
+        // get the post object of the passed ID.
+        $event_post = get_post( $the_post );
     elseif ( is_object( $the_post ) ) :
-        $post = $the_post;
+        $event_post = $the_post;
     endif;
 
     $dates = array();
-    $meta = get_post_meta( $post->ID );
+    $meta = get_post_meta( $event_post->ID );
 
     foreach ( $meta as $key => $value ) :
         if ( strpos( $key, '_start_date_' ) !== false ) :
@@ -64,12 +64,11 @@ function pc_get_posts( $args = null ) {
     );
 
     $args = wp_parse_args( $args, $defaults );
-    $select = 'SELECT wp_posts.ID';
     $db_from = "FROM $wpdb->posts INNER JOIN $wpdb->postmeta ON ( $wpdb->posts.ID = $wpdb->postmeta.post_id ) INNER JOIN $wpdb->postmeta AS mt1 ON ( $wpdb->posts.ID = mt1.post_id )";
     $where_data = array( '1=1', "AND $wpdb->posts.post_type = 'pcevent'", "AND (($wpdb->posts.post_status = 'publish'))", "AND ( REPLACE($wpdb->postmeta.meta_key, '_start_date_', '') = REPLACE(mt1.meta_key, '_end_date_', '') )" );
 
     // this is where our "options are run".
-    // anything from today onwards (default) -- CAN SET DATE FOR START DATE
+    // anything from today onwards (default) -- CAN SET DATE FOR START DATE.
     if ( ! empty( $args['start_date'] ) && empty( $args['end_date'] ) ) :
         $where_data[] = "AND ( ( mt1.meta_key LIKE '_end_date_%' AND CAST(mt1.meta_value AS DATE) >= {$args['start_date']} ) )"; // anything from start date onwards.
     elseif ( ! empty( $args['end_date'] ) && empty( $args['start_date'] ) ) :
@@ -81,16 +80,7 @@ function pc_get_posts( $args = null ) {
     endif;
 
     $where = implode( ' ', $where_data );
-    $post_ids = $wpdb->get_col(
-        "
-		$select
-		$db_from
-		WHERE $where
-		GROUP BY $wpdb->posts.ID
-		ORDER BY $wpdb->postmeta.meta_value {$args['order']}
-		LIMIT {$args['events']}        
-    "
-    );
+    $post_ids = $wpdb->get_col( $wpdb->prepare( "SELECT wp_posts.ID %s WHERE %s GROUP BY $wpdb->posts.ID ORDER BY $wpdb->postmeta.meta_value %s LIMIT %s", $db_from, $where, $args['order'], $args['events'] ) );
 
     foreach ( $post_ids as $post_id ) :
         $post = get_post( $post_id );

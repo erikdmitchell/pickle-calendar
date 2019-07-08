@@ -233,14 +233,14 @@ class Pickle_Calendar_Admin {
         $import_file_name = isset( $_FILES['import_file']['name'] ) ? sanitize_text_field( wp_unslash( $_FILES['import_file']['name'] ) ) : '';
         $extension = end( explode( '.', $import_file_name ) );
 
-        if ('json' !=  $extension ) {
-            wp_die( _e( 'Please upload a valid .json file', 'pickle-calendar' ) );
+        if ( 'json' != $extension ) {
+            wp_die( 'Please upload a valid .json file.' );
         }
 
         $import_file = isset( $_FILES['import_file']['tmp_name'] ) ? sanitize_text_field( wp_unslash( $_FILES['import_file']['tmp_name'] ) ) : '';
 
         if ( empty( $import_file ) ) {
-            wp_die( _e( 'Please upload a file to import', 'pickle-calendar' ) );
+            wp_die( 'Please upload a file to import.' );
         }
 
         // Retrieve the settings from the file and convert the json object to an array.
@@ -301,14 +301,14 @@ class Pickle_Calendar_Admin {
         $import_file_name = isset( $_FILES['import_file']['name'] ) ? sanitize_text_field( wp_unslash( $_FILES['import_file']['name'] ) ) : '';
         $extension = end( explode( '.', $import_file_name ) );
 
-        if ('json' !=  $extension ) {
-            wp_die( _e( 'Please upload a valid .json file', 'pickle-calendar' ) );
+        if ( 'json' != $extension ) {
+            wp_die( 'Please upload a valid .json file.' );
         }
 
         $import_file = isset( $_FILES['import_file']['tmp_name'] ) ? sanitize_text_field( wp_unslash( $_FILES['import_file']['tmp_name'] ) ) : '';
 
         if ( empty( $import_file ) ) {
-            wp_die( _e( 'Please upload a file to import', 'pickle-calendar' ) );
+            wp_die( 'Please upload a file to import.' );
         }
 
         // Retrieve the settings from the file.

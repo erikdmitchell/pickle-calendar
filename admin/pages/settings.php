@@ -1,3 +1,13 @@
+<?php
+/**
+ * Settings admin page.
+ *
+ * @package PickleCalendar
+ * @since   1.0.0
+ */
+
+?>
+
 <h2>Settings</h2>
 
 <form class="pickle-calendar-settings-form" action="" method="post">
@@ -10,17 +20,17 @@
         
             <tr>
                 <th scope="row"><label for="adminlabel">Admin Label</label></th>
-                <td><input name="settings[adminlabel]" type="text" id="adminlabel" value="<?php echo picklecalendar()->settings['adminlabel']; ?>" class="regular-text"></td>
+                <td><input name="settings[adminlabel]" type="text" id="adminlabel" value="<?php echo esc_attr( picklecalendar()->settings['adminlabel'] ); ?>" class="regular-text"></td>
             </tr>
         
             <tr>
                 <th scope="row"><label for="cpt_single">Post Type Label (single)</label></th>
-                <td><input name="settings[cpt_single]" type="text" id="cpt_single" value="<?php echo picklecalendar()->settings['cpt_single']; ?>" class="regular-text"></td>
+                <td><input name="settings[cpt_single]" type="text" id="cpt_single" value="<?php echo esc_attr( picklecalendar()->settings['cpt_single'] ); ?>" class="regular-text"></td>
             </tr>
         
             <tr>
                 <th scope="row"><label for="cpt_plural">Post Type Label (plural)</label></th>
-                <td><input name="settings[cpt_plural]" type="text" id="cpt_plural" value="<?php echo picklecalendar()->settings['cpt_plural']; ?>" class="regular-text"></td>
+                <td><input name="settings[cpt_plural]" type="text" id="cpt_plural" value="<?php echo esc_attr( picklecalendar()->settings['cpt_plural'] ); ?>" class="regular-text"></td>
             </tr>
         
         </tbody>                

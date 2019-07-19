@@ -85,6 +85,7 @@ class Pickle_Calendar_Event_Details {
             ),
         );
         $event_dates = picklecalendar()->calendar->get_event_dates( $post->ID );
+print_r($event_dates);        
         $dates = $this->_wp_parse_args( $event_dates, $default_dates );
 
         // bail if no start/end date in settings.
@@ -168,7 +169,7 @@ class Pickle_Calendar_Event_Details {
             )
         );
 
-        $details_dates = isset( $_POST['details']['dates'] ) ? pc_sanitize_array( wp_unslash( [ 'details' ]['dates'] ) ) : array();
+        $details_dates = isset( $_POST['details']['dates'] ) ? pc_sanitize_array( wp_unslash( $_POST['details']['dates'] ) ) : array();
 
         foreach ( $details_dates as $key => $dates ) :
             add_post_meta( $post_id, '_start_date_' . sanitize_key( $key ), $dates['start_date'] );

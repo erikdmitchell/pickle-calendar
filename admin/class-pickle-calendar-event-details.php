@@ -48,7 +48,7 @@ class Pickle_Calendar_Event_Details {
         wp_enqueue_script( 'pc-repeat-field-script', PICKLE_CALENDAR_URL . 'admin/js/repeat-field.js', array( 'jquery' ), '0.1.0', true );
 
         wp_enqueue_style( 'jquery-ui-style', PICKLE_CALENDAR_URL . 'admin/css/jquery-ui.min.css', '', '1.12.1' );
-        wp_enqueue_style( 'bted-style', PICKLE_CALENDAR_URL . 'admin/css/event-details.css', '', '0.1.0' );
+        wp_enqueue_style( 'pced-style', PICKLE_CALENDAR_URL . 'admin/css/event-details.css', '', '0.1.0' );
     }
 
     /**

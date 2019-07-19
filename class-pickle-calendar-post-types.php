@@ -66,7 +66,7 @@ class Pickle_Calendar_Post_Types {
                     'not_found'           => 'No ' . $cpt_plural . ' found',
                     'not_found_in_trash'  => 'No ' . $cpt_plural . ' found in trash',
                     'parent_item_colon'   => 'Parent ' . $cpt_single,
-                    'menu_name'           => _picklecalendar()->settings['adminlabel'],
+                    'menu_name'           => picklecalendar()->settings['adminlabel'],
                 ),
                 'public'            => true,
                 'hierarchical'      => false,

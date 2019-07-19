@@ -204,7 +204,7 @@ class Pickle_Calendar_Post_Types {
                 picklecalendar()->settings['cpt_single']
             ),
             10 => sprintf(
-                '%1$s draft updated. <a target="_blank" href="%2$s">Preview %3$s</a>',
+                '%1$s draft updated. <a target="_blank" href="%2$s">Preview %1$s</a>',
                 picklecalendar()->settings['cpt_single'],
                 esc_url( add_query_arg( 'preview', 'true', $permalink ) )
             ),

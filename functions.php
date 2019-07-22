@@ -21,6 +21,9 @@ function pc_get_event_details( $the_post = '' ) {
         $event_post = get_post( $the_post );
     elseif ( is_object( $the_post ) ) :
         $event_post = $the_post;
+    else :
+        // use post as default.
+        $event_post = $post;
     endif;
 
     $dates = array();

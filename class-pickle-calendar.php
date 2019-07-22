@@ -114,11 +114,11 @@ class Pickle_Calendar {
     protected function create_header( $month, $year, $month_format ) {
         $html = null;
 
-        $html .= '<div class="pc-row header">';
-            $html .= '<div class="pc-col-2 prev"><a class="cal-nav" href="#" data-month="' . $this->prev_month( $month ) . '" data-year="' . $this->nav_year( $month, $year, 'prev' ) . '">&#10094;</a></div>';
-            $html .= '<div class="pc-col-5 month">' . $this->month( $month, $month_format ) . '</div>';
-            $html .= '<div class="pc-col-3 year">' . $year . '</div>';
-            $html .= '<div class="pc-col-2 next"><a class="cal-nav" href="#" data-month="' . $this->next_month( $month ) . '" data-year="' . $this->nav_year( $month, $year, 'next' ) . '">&#10095;</a></div>';
+        $html .= '<div class="row header">';
+            $html .= '<div class="col-2 prev"><a class="cal-nav" href="#" data-month="' . $this->prev_month( $month ) . '" data-year="' . $this->nav_year( $month, $year, 'prev' ) . '">&#10094;</a></div>';
+            $html .= '<div class="col-5 month">' . $this->month( $month, $month_format ) . '</div>';
+            $html .= '<div class="col-3 year">' . $year . '</div>';
+            $html .= '<div class="col-2 next"><a class="cal-nav" href="#" data-month="' . $this->next_month( $month ) . '" data-year="' . $this->nav_year( $month, $year, 'next' ) . '">&#10095;</a></div>';
         $html .= '</div>';
 
         return apply_filters( 'pickle_calendar_create_header', $html, $month, $year );

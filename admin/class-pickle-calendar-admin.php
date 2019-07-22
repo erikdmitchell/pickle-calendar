@@ -107,12 +107,12 @@ class Pickle_Calendar_Admin {
      * @access public
      * @return bool
      */
-    public function update_settings() {
-        if ( ! isset( $_POST['pickle_calendar_admin'], $_POST['update_settings'] ) || ! wp_verify_nonce( sanitize_key( $_POST['pickle_calendar_admin'] ), 'update_settings' ) ) {
+    public function update_settings() {        
+        if ( ! isset( $_POST['pickle_calendar_admin'] ) || ! wp_verify_nonce( sanitize_key( $_POST['pickle_calendar_admin'] ), 'update_settings' ) ) {
             return false;
         }
 
-        $post_settings = isset( $_POST['settings'] ) ? sanitize_text_field( wp_unslash( $_POST['settings'] ) ) : '';
+        $post_settings = isset( $_POST['settings'] ) ? pc_sanitize_array( wp_unslash( $_POST['settings'] ) ) : '';
         $new_settings = picklecalendar()->parse_args( $post_settings, picklecalendar()->settings );
 
         // for checkboxes.
@@ -137,7 +137,7 @@ class Pickle_Calendar_Admin {
      * @return bool
      */
     public function update_taxonomy() {
-        if ( ! isset( $_POST['pickle_calendar_admin'], $_POST['update_taxonomy'] ) || ! wp_verify_nonce( sanitize_key( $_POST['pickle_calendar_admin'] ), 'update_taxonomy' ) ) {
+        if ( ! isset( $_POST['pickle_calendar_admin'] ) || ! wp_verify_nonce( sanitize_key( $_POST['pickle_calendar_admin'] ), 'update_taxonomy' ) ) {
             return false;
         }
 

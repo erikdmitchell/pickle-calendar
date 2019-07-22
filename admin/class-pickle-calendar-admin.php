@@ -107,7 +107,7 @@ class Pickle_Calendar_Admin {
      * @access public
      * @return bool
      */
-    public function update_settings() {        
+    public function update_settings() {
         if ( ! isset( $_POST['pickle_calendar_admin'] ) || ! wp_verify_nonce( sanitize_key( $_POST['pickle_calendar_admin'] ), 'update_settings' ) ) {
             return false;
         }
@@ -340,8 +340,8 @@ class Pickle_Calendar_Admin {
         if ( 'settings_page_pickle-calendar' !== $screen->id ) {
             return;
         }
-        
-        if (!isset($_GET['import-events'])) {
+
+        if ( ! isset( $_GET['import-events'] ) ) {
             return;
         }
 

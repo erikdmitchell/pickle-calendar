@@ -84,7 +84,7 @@ class Pickle_Calendar_Event_Details {
                 'end_date' => '',
             ),
         );
-        $event_dates = picklecalendar()->calendar->get_event_dates( $post->ID ); 
+        $event_dates = picklecalendar()->calendar->get_event_dates( $post->ID );
         $dates = $this->_wp_parse_args( $event_dates, $default_dates );
 
         // bail if no start/end date in settings.

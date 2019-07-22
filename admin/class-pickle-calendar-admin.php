@@ -340,6 +340,10 @@ class Pickle_Calendar_Admin {
         if ( 'settings_page_pickle-calendar' !== $screen->id ) {
             return;
         }
+        
+        if (!isset($_GET['import-events'])) {
+            return;
+        }
 
         $import_events = isset( $_GET['import-events'] ) ? sanitize_text_field( wp_unslash( $_GET['import-events'] ) ) : '';
 

@@ -144,7 +144,7 @@ class Pickle_Calendar {
 
         $dow_formatted = array_map( array( $this, 'format_day' ), $dow );
 
-        $html .= '<div class="pc-row weekdays">';
+        $html .= '<div class="row weekdays">';
 
         foreach ( $dow_formatted as $day ) :
             $html .= '<div class="' . implode( ' ', $classes ) . '">' . $day . '</div>';

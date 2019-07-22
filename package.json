@@ -1,6 +1,6 @@
 {
   "name": "pickle-calendar",
-  "version": "1.9.1",
+  "version": "1.4.0",
   "description": "Pickle Calendar",
   "main": "gulpfile.js",
   "scripts": {
@@ -35,16 +35,17 @@
     "gulp-phpcs": "^2.1.0",
     "gulp-plumber": "^1.1.0",
     "gulp-rename": "^1.2.2",
-    "run-sequence": "",
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "",
-    "gulp-stylelint": "^5.0.0",
+    "gulp-stylelint": "^9.0.0",
     "gulp-uglify": "^3.0.2",
     "gulp-uglifycss": "",
     "gulp-util": "",
     "gulp-zip": "^3.2.0",
     "jshint": "",
-    "jshint-stylish": ""
+    "jshint-stylish": "",
+    "run-sequence": "",
+    "stylelint": "^10.1.0"
   },
   "dependencies": {
     "gulp-sourcemaps": "^2.6.5"

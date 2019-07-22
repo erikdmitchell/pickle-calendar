@@ -47,7 +47,7 @@ class Pickle_Calendar {
 
         wp_enqueue_script( 'pickle-calendar-script' );
 
-        wp_register_style( 'pickle-calendar-style', PICKLE_CALENDAR_URL . 'css/calendar.css', '', picklecalendar()->version );
+        wp_register_style( 'pickle-calendar-style', PICKLE_CALENDAR_URL . 'css/calendar.min.css', '', picklecalendar()->version );
     }
 
     /**

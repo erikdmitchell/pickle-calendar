@@ -1,19 +1,20 @@
 <?php
 /**
- * The template for displaying single events
+ * Template for displaying single events.
  *
  * @package PickleCalendar
  * @since   1.0.0
- * @version 1.0
  */
 
-get_header(); ?>
+get_header();
+?>
 
 <div class="wrap">
     <div id="primary" class="content-area">
         <main id="main" class="site-main" role="main">
 
-            <?php while ( have_posts() ) : the_post(); ?>
+            <?php while ( have_posts() ) : ?>
+                <?php the_post(); ?>
 
                 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
                 
@@ -30,7 +31,8 @@ get_header(); ?>
                         /* translators: %s: Name of current post */
                         the_content(
                             sprintf(
-                                __( 'Continue reading<span class="screen-reader-text"> "%s"</span>', 'twentyseventeen' ),
+                                /* translators: %s: event title */
+                                __( 'Continue reading<span class="screen-reader-text"> "%s"</span>', 'pickle-calendar' ),
                                 get_the_title()
                             )
                         );

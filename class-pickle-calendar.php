@@ -35,10 +35,13 @@ class Pickle_Calendar {
         wp_register_script( 'pickle-calendar-script', PICKLE_CALENDAR_URL . 'js/calendar.min.js', array( 'jquery' ), picklecalendar()->version, true );
 
         wp_localize_script(
-            'pickle-calendar-script', 'pickleCalOpts', array(
+            'pickle-calendar-script',
+            'pickleCalOpts',
+            array(
                 'ajax_url' => admin_url( 'admin-ajax.php' ),
                 'pluginURL' => PICKLE_CALENDAR_URL,
                 'pluginPath' => PICKLE_CALENDAR_PATH,
+                'ajax_nonce' => wp_create_nonce( 'pc_bscal_nav' ),
             )
         );
 
@@ -111,11 +114,11 @@ class Pickle_Calendar {
     protected function create_header( $month, $year, $month_format ) {
         $html = null;
 
-        $html .= '<div class="pc-row header">';
-            $html .= '<div class="pc-col-2 prev"><a class="cal-nav" href="#" data-month="' . $this->prev_month( $month ) . '" data-year="' . $this->nav_year( $month, $year, 'prev' ) . '">&#10094;</a></div>';
-            $html .= '<div class="pc-col-5 month">' . $this->month( $month, $month_format ) . '</div>';
-            $html .= '<div class="pc-col-3 year">' . $year . '</div>';
-            $html .= '<div class="pc-col-2 next"><a class="cal-nav" href="#" data-month="' . $this->next_month( $month ) . '" data-year="' . $this->nav_year( $month, $year, 'next' ) . '">&#10095;</a></div>';
+        $html .= '<div class="row header">';
+            $html .= '<div class="col-2 prev"><a class="cal-nav" href="#" data-month="' . $this->prev_month( $month ) . '" data-year="' . $this->nav_year( $month, $year, 'prev' ) . '">&#10094;</a></div>';
+            $html .= '<div class="col-5 month">' . $this->month( $month, $month_format ) . '</div>';
+            $html .= '<div class="col-3 year">' . $year . '</div>';
+            $html .= '<div class="col-2 next"><a class="cal-nav" href="#" data-month="' . $this->next_month( $month ) . '" data-year="' . $this->nav_year( $month, $year, 'next' ) . '">&#10095;</a></div>';
         $html .= '</div>';
 
         return apply_filters( 'pickle_calendar_create_header', $html, $month, $year );
@@ -141,7 +144,7 @@ class Pickle_Calendar {
 
         $dow_formatted = array_map( array( $this, 'format_day' ), $dow );
 
-        $html .= '<div class="pc-row weekdays">';
+        $html .= '<div class="row weekdays">';
 
         foreach ( $dow_formatted as $day ) :
             $html .= '<div class="' . implode( ' ', $classes ) . '">' . $day . '</div>';
@@ -396,17 +399,17 @@ class Pickle_Calendar {
                 elseif ( $this->is_end_date( $event_id, $date ) ) :
                     $classes[] = 'end';
                 endif;
-            else :
-                $classes[] = 'single';
+                else :
+                    $classes[] = 'single';
             endif;
 
-            // add terms as classes.
-            $classes = $this->add_terms_classes( $event_id, $classes );
+                // add terms as classes.
+                $classes = $this->add_terms_classes( $event_id, $classes );
 
-            $title = '<a href="' . get_permalink( $event_id ) . '">' . get_the_title( $event_id ) . '</a>';
-            $text = apply_filters( 'pickle_calendar_event_title', $title, $event_id );
+                $title = '<a href="' . get_permalink( $event_id ) . '">' . get_the_title( $event_id ) . '</a>';
+                $text = apply_filters( 'pickle_calendar_event_title', $title, $event_id );
 
-            $content .= '<div class="pickle-calendar-event ' . implode( ' ', $classes ) . '" data-event-id="' . $event_id . '" data-event-day-number="' . $key . '" data-event-date="' . $date . '" data-event-total-days=' . $this->total_days( $event_id, $date ) . '>' . $text . '</div>';
+                $content .= '<div class="pickle-calendar-event ' . implode( ' ', $classes ) . '" data-event-id="' . $event_id . '" data-event-day-number="' . $key . '" data-event-date="' . $date . '" data-event-total-days=' . $this->total_days( $event_id, $date ) . '>' . $text . '</div>';
 
         endforeach;
 
@@ -650,11 +653,11 @@ class Pickle_Calendar {
                     preg_match( '/([0-9]+)/', $key, $matches );
                     $dates[ $matches[1] ]['start_date'] = $value[0];
                 endif;
-            elseif ( strpos( $key, '_end_date_' ) !== false ) :
-                if ( isset( $value[0] ) ) :
-                    preg_match( '/([0-9]+)/', $key, $matches );
-                    $dates[ $matches[1] ]['end_date'] = $value[0];
-                endif;
+                elseif ( strpos( $key, '_end_date_' ) !== false ) :
+                    if ( isset( $value[0] ) ) :
+                        preg_match( '/([0-9]+)/', $key, $matches );
+                        $dates[ $matches[1] ]['end_date'] = $value[0];
+                    endif;
             endif;
         endforeach;
 
@@ -775,6 +778,8 @@ class Pickle_Calendar {
      * @access public
      */
     public function ajax_nav() {
+        check_ajax_referer( 'pc_bscal_nav', 'security' );
+
         $month = ! empty( $_POST['month'] ) ? sanitize_text_field( wp_unslash( $_POST['month'] ) ) : '';
         $year = ! empty( $_POST['year'] ) ? sanitize_text_field( wp_unslash( $_POST['year'] ) ) : '';
 
@@ -784,8 +789,7 @@ class Pickle_Calendar {
             'echo' => false,
         );
 
-        // echo esc_attr( $this->calendar( $args ) ); -- doth not work.
-        echo $this->calendar( $args );
+        echo $this->calendar( $args ); // phpcs:ignore
 
         wp_die();
     }
@@ -801,7 +805,8 @@ class Pickle_Calendar {
         $args = shortcode_atts(
             array(
                 'show_filters' => true,
-            ), $atts
+            ),
+            $atts
         );
 
         $args['echo'] = false;

@@ -1,8 +1,17 @@
-<?php picklecalendar()->admin->check_remove_taxonomy(); ?>
+<?php
+/**
+ * Taxonomies admin page.
+ *
+ * @package PickleCalendar
+ * @since   1.0.0
+ */
+
+picklecalendar()->admin->check_remove_taxonomy();
+?>
 
 <h2 class="wp-heading-inline">Taxonomies</h2>
 
-<a href="<?php echo admin_url( 'options-general.php?page=pickle-calendar&tab=taxonomies&action=edit' ); ?>" class="page-title-action">Add New</a>
+<a href="<?php echo esc_url( admin_url( 'options-general.php?page=pickle-calendar&tab=taxonomies&action=edit' ) ); ?>" class="page-title-action">Add New</a>
 
 <form id="pickle-calendar-taxonomies" method="post">
 
@@ -25,19 +34,19 @@
     </thead>
 
     <tbody id="the-list">
-        <?php foreach ( picklecalendar()->settings['taxonomies'] as $taxonomy ) : ?>
-            <tr id="taxonomy-<?php echo $taxonomy['slug']; ?>" class="taxonomy-<?php echo $taxonomy['slug']; ?> taxonomy hentry">
+        <?php foreach ( picklecalendar()->settings['taxonomies'] as $setings_taxonomy ) : ?>
+            <tr id="taxonomy-<?php echo esc_attr( $setings_taxonomy['slug'] ); ?>" class="taxonomy-<?php echo esc_attr( $setings_taxonomy['slug'] ); ?> taxonomy hentry">
                 <th scope="row" class="check-column">
-                    <label class="screen-reader-text" for="cb-select-<?php echo $taxonomy['slug']; ?>">Select <?php echo ucwords( $taxonomy['label'] ); ?></label>
-                    <input id="cb-select-<?php echo $taxonomy['slug']; ?>" type="checkbox" name="pickle_calendar_taxonomy[]" value="<?php echo $taxonomy['slug']; ?>">
+                    <label class="screen-reader-text" for="cb-select-<?php echo esc_attr( $setings_taxonomy['slug'] ); ?>">Select <?php echo esc_attr( ucwords( $setings_taxonomy['label'] ) ); ?></label>
+                    <input id="cb-select-<?php echo esc_attr( $setings_taxonomy['slug'] ); ?>" type="checkbox" name="pickle_calendar_taxonomy[]" value="<?php echo esc_attr( $setings_taxonomy['slug'] ); ?>">
                 </th>
                 
                 <td class="name column-name column-primary" data-colname="Name">
-                    <strong><a class="row-name" href="<?php echo admin_url( 'options-general.php?page=pickle-calendar&tab=taxonomies&action=edit&slug=' . $taxonomy['slug'] ); ?>" aria-label="“<?php echo ucwords( $taxonomy['label'] ); ?>” (Edit)"><?php echo ucwords( $taxonomy['label'] ); ?></a></strong>
+                    <strong><a class="row-name" href="<?php echo esc_url( admin_url( 'options-general.php?page=pickle-calendar&tab=taxonomies&action=edit&slug=' . $setings_taxonomy['slug'] ) ); ?>" aria-label="“<?php echo esc_attr( ucwords( $setings_taxonomy['label'] ) ); ?>” (Edit)"><?php echo esc_attr( ucwords( $setings_taxonomy['label'] ) ); ?></a></strong>
                 </td>
                 
                 <td class="actions column-actions" data-colname="Actions">
-                    <strong><a class="delete" href="<?php echo admin_url( 'options-general.php?page=pickle-calendar&tab=taxonomies&action=delete&slug=' . $taxonomy['slug'] ); ?>" aria-label="delete">Delete</a></strong>
+                    <strong><a class="delete" href="<?php echo esc_url( admin_url( 'options-general.php?page=pickle-calendar&tab=taxonomies&action=delete&slug=' . $setings_taxonomy['slug'] ) ); ?>" aria-label="delete">Delete</a></strong>
                 </td>               
             </tr>
         <?php endforeach; ?>

@@ -1,10 +1,9 @@
 <?php
-
 /**
  * Plugin Name: Pickle Calendar
  * Plugin URI:
  * Description: Pickle Calendar
- * Version: 1.3.2
+ * Version: 1.4.0
  * Author: Erik Mitchell
  * Author URI:
  * License: GPL-2.0+

@@ -1,4 +1,10 @@
 <?php
+/**
+ * Pickle Calendar Admin class
+ *
+ * @package PickleCalendar
+ * @since   1.0.0
+ */
 
 /**
  * Pickle_Calendar_Admin class.
@@ -24,7 +30,7 @@ class Pickle_Calendar_Admin {
     }
 
     /**
-     * admin_scripts_styles function.
+     * Load admin scripts and styles.
      *
      * @access public
      * @return void
@@ -36,7 +42,7 @@ class Pickle_Calendar_Admin {
     }
 
     /**
-     * admin_menu function.
+     * Add page to menu.
      *
      * @access public
      * @return void
@@ -46,7 +52,7 @@ class Pickle_Calendar_Admin {
     }
 
     /**
-     * admin_page function.
+     * Admin page.
      *
      * @access public
      * @return void
@@ -58,7 +64,7 @@ class Pickle_Calendar_Admin {
             'taxonomies' => 'Categories',
             'import-export' => 'Import/Export',
         );
-        $active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
+        $active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'settings';
 
         $html .= '<div class="wrap pickle-calendar-admin">';
             $html .= '<h1>Pickle Calendar</h1>';
@@ -77,7 +83,7 @@ class Pickle_Calendar_Admin {
 
         switch ( $active_tab ) :
             case 'taxonomies':
-                if ( isset( $_GET['action'] ) && $_GET['action'] == 'edit' ) :
+                if ( isset( $_GET['action'] ) && 'edit' == $_GET['action'] ) :
                     $html .= $this->get_admin_page( 'taxonomies-single' );
                     else :
                         $html .= $this->get_admin_page( 'taxonomies' );
@@ -92,23 +98,24 @@ class Pickle_Calendar_Admin {
 
         $html .= '</div>';
 
-        echo $html;
+        echo $html; // phpcs:ignore
     }
 
     /**
-     * update_settings function.
+     * Update settings.
      *
      * @access public
-     * @return void
+     * @return bool
      */
     public function update_settings() {
-        if ( ! isset( $_POST['pickle_calendar_admin'] ) || ! wp_verify_nonce( $_POST['pickle_calendar_admin'], 'update_settings' ) ) {
+        if ( ! isset( $_POST['pickle_calendar_admin'] ) || ! wp_verify_nonce( sanitize_key( $_POST['pickle_calendar_admin'] ), 'update_settings' ) ) {
             return false;
         }
 
-        $new_settings = picklecalendar()->parse_args( $_POST['settings'], picklecalendar()->settings );
+        $post_settings = isset( $_POST['settings'] ) ? pc_sanitize_array( wp_unslash( $_POST['settings'] ) ) : '';
+        $new_settings = picklecalendar()->parse_args( $post_settings, picklecalendar()->settings );
 
-        // for checkboxes //
+        // for checkboxes.
         foreach ( $new_settings as $key => $value ) :
             if ( ! isset( $_POST['settings'][ $key ] ) ) :
                 $new_settings[ $key ] = 0;
@@ -117,30 +124,34 @@ class Pickle_Calendar_Admin {
 
         update_option( 'pickle_calendar_settings', $new_settings );
 
-        wp_redirect( site_url( $_POST['_wp_http_referer'] ) );
+        $wp_http_referer = isset( $_POST['_wp_http_referer'] ) ? sanitize_text_field( wp_unslash( $_POST['_wp_http_referer'] ) ) : '';
+
+        wp_redirect( site_url( $wp_http_referer ) );
         exit;
     }
 
     /**
-     * update_taxonomy function.
+     * Update taxonomy.
      *
      * @access public
-     * @return void
+     * @return bool
      */
     public function update_taxonomy() {
-        if ( ! isset( $_POST['pickle_calendar_admin'] ) || ! wp_verify_nonce( $_POST['pickle_calendar_admin'], 'update_taxonomy' ) ) {
+        if ( ! isset( $_POST['pickle_calendar_admin'] ) || ! wp_verify_nonce( sanitize_key( $_POST['pickle_calendar_admin'] ), 'update_taxonomy' ) ) {
             return false;
         }
 
         $taxonomies = get_option( 'pickle_calendar_taxonomies' );
         $exists = false;
+        $post_tax_details_slug = isset( $_POST['tax_details']['slug'] ) ? sanitize_text_field( wp_unslash( $_POST['tax_details']['slug'] ) ) : '';
+        $post_tax_details = isset( $_POST['tax_details'] ) ? sanitize_text_field( wp_unslash( $_POST['tax_details'] ) ) : '';
 
         // we added a check if tax exists, fixes a bug and provides some built in clean up.
-        if ( ! empty( $_POST['tax_details']['slug'] ) ) :
+        if ( ! empty( $post_tax_details_slug ) ) :
             // search for existing, update or add.
             foreach ( $taxonomies as $key => $tax_details ) :
-                if ( $_POST['tax_details']['slug'] == $tax_details['slug'] ) :
-                    $taxonomies[ $key ] = $_POST['tax_details'];
+                if ( $post_tax_details_slug == $tax_details['slug'] ) :
+                    $taxonomies[ $key ] = $post_tax_details;
                     $exists = true;
                 endif;
             endforeach;
@@ -150,7 +161,7 @@ class Pickle_Calendar_Admin {
 
             // update if not exists.
             if ( ! $exists ) {
-                $taxonomies[] = $_POST['tax_details'];
+                $taxonomies[] = $post_tax_details;
             }
         endif;
 
@@ -158,23 +169,25 @@ class Pickle_Calendar_Admin {
 
         picklecalendar()->update_settings();
 
-        wp_redirect( admin_url( 'options-general.php?page=pickle-calendar&tab=taxonomies&action=edit&slug=' . $_POST['tax_details']['slug'] ) );
+        wp_redirect( admin_url( 'options-general.php?page=pickle-calendar&tab=taxonomies&action=edit&slug=' . $post_tax_details_slug ) );
         exit;
     }
 
     /**
-     * process_settings_export function.
+     * Process settings export.
      *
      * @access public
      * @return void
      */
     public function process_settings_export() {
-        if ( empty( $_POST['pc_action'] ) || $_POST['pc_action'] != 'export_settings' ) {
+        $pc_action = isset( $_POST['pc_action'] ) ? sanitize_text_field( wp_unslash( $_POST['pc_action'] ) ) : '';
+
+        if ( empty( $pc_action ) || 'export_settings' != $pc_action ) {
             return;
         }
 
-        if ( ! isset( $_POST['pickle_calendar_export_nonce'] ) || ! wp_verify_nonce( $_POST['pickle_calendar_export_nonce'], 'pickle_calendar_export_nonce' ) ) {
-            return;
+        if ( ! isset( $_POST['pickle_calendar_export_nonce'] ) && ! wp_verify_nonce( sanitize_key( $_POST['pickle_calendar_export_nonce'] ), 'pickle_calendar_export_nonce' ) ) {
+            return false;
         }
 
         if ( ! current_user_can( 'manage_options' ) ) {
@@ -197,34 +210,37 @@ class Pickle_Calendar_Admin {
     }
 
     /**
-     * process_settings_import function.
+     * Process settings import.
      *
      * @access public
      * @return void
      */
     public function process_settings_import() {
-        if ( empty( $_POST['pc_action'] ) || $_POST['pc_action'] != 'import_settings' ) {
+        $pc_action = isset( $_POST['pc_action'] ) ? sanitize_text_field( wp_unslash( $_POST['pc_action'] ) ) : '';
+
+        if ( empty( $pc_action ) || 'import_settings' != $pc_action ) {
             return;
         }
 
-        if ( ! isset( $_POST['pickle_calendar_import_nonce'] ) || ! wp_verify_nonce( $_POST['pickle_calendar_import_nonce'], 'pickle_calendar_import_nonce' ) ) {
-            return;
+        if ( ! isset( $_POST['pickle_calendar_import_nonce'] ) && ! wp_verify_nonce( sanitize_key( $_POST['pickle_calendar_import_nonce'] ), 'pickle_calendar_import_nonce' ) ) {
+            return false;
         }
 
         if ( ! current_user_can( 'manage_options' ) ) {
             return;
         }
 
-        $extension = end( explode( '.', $_FILES['import_file']['name'] ) );
+        $import_file_name = isset( $_FILES['import_file']['name'] ) ? sanitize_text_field( wp_unslash( $_FILES['import_file']['name'] ) ) : '';
+        $extension = end( explode( '.', $import_file_name ) );
 
-        if ( $extension != 'json' ) {
-            wp_die( __( 'Please upload a valid .json file' ) );
+        if ( 'json' != $extension ) {
+            wp_die( 'Please upload a valid .json file.' );
         }
 
-        $import_file = $_FILES['import_file']['tmp_name'];
+        $import_file = isset( $_FILES['import_file']['tmp_name'] ) ? sanitize_text_field( wp_unslash( $_FILES['import_file']['tmp_name'] ) ) : '';
 
         if ( empty( $import_file ) ) {
-            wp_die( __( 'Please upload a file to import' ) );
+            wp_die( 'Please upload a file to import.' );
         }
 
         // Retrieve the settings from the file and convert the json object to an array.
@@ -238,18 +254,20 @@ class Pickle_Calendar_Admin {
     }
 
     /**
-     * process_events_export function.
+     * Process events export.
      *
      * @access public
-     * @return void
+     * @return bool
      */
     public function process_events_export() {
-        if ( empty( $_POST['pc_action'] ) || $_POST['pc_action'] != 'export_events' ) {
+        $pc_action = isset( $_POST['pc_action'] ) ? sanitize_text_field( wp_unslash( $_POST['pc_action'] ) ) : '';
+
+        if ( empty( $pc_action ) || 'export_events' != $pc_action ) {
             return;
         }
 
-        if ( ! isset( $_POST['pickle_calendar_export_events_nonce'] ) || ! wp_verify_nonce( $_POST['pickle_calendar_export_events_nonce'], 'pickle_calendar_export_events_nonce' ) ) {
-            return;
+        if ( ! isset( $_POST['pickle_calendar_export_events_nonce'] ) && ! wp_verify_nonce( sanitize_key( $_POST['pickle_calendar_export_events_nonce'] ), 'pickle_calendar_export_events_nonce' ) ) {
+            return false;
         }
 
         if ( ! current_user_can( 'manage_options' ) ) {
@@ -259,29 +277,38 @@ class Pickle_Calendar_Admin {
         picklecalendar()->import_export_events->export();
     }
 
+    /**
+     * Process events import.
+     *
+     * @access public
+     * @return bool
+     */
     public function process_events_import() {
-        if ( empty( $_POST['pc_action'] ) || $_POST['pc_action'] != 'import_events' ) {
+        $pc_action = isset( $_POST['pc_action'] ) ? sanitize_text_field( wp_unslash( $_POST['pc_action'] ) ) : '';
+
+        if ( empty( $pc_action ) || 'import_events' != $pc_action ) {
             return;
         }
 
-        if ( ! isset( $_POST['pickle_calendar_import_events_nonce'] ) || ! wp_verify_nonce( $_POST['pickle_calendar_import_events_nonce'], 'pickle_calendar_import_events_nonce' ) ) {
-            return;
+        if ( ! isset( $_POST['pickle_calendar_import_events_nonce'] ) && ! wp_verify_nonce( sanitize_key( $_POST['pickle_calendar_import_events_nonce'] ), 'pickle_calendar_import_events_nonce' ) ) {
+            return false;
         }
 
         if ( ! current_user_can( 'manage_options' ) ) {
             return;
         }
 
-        $extension = end( explode( '.', $_FILES['import_file']['name'] ) );
+        $import_file_name = isset( $_FILES['import_file']['name'] ) ? sanitize_text_field( wp_unslash( $_FILES['import_file']['name'] ) ) : '';
+        $extension = end( explode( '.', $import_file_name ) );
 
-        if ( $extension != 'json' ) {
-            wp_die( __( 'Please upload a valid .json file' ) );
+        if ( 'json' != $extension ) {
+            wp_die( 'Please upload a valid .json file.' );
         }
 
-        $import_file = $_FILES['import_file']['tmp_name'];
+        $import_file = isset( $_FILES['import_file']['tmp_name'] ) ? sanitize_text_field( wp_unslash( $_FILES['import_file']['tmp_name'] ) ) : '';
 
         if ( empty( $import_file ) ) {
-            wp_die( __( 'Please upload a file to import' ) );
+            wp_die( 'Please upload a file to import.' );
         }
 
         // Retrieve the settings from the file.
@@ -300,35 +327,50 @@ class Pickle_Calendar_Admin {
         exit;
     }
 
+    /**
+     * Display admin notices.
+     *
+     * @access public
+     * @return void
+     */
     public function admin_notices() {
         $html = '';
         $screen = get_current_screen();
 
-        if ( $screen->id !== 'settings_page_pickle-calendar' ) {
+        if ( 'settings_page_pickle-calendar' !== $screen->id ) {
             return;
         }
 
-        if ( isset( $_GET['import-events'] ) ) :
+        if ( ! isset( $_GET['import-events'] ) ) {
+            return;
+        }
 
-            if ( $_GET['import-events'] ) :
+        $import_events = isset( $_GET['import-events'] ) ? sanitize_text_field( wp_unslash( $_GET['import-events'] ) ) : '';
 
-                $html .= '<div class="notice notice-success is-dismissible">';
-                    $html .= '<p>' . __( 'Events successfully imported.', 'pickle-calendar' ) . '</p>';
-                $html .= '</div>';
+        if ( $import_events ) :
 
-            else :
+            $html .= '<div class="notice notice-success is-dismissible">';
+                $html .= '<p>' . __( 'Events successfully imported.', 'pickle-calendar' ) . '</p>';
+            $html .= '</div>';
 
-                $html .= '<div class="notice notice-error is-dismissible">';
-                    $html .= '<p>' . __( 'Events not imported.', 'pickle-calendar' ) . '</p>';
-                $html .= '</div>';
+        else :
 
-            endif;
+            $html .= '<div class="notice notice-error is-dismissible">';
+                $html .= '<p>' . __( 'Events not imported.', 'pickle-calendar' ) . '</p>';
+            $html .= '</div>';
 
         endif;
 
-        echo $html;
+        echo $html; // phpcs:ignore
     }
 
+    /**
+     * Get admin page.
+     *
+     * @access public
+     * @param bool $template_name (default: false).
+     * @return string
+     */
     public function get_admin_page( $template_name = false ) {
         if ( ! $template_name ) {
             return false;

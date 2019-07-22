@@ -1,20 +1,21 @@
 // Project configuration
 var buildInclude = [
         // include common file types
-        //'**/*.php',
-        //'**/*.html',
-        //'**/*.css',
-        //'**/*.js',
-        //'**/*.svg',
-        //'**/*.ttf',
-        //'**/*.otf',
-        //'**/*.eot',
-        //'**/*.woff',
-        //'**/*.woff2',
-        
-        './**/*',
+        '**/*.php',
+        '**/*.html',
+        '**/*.css',
+        '**/*.js',
+        '**/*.svg',
+        '**/*.ttf',
+        '**/*.otf',
+        '**/*.eot',
+        '**/*.woff',
+        '**/*.woff2',
+        '**/*.png',
         
         // include specific files and folders
+        'screenshot.png',
+        'readme.txt',
 
         // exclude files and folders
         '!./composer.json', 
@@ -26,12 +27,13 @@ var buildInclude = [
         '!./{sass,sass/**/*}',
         '!./.stylelintrc',
         '!./{vendor,vendor/**/*}',
+        '!svn/**'
     ];
     
 var phpSrc = [
         '**/*.php', // Include all files    
-        '!node_modules/**/*', // Exclude node_modules/
-        '!vendor/**' // Exclude vendor/    
+        '!node_modules/**/*', // Exclude node_modules
+        '!vendor/**' // Exclude vendor   
     ];
 
 var cssInclude = [
@@ -42,7 +44,7 @@ var cssInclude = [
         '!**/*.min.css',
         '!node_modules/**/*',
         '!style.css.map',
-        '!vendor/**/*'
+        '!vendor/**'
     ];
     
 var jsInclude = [
@@ -53,8 +55,8 @@ var jsInclude = [
         '!**/*.min.js',
         '!node_modules/**/*',
         '!vendor/**',
-        '!**/gulpfile.js'             
-    ];         
+        '!**/gulpfile.js'       
+    ];    
 
 // Load plugins
 var gulp = require('gulp'),
@@ -67,7 +69,7 @@ var gulp = require('gulp'),
     rename = require('gulp-rename'),
     concat = require('gulp-concat'),
     notify = require('gulp-notify'),
-    runSequence = require('gulp-run-sequence'),
+    runSequence = require('run-sequence'),
     sass = require('gulp-sass'),
     plugins = require('gulp-load-plugins')({
         camelize: true
@@ -82,7 +84,9 @@ var gulp = require('gulp'),
     phpcs = require('gulp-phpcs'), // Gulp plugin for running PHP Code Sniffer.
     phpcbf = require('gulp-phpcbf'), // PHP Code Beautifier
     gutil = require('gulp-util'), // gulp util
-    zip = require('gulp-zip'); // gulp zip
+    zip = require('gulp-zip'), // gulp zip
+    beautify = require('gulp-jsbeautifier'),
+    cssbeautify = require('gulp-cssbeautify');
 
 /**
  * Styles
@@ -140,7 +144,14 @@ gulp.task('lintcss', function lintCssTask() {
         {formatter: 'string', console: true}
       ]
     }));
-});	
+});
+
+// make pretty
+gulp.task('beautifycss', () =>
+    gulp.src(cssInclude)
+        .pipe(cssbeautify())
+        .pipe(gulp.dest('./'))
+);	
 
 /**
  * Scripts
@@ -162,6 +173,30 @@ gulp.task('lintjs', function() {
     .pipe(jshint())
     .pipe(jshint.reporter(stylish));
 });
+
+// combine scripts into one file and min it.
+gulp.task('scriptscombine', function () {
+    return gulp.src(jsInclude)
+        .pipe(concat('scripts.js'))
+        .pipe(gulp.dest('./inc/js'))
+        .pipe(rename({
+            basename: "scripts",
+            suffix: '.min'
+        }))
+        .pipe(uglify())
+        .pipe(gulp.dest('./inc/js/'))
+        .pipe(notify({
+            message: 'Scripts combined',
+            onLast: true
+        }));
+});
+
+// make pretty
+gulp.task('beautifyjs', () =>
+    gulp.src(jsInclude)
+        .pipe(beautify())
+        .pipe(gulp.dest('./'))
+);
 
 /**
  * PHP
@@ -192,21 +227,15 @@ gulp.task('phpcbf', function () {
 });
 
 // ==== TASKS ==== //
-/**
- * Gulp Default Task
- *
- * Compiles styles, watches js and php files.
- *
- */
- 
+
 // gulp zip
 gulp.task('zip', function () {
   return gulp.src(buildInclude)
     .pipe(zip('pickle-calendar.zip'))
     .pipe(gulp.dest('./../'));
-}); 
+});  
 
-// Package Distributable - sort of
+// Package Distributable
 gulp.task('build', function (cb) {
     runSequence('styles', 'scripts', 'zip', cb);
 });
@@ -219,6 +248,6 @@ gulp.task('styles', function (cb) {
 
 // Watch Task
 gulp.task('default', ['styles', 'scripts'], function () {
-    gulp.watch('./css/**/*', ['sass']);
+    gulp.watch('./sass/**/*', ['sass']);
     gulp.watch('./js/**/*.js', ['scripts']);
 });

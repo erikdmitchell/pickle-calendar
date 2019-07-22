@@ -48,7 +48,7 @@ class Pickle_Calendar_Event_Details {
         wp_enqueue_script( 'pc-repeat-field-script', PICKLE_CALENDAR_URL . 'admin/js/repeat-field.js', array( 'jquery' ), '0.1.0', true );
 
         wp_enqueue_style( 'jquery-ui-style', PICKLE_CALENDAR_URL . 'admin/css/jquery-ui.min.css', '', '1.12.1' );
-        wp_enqueue_style( 'bted-style', PICKLE_CALENDAR_URL . 'admin/css/event-details.css', '', '0.1.0' );
+        wp_enqueue_style( 'pced-style', PICKLE_CALENDAR_URL . 'admin/css/event-details.css', '', '0.1.0' );
     }
 
     /**
@@ -116,7 +116,7 @@ class Pickle_Calendar_Event_Details {
 
         $html .= '<a href="" class="button pc-repeater" data-field=".event-date-wrap">+</a>';
 
-        echo $html;
+        echo $html; // phpcs:ignore
     }
 
     /**
@@ -130,7 +130,7 @@ class Pickle_Calendar_Event_Details {
     public function save_metabox( $post_id, $post ) {
         global $wpdb;
 
-        $nonce_name   = isset( $_POST['boomi_trust_admin'] ) ? $_POST['boomi_trust_admin'] : '';
+        $nonce_name = isset( $_POST['boomi_trust_admin'] ) ? sanitize_text_field( wp_unslash( $_POST['boomi_trust_admin'] ) ) : '';
         $nonce_action = 'update_settings';
 
         // Check if nonce is set.
@@ -158,7 +158,7 @@ class Pickle_Calendar_Event_Details {
             return;
         }
 
-        // delete all existing dates //
+        // delete all existing dates.
         $wpdb->query(
             $wpdb->prepare(
                 "DELETE FROM $wpdb->postmeta WHERE post_id = %d AND ( meta_key LIKE %s OR meta_key LIKE %s )",
@@ -168,7 +168,9 @@ class Pickle_Calendar_Event_Details {
             )
         );
 
-        foreach ( $_POST['details']['dates'] as $key => $dates ) :
+        $details_dates = isset( $_POST['details']['dates'] ) ? pc_sanitize_array( wp_unslash( $_POST['details']['dates'] ) ) : array();
+
+        foreach ( $details_dates as $key => $dates ) :
             add_post_meta( $post_id, '_start_date_' . sanitize_key( $key ), $dates['start_date'] );
 
             // if we have a start date, but no end date, make end = start.
@@ -186,9 +188,9 @@ class Pickle_Calendar_Event_Details {
      * Parse args function.
      *
      * @access public
-     * @param mixed &$a (array).
+     * @param mixed $a (array).
      * @param mixed $b (array).
-     * @return void
+     * @return array
      */
     public function _wp_parse_args( &$a, $b ) {
         $a = (array) $a;

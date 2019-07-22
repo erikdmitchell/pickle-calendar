@@ -19,7 +19,7 @@ final class PickleCalendar {
      * @var string
      * @access public
      */
-    public $version = '1.3.2';
+    public $version = '1.4.0';
 
     /**
      * Settings.
@@ -115,8 +115,8 @@ final class PickleCalendar {
         include_once( PICKLE_CALENDAR_PATH . 'class-pickle-calendar-install.php' );
         include_once( PICKLE_CALENDAR_PATH . 'templates.php' );
         include_once( PICKLE_CALENDAR_PATH . 'functions.php' );
-        include_once( PICKLE_CALENDAR_PATH . 'admin/admin.php' );
-        include_once( PICKLE_CALENDAR_PATH . 'admin/functions.php' );
+        include_once( PICKLE_CALENDAR_PATH . 'admin/class-pickle-calendar-admin.php' );
+        include_once( PICKLE_CALENDAR_PATH . 'admin/class-pickle-calendar-admin-functions.php' );
         include_once( PICKLE_CALENDAR_PATH . 'class-pickle-calendar.php' );
         include_once( PICKLE_CALENDAR_PATH . 'admin/class-pickle-calendar-event-details.php' );
         include_once( PICKLE_CALENDAR_PATH . 'class-pickle-calendar-post-types.php' );

@@ -6,7 +6,7 @@
 	<description>PHP_CodeSniffer ruleset.</description>
 
 	<!-- Configs -->
-	<config name="minimum_supported_wp_version" value="5.2" />
+	<config name="minimum_supported_wp_version" value="4.7" />
 	<config name="testVersion" value="7.1-"/>
 
     <!-- Include file/paths -->
@@ -21,15 +21,8 @@
 
 	<rule ref="WordPress">
 		<exclude name="Generic.WhiteSpace.DisallowSpaceIndent" />
-		<exclude name="WordPress.VIP.DirectDatabaseQuery.NoCaching" />
-		<exclude name="WordPress.VIP.DirectDatabaseQuery.DirectQuery" />
-		<exclude name="WordPress.VIP.DirectDatabaseQuery.SchemaChange" />
-		<exclude name="WordPress.VIP.FileSystemWritesDisallow.file_ops_fwrite" />
-		<exclude name="WordPress.VIP.OrderByRand" />
-		<exclude name="WordPress.VIP.RestrictedFunctions" />
-		<exclude name="WordPress.VIP.RestrictedVariables.user_meta__wpdb__usermeta" />
 		<exclude name="WordPress.VIP.PostsPerPage.posts_per_page_posts_per_page" />
-		<exclude name="WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE" />
+		<exclude name="WordPress.VIP.DirectDatabaseQuery.NoCaching" />
 	</rule>
 
     <rule ref="Generic.WhiteSpace.ScopeIndent">
@@ -46,4 +39,13 @@
 			<property name="text_domain" type="array" value="pickle-calendar" />
 		</properties>
 	</rule>
+	
+    <!-- Custom sanitizing functions. -->	
+    <rule ref="WordPress.Security.ValidatedSanitizedInput">
+        <properties>
+            <property name="customSanitizingFunctions" type="array">
+                <element value="pc_sanitize_array"/>
+            </property>
+        </properties>
+    </rule>		
 </ruleset>

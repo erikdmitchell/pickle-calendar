@@ -1,7 +1,13 @@
 <?php
+/**
+ * Pickle Calendar update functions
+ *
+ * @package PickleCalendar
+ * @since   1.0.0
+ */
 
 /**
- * pcl_update_120_taxonomies function.
+ * Update version 1.2.0.
  *
  * @access public
  * @return void
